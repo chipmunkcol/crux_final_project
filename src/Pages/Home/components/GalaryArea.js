@@ -28,13 +28,13 @@ useEffect(()=>{
 
     return(
         <div style={{width:'1920px', height:'1180px', backgroundColor:'#111'}}>
-            <Title>갤러리</Title>
+            <Title> 유저 갤러리 </Title>
 
             <div style={{width:'1206px', height:'804px', margin:'30px auto 0 auto' }}>
                 
             {
                 galarys.length === 0 ? <Loading /> :
-                    galarys?.map((galary)=>{
+                    galarys?.slice(0,6).map((galary)=>{
                         return(
                             <img key={`${galary.postId}+${galary.crewId}`} 
                                 src={galary.imgList[0]?.imgUrl} 

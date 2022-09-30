@@ -3,7 +3,7 @@ import loadingSpinner from '../Image/로딩스피너.gif'
 
 const Loading = () => {
     return (
-        <div style={{width:'192rem', height:'100rem', backgroundColor:'#141414'}}>
+        <div style={{width:'100%', height:'100%', backgroundColor:'#141414'}}>
             <LoadingSpinner>
                 <LoadingText>잠시만 기다려 주세요~</LoadingText>
                 <img src={loadingSpinner} alt="로딩중" width="5%"/>

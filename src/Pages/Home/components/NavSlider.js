@@ -4,72 +4,73 @@ import Slider from "react-slick";
 import styled from "styled-components";
 import 슬라이더왼쪽버튼 from "../../../Image/btn_left.png"
 import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
-import 메인배너 from "../../../Image/메인배너.png"
-import 클라이밍짐배너 from "../../../Image/클라이밍짐배너.png"
+import 슬라이더정지버튼 from "../../../Image/btn_stop.png"
+import 메인슬라이더1 from "../../../Image/메인슬라이더1.png"
+import 메인슬라이더2 from "../../../Image/메인슬라이더2.png"
+import 메인슬라이더3 from "../../../Image/메인슬라이더3.png"
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
-const NavSlider = (props) => {
+const NavSlider = () => {
 
     const navigate = useNavigate()
+    
+    const [playCarousel, setPlayCarousel] = useState(true);
+    const onClickPlayCarousel = () => {
+        setPlayCarousel((prev) => !prev);
+    };
 
     const settings = {
         dots: false,
         fade: true,
         infinite: true,
         speed: 1000,
-        // autoplay: true,
+        autoplay: playCarousel,
         autoplaySpeed: 5000,
-        pauseOnHover: true,
         nextArrow: (
             <Snext>
-                <img src={슬라이더오른쪽버튼} />
+                <img src={슬라이더오른쪽버튼} style={{width:'2.5rem'}}/>
             </Snext>
         ),
         prevArrow: (
             <Sprev>
-                <img src={슬라이더왼쪽버튼} />
+                <img src={슬라이더왼쪽버튼} style={{width:'2.5rem'}}/>
             </Sprev>
         ),
       };
 
 return(
     <div>
-    
-        <StyledSlider  {...settings} style={{}}>
+    <StopButton src={슬라이더정지버튼} type="button" onClick={onClickPlayCarousel}/>
+        <StyledSlider {...settings}>
 
     {/* 1번째 슬라이드 */}
-            <div>
-                <BGimg >
+            <Wrap1>
+                <ContentArea>
+                    {/* <Top></Top> */}
+                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
+                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                </ContentArea>
                 
-                    <div style={{width:'1200px', height:'163px', fontSize:'48px', margin:'0% auto 0 auto', padding:'20% 0 0 0'}}>
-                        클라이머들을 위한 공간 <br/>
-                        CRUX에서 완등하자!
-                    </div>
-
-                    <div style={{width:'1200px', height:'300px', fontSize:'20px', margin:'0 auto', padding:'11% 0 0 0'}}>
-                        새로운 크루원들과 클라이밍을 원하신다면,<br/>
-                        지금 바로 모임에 참가해보세요!
-                    </div>
-            
-                </BGimg>
-            </div>
+            </Wrap1>
 
     {/* 2번째 슬라이드 */}
-            <div>
-                <BGimg2 >
-                
-                    <div style={{width:'1200px', color:'black', fontSize:'48px', margin:'0 auto 0 auto', padding:'5% 0 0 13%'}}>
-                        {/* 클라이머를 위한 것을 한 눈에 <br/> */}
-                        주변 클라이밍짐을 확인해보세요!
-                    </div>
+            <Wrap2>
+                <ContentArea>
+                    <Top></Top>
+                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
+                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                </ContentArea>
+            </Wrap2>
 
-                    <div style={{width:'61rem', height:'300px', color:'black', fontSize:'20px', margin:'2rem auto', textAlign:'end'}}>
-                        마음에 드는 클라이밍 짐을 찾으셨다면,<br/>
-                        즐겨찾기와 후기를 남겨주세요!
-                    </div>
-            
-                </BGimg2>
-            </div>
+    {/* 3번째 슬라이드 */}
+            <Wrap3>
+                <ContentArea>
+                    <Top></Top>
+                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
+                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                </ContentArea>
+            </Wrap3>
 
 
         </StyledSlider>
@@ -77,6 +78,50 @@ return(
     </div>
     );
 }
+
+const Wrap1 = styled.div`
+background-image: url(${메인슬라이더1});
+width: 100%;
+height: 100rem;
+margin: 0 auto;
+`
+const ContentArea = styled.div`
+width: 62.5%;
+margin: 34rem 0 0 36rem;
+color: #ffffff;
+font-size: 20px;
+font-weight: 500;
+`
+const Top = styled.div`
+`
+const Mid = styled.div`
+margin: 5rem 0 0 0;
+font-size: 48px;
+`
+const Bottom = styled.div`
+margin: 3rem 0 0 0;
+`
+
+const Wrap2 = styled.div`
+background-image: url(${메인슬라이더2});
+width: 192rem;
+height: 100rem;
+margin: 0 auto;
+`
+const Wrap3 = styled.div`
+background-image: url(${메인슬라이더3});
+width: 192rem;
+height: 100rem;
+margin: 0 auto;
+`
+
+const StopButton = styled.img`
+width: 1rem;
+height: 2rem;
+position: absolute;
+margin: 79.2rem 0 0 41.2rem;
+z-index: 5;
+`
 
 const StyledSlider = styled(Slider)`
 width: 100%;
@@ -86,6 +131,11 @@ position: relative;
     opacity: 0;
     display: none;
 }
+/* 밑에 right auto 안하면 오른쪽 슬라이더 버튼이 기본 값 right -25px 때문에 왼쪽으로 엄청 밀림... 진짜 이런거 기본값 설정 하지마~~ */
+.slick-next {
+    right: auto;
+}
+
 .slick-slide div {
     //슬라이더  컨텐츠
     /* cursor: pointer; */
@@ -93,46 +143,26 @@ position: relative;
 `
 
 const Snext = styled.div`
-width: 30px;
+width: 2rem;
 height: 30px;
 position: absolute;
-/* right: 16px; */
 z-index: 4;
-margin: 24rem 147rem 0 0;
-/* text-align: right; */
+margin: 30rem 0 0 44.5rem;
 line-height: 30px;
+.slick-next {
+    right: none;
+}
 `;
 
 const Sprev = styled.div`
-width: 30px;
+width: 2rem;
 height: 30px;
 position: absolute;
-/* left: 16px; */
 z-index: 4;
-margin: 24rem 0 0 38rem;
-/* text-align: left; */
+margin: 30rem 0 0 39rem;
 line-height: 30px;
 `;
 
-
-const BGimg = styled.div`
-background: url(${메인배너});
-background-position: center;
-background-size: cover;
-
-width: 1920px;
-height: 1000px;
-margin: 0 auto;
-`
-const BGimg2 = styled.div`
-background: url(${클라이밍짐배너});
-background-position: center;
-background-size: cover;
-
-width: 1920px;
-height: 75rem;
-margin: 22rem auto 0 auto;
-`
 
 
 export default NavSlider;

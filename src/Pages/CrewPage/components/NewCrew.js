@@ -129,17 +129,12 @@ const Container = styled.div`
 width: 192rem;
 background-color: #141414;
 color: #999999;
-overflow: auto;
-::-webkit-scrollbar {
-    display: none;
-}
 `
 const Wrap = styled.div`
 display: grid;
 grid-template-columns: 41rem 41rem 39rem;
 justify-content: center;
 width: 123rem;
-height: 130rem;
 margin: 0 auto;
 padding: 4rem 0 0 0;
 `

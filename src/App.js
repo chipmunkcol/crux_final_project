@@ -7,8 +7,6 @@ import Navbar from './Shared/Navbar';
 
 function App() {
 
-  const navigate = useNavigate()
-
   return (
     <div className="App">
       

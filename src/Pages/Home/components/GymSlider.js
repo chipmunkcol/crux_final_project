@@ -22,12 +22,12 @@ const SliderGym = ({ gyms }) => {
         pauseOnHover: true,
         nextArrow: (
             <Snext>
-                <img src={슬라이더오른쪽버튼} />
+                <img src={슬라이더오른쪽버튼} style={{width:'2.5rem'}}/>
             </Snext>
         ),
         prevArrow: (
             <Sprev>
-                <img src={슬라이더왼쪽버튼} />
+                <img src={슬라이더왼쪽버튼} style={{width:'2.5rem'}}/>
             </Sprev>
         ),
       };
@@ -42,12 +42,12 @@ const SliderGym = ({ gyms }) => {
             {
                 gyms?.map((gym,i)=>{
                     return(
-                        <div key={i}>
-                            <div style={{color:'#ffffff', fontSize:'2rem', margin:'0 0 8px 15px'}}>{gym.name} (평점: {Number(gym.avgScore).toFixed(2)}점)</div>
+                        <Wrap key={i}>
+                            <GymName>{gym.name} (평점: {Number(gym.avgScore).toFixed(2)}점)</GymName>
                             <img src={gym.imgUrl !== null ? gym.imgUrl : 기본클라이밍짐} alt="" 
                                  style={{width:'630px', height:'630px', margin:'0 2%', position:'relative'}}
                                     onClick={()=>{navigate(`/gyms/${gym.id}`)}}/>
-                        </div>
+                        </Wrap>
                     )
                 })
             }
@@ -57,6 +57,19 @@ const SliderGym = ({ gyms }) => {
         </div>
     );
 }
+const Wrap = styled.div`
+:hover {
+    color: #ffb800;
+}
+`
+
+const GymName = styled.div`
+font-size: 2rem;
+margin: 1rem 0px 8px 3rem;
+position: absolute;
+z-index: 3;
+
+`
 
 const StyledSlider = styled(Slider)`
 width: 100%;

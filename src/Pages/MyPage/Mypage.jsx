@@ -180,6 +180,9 @@ width: 83rem;
 height: 9rem;
 margin: 1.5rem 75.7rem 0rem 7rem;
 overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
 `
 const LikeGymTitle = styled.div`
 color: #666666;
@@ -192,6 +195,9 @@ width: 83rem;
 height: 13rem;
 margin: 1.5rem 75.7rem 0 7rem;
 overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
 `
 
 

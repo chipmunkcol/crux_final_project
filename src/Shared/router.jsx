@@ -13,11 +13,11 @@ import ChatList from "../Pages/Chatting/ChatList";
 import ChatRoom from "../Pages/Chatting/ChatRoom";
 import TermsOfUse from "../Pages/Register/TermsOfUse";
 import Userprivacy from "../Pages/Register/Userprivacy";
+import { useEffect } from "react";
 
 const Router = () => {
+  
   return (
-    <Warp>
-      <Container>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/crews" element={<Crew />} />
@@ -33,20 +33,8 @@ const Router = () => {
           <Route path="/terms/terms-of-use" element={<TermsOfUse />} />
           <Route path="/terms/user-privacy" element={<Userprivacy />} />
         </Routes>
-      </Container>
-    </Warp>
   );
 };
 
 export default Router;
 
-const Warp = styled.div`
-  width: 100vw;
-  height: 100vh;
-`;
-
-const Container = styled.div`
-  width: 192rem;
-  height: auto;
-  margin: 0 auto;
-`;

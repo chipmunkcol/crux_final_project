@@ -41,6 +41,7 @@ const Navbar = () => {
         {registerVisible && <Register onClose={handleRegisterModal} />}
       </ModalPortal>
       <NavContent>
+
         <NavMain type="button" onClick={() => {navigate("/")}}>
           CRUX
         </NavMain>
@@ -53,10 +54,12 @@ const Navbar = () => {
         <NavGym type="button" onClick={() => {navigate("/gyms")}}>
           클라이밍짐 후기
         </NavGym>
+        
+      </NavContent>
           
           {
             userToken !== null ?
-            <>
+            <NavContentLogin>
               {/* <Alam /> */}
               <NavLogin type="button" onClick={()=>{navigate(`/members/${userId}`)}}>
                 MYPAGE
@@ -65,11 +68,11 @@ const Navbar = () => {
               <NavRegister type="button" onClick={removeToken} >
                 LOGOUT
               </NavRegister>
-            </>
+            </NavContentLogin>
 
             :
 
-            <>
+            <NavContentLogin>
               <NavLogin type="button" onClick={handleLoginModal}>
                 LOGIN
               </NavLogin>
@@ -77,10 +80,9 @@ const Navbar = () => {
               <NavRegister type="button" onClick={handleRegisterModal}>
                 REGISTER
               </NavRegister>
-            </>
+            </NavContentLogin>
           }
           
-      </NavContent>
     </NavContainer>
   );
 };
@@ -88,6 +90,7 @@ const Navbar = () => {
 const NavContainer = styled.div`
   display: flex;
   background-color: transparent;
+  color: #ffffff;
   z-index: 3;
   position: absolute;
   margin: 0;
@@ -95,13 +98,13 @@ const NavContainer = styled.div`
 `;
 
 const NavContent = styled.div`
-  width: 120rem;
-  margin: 10rem 36rem 0 36rem;
+  width: 65rem;
+  margin: 10rem 0 0 36rem;
   align-items: baseline;
-  color: #ffffff;
+  display: flex;
 `;
 
-const NavMain = styled.span`
+const NavMain = styled.div`
 margin: 0 60px 0 0;
 font-family: GothamBold;
 font-size: 40px;
@@ -110,7 +113,7 @@ letter-spacing: -2px;
 text-align: left;
 `
 
-const NavCrew = styled.span`
+const NavCrew = styled.div`
 margin: 0 40px 0 0;
 font-size: 20px;
 font-weight: 500;
@@ -118,28 +121,33 @@ letter-spacing: -1px;
 text-align: left;
 `
 
-const NavCreateCrew = styled.span`
+const NavCreateCrew = styled.div`
 margin: 0 40px 0 0;
 font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
 `
-const NavGym = styled.span`
+const NavGym = styled.div`
 margin: 0 0 0 0;
 font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
 `
+const NavContentLogin = styled.div`
+display: flex;
+margin: 10rem 0 0 0;
+align-items: end;
 
-const NavLogin = styled.span`
+`
+const NavLogin = styled.div`
 margin: 0 25px 0 390px;
 font-size: 16px;
 font-weight: 500;
 `
 
-const NavRegister = styled.span`
+const NavRegister = styled.div`
 font-size: 16px;
 font-weight: 500;
 `
