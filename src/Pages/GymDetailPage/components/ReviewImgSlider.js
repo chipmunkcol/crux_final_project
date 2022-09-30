@@ -24,12 +24,12 @@ const settings = {
     slidesToScroll: 1,
     nextArrow: (
         <Snext>
-            <img src={슬라이더오른쪽버튼} />
+            <img src={슬라이더오른쪽버튼} style={{width:'5rem'}}/>
         </Snext>
     ),
     prevArrow: (
         <Sprev>
-            <img src={슬라이더왼쪽버튼} />
+            <img src={슬라이더왼쪽버튼} style={{width:'5rem'}}/>
         </Sprev>
     ),
   };
@@ -100,23 +100,19 @@ position: relative;
 `
 
 const Snext = styled.div`
-width: 5rem;
-height: 5rem;
 position: absolute;
 /* right: 16px; */
 z-index: 100;
-margin: 52% -10% 0 0;
+margin: 48% 12% 0 0;
 /* text-align: right; */
 line-height: 30px;
 `;
 
 const Sprev = styled.div`
-width: 5rem;
-height: 5rem;
 position: absolute;
 /* left: 16px; */
 z-index: 100;
-margin: 52% 0 0 -4%;
+margin: 48% 0 0 9%;
 /* text-align: left; */
 line-height: 30px;
 `;

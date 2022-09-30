@@ -92,6 +92,7 @@ useEffect(()=>{
         {registerVisible && <Legister onClose={handleRegisterModal} />}
       </ModalPortal>
       <NavContent>
+
         <NavMain type="button" onClick={() => {navigate("/")}}>
           CRUX
         </NavMain>
@@ -104,21 +105,13 @@ useEffect(()=>{
         <NavGym type="button" onClick={() => {navigate("/gyms")}}>
           클라이밍짐 후기
         </NavGym>
+        
+      </NavContent>
           
           {
             userToken !== null ?
-            <>
-             { showAlam ? <Alam setShowAlam={setShowAlam} NreadAlams={NreadAlams}/> : null }
-              <div style={{position:'absolute', margin:'-32px 0 0 84rem'}}>
-                <img style={{width:'3rem'}} src="https://previews.123rf.com/images/get4net/get4net1711/get4net171100677/89003028-%EC%A2%85-%EC%95%84%EC%9D%B4%EC%BD%98.jpg" 
-                  onClick={()=>{setShowAlam(true)}}/>
-                <div style={{width:'3rem', height:'3rem', backgroundColor:'white', borderRadius:'60%', position:'absolute', margin:'-48px 0 0 9px', textAlign:'center', padding:'7px 0 0 0'}}>
-                
-                  { isLoading2 ? 0 : NreadAlams.data.count}
-
-                </div>
-              </div>
-
+            <NavContentLogin>
+              {/* <Alam /> */}
               <NavLogin type="button" onClick={()=>{navigate(`/members/${userId}`)}}>
                 MYPAGE
               </NavLogin>
@@ -126,11 +119,11 @@ useEffect(()=>{
               <NavRegister type="button" onClick={removeToken} >
                 LOGOUT
               </NavRegister>
-            </>
+            </NavContentLogin>
 
             :
 
-            <>
+            <NavContentLogin>
               <NavLogin type="button" onClick={handleLoginModal}>
                 LOGIN
               </NavLogin>
@@ -138,37 +131,40 @@ useEffect(()=>{
               <NavRegister type="button" onClick={handleRegisterModal}>
                 REGISTER
               </NavRegister>
-            </>
+            </NavContentLogin>
           }
           
-      </NavContent>
     </NavContainer>
   );
 };
 
 const NavContainer = styled.div`
   display: flex;
-  background-color: #000000;
+  color: #ffffff;
+  z-index: 3;
+  /* position: absolute; */
+  padding: 0 0 4.2rem 0;
+  margin: 0;
+  width: 192rem;
 `;
 
 const NavContent = styled.div`
-  width: 120rem;
-  margin: 10rem 36rem 4.2rem 36rem;
+  width: 65rem;
+  margin: 10rem 0 0 36rem;
   align-items: baseline;
-  color: #999999;
+  display: flex;
 `;
 
-const NavMain = styled.span`
+const NavMain = styled.div`
 margin: 0 60px 0 0;
 font-family: GothamBold;
 font-size: 40px;
 font-weight: 700;
 letter-spacing: -2px;
 text-align: left;
-color: #ffffff;
 `
 
-const NavCrew = styled.span`
+const NavCrew = styled.div`
 margin: 0 40px 0 0;
 font-size: 20px;
 font-weight: 500;
@@ -176,28 +172,33 @@ letter-spacing: -1px;
 text-align: left;
 `
 
-const NavCreateCrew = styled.span`
+const NavCreateCrew = styled.div`
 margin: 0 40px 0 0;
 font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
 `
-const NavGym = styled.span`
+const NavGym = styled.div`
 margin: 0 0 0 0;
 font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
 `
+const NavContentLogin = styled.div`
+display: flex;
+margin: 10rem 0 0 0;
+align-items: end;
 
-const NavLogin = styled.span`
+`
+const NavLogin = styled.div`
 margin: 0 25px 0 390px;
 font-size: 16px;
 font-weight: 500;
 `
 
-const NavRegister = styled.span`
+const NavRegister = styled.div`
 font-size: 16px;
 font-weight: 500;
 `

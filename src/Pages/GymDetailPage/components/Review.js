@@ -82,7 +82,8 @@ if(gym === undefined) {
                                     </div>
                 {/* ?? 반복문 웨안돼! */}
                 
-                                        { review?.reviewPhotoList?.length === 1 ? 
+                                        {   review?.reviewPhotoList?.length === 0 ? null :
+                                            review?.reviewPhotoList?.length === 1 ? 
                                             <img src={review.reviewPhotoList[0].imgUrl} style={{width:'12rem', height:'12rem', margin:'1.4rem 1rem 2rem 0'}}
                                             onClick={()=>{openModal(review); setReviewId(review.id)}}/> :
                                             review?.reviewPhotoList?.length === 2 ? 

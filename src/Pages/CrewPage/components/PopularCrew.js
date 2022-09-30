@@ -64,13 +64,11 @@ const PopularCrew = ({searchData}) => {
           setLoad(false);
       }, [page])
 
-//window.scroll Top button
-      const goTop = useRef(null);
 
 return (
     <Container >
         <Wrap>
-        <Topbar ref={goTop}></Topbar>
+        <Topbar ></Topbar>
         {
             searchData?.length !== 0 ? 
             
@@ -115,8 +113,7 @@ return (
               ))
 
         }
-          <button style={{position:'absolute', top:'116%', right:'24%'}} 
-            onClick={()=>{window.scrollTo({ top: goTop.current.offsetTop, left:0, behavior:"smooth" })}}>goTop</button>
+          
             { load && <Loading />}
                         
             <div ref={obsRef} ></div>
@@ -130,10 +127,6 @@ const Container = styled.div`
 width: 192rem;
 background-color: #141414;
 color: #999999;
-overflow: auto;
-::-webkit-scrollbar {
-    display: none;
-}
 `
 
 const Wrap = styled.div`
@@ -141,7 +134,6 @@ display: grid;
 grid-template-columns: 41rem 41rem 39rem;
 justify-content: center;
 width: 123rem;
-height: 130rem;
 margin: 0 auto;
 padding: 4rem 0 0 0;
 `

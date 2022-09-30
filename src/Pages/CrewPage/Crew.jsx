@@ -1,9 +1,5 @@
 import styled from "styled-components";
 import Navbar from "../../Shared/Navbar.js";
-import { Container, Row, Col } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import { __getCrew } from "../../Redux/modules/crewSlice";
-import Loading from "../../Shared/Loading";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -13,6 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PopularCrew from "./components/PopularCrew.js";
 import NewCrew from "./components/NewCrew.js";
+import 탑버튼 from "../../Image/TopBtn.png"
 
 const Crew = () => {
   const BASE_URL = "http://sparta-tim.shop";
@@ -50,7 +47,7 @@ const Crew = () => {
   }, [onclickSearchCrew]);
 
   return (
-    <div>
+    <CrewContainer>
       <Navbar />
 
       <HeaderWrap>
@@ -90,10 +87,16 @@ const Crew = () => {
           {choicePopularCrew === true ? 
             (<PopularCrew searchData={searchData}/>) : 
               (<NewCrew searchData={searchData}/>)}
-
-    </div>
+      <TopBtn onClick={()=>{window.scrollTo({ top: 0, left:0, behavior:"smooth" })}} >
+        <img src={탑버튼} style={{width:'6rem'}}/>
+      </TopBtn>
+    </CrewContainer>
   );
 };
+const CrewContainer = styled.div`
+width: 100%;
+height: 100%;
+`
 
 const HeaderWrap = styled.div`
   width: 192rem;
@@ -120,7 +123,12 @@ padding: 0 0 1rem 0;
 border-bottom: ${(props) => (props.status ? `1px solid #ffffff` : null)};
 color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
 font-weight: ${(props) => (props.status ? `700` : `400`)};
-
+`
+const TopBtn = styled.div`
+position: fixed;
+right: 19%;
+bottom: 10%;
+cursor: pointer;
 `
 
 export default Crew;
