@@ -14,29 +14,29 @@ import 탑버튼 from "../../Image/TopBtn.png"
 const Crew = () => {
   const BASE_URL = "http://sparta-tim.shop";
 
-
   const [choicePopularCrew, setChoicePopularCrew] = useState(true);
-  
-  const [choiceCrew, setChoiceCrew] = useState(true)
-  const [choiceNewCrew, setChoiceNewCrew] = useState(false)
+
+  const [choiceCrew, setChoiceCrew] = useState(true);
+  const [choiceNewCrew, setChoiceNewCrew] = useState(false);
 
   const navigate = useNavigate();
 
   // 크루검색 API 입니다
   const [search, setSearch] = useState("");
-  const [searchData, setSearchData] = useState([])
+  const [searchData, setSearchData] = useState([]);
 
   const onKeyPress = (e) => {
-    if(e.key == 'Enter') {
+    if (e.key == "Enter") {
       onclickSearchCrew();
     }
-  }
+  };
   const onclickSearchCrew = () => {
-    searchCrew()
+    searchCrew();
   };
 
   const searchCrew = useCallback(async () => {
-    await axios.get(`${BASE_URL}/crews/search?query=${search}`)
+    await axios
+      .get(`${BASE_URL}/crews/search?query=${search}`)
       .then((res) => {
         setSearchData(res.data.data);
         setSearch("");
@@ -57,7 +57,7 @@ const Crew = () => {
           크루 모임
         </h1>
 
-    {/* 검색 박스 */}
+        {/* 검색 박스 */}
         <div style={{ width: "120rem", margin: "0 auto", height: "8rem" }}>
           <S_search
             placeholder="검색어를 입력해 주세요"
@@ -66,24 +66,49 @@ const Crew = () => {
             value={search}
           />
           <FontAwesomeIcon
-            icon={faMagnifyingGlass} size="3x" color="#666666"
+            icon={faMagnifyingGlass}
+            size="3x"
+            color="#666666"
             onClick={onclickSearchCrew}
             style={{ position: "absolute", margin: "35px 2rem 0 -50px" }}
             type="button"
           />
         </div>
-        <div style={{ width: "120rem", margin: "7.5rem auto 0 auto", display:'flex', fontSize:'2rem'}}>
-            <CoiceCrew status={choiceCrew} type="button" 
-                onClick={()=>{setChoicePopularCrew(true); setSearchData([]); setChoiceCrew(true); setChoiceNewCrew(false)}}>
-                  인기 크루
-            </CoiceCrew>
-            <CoiceCrew status={choiceNewCrew} type="button" style={{margin:'0 0 0 4rem'}}
-                onClick={()=>{setChoicePopularCrew(false); setSearchData([]); setChoiceCrew(false); setChoiceNewCrew(true)}}>
-                  신규 크루
-            </CoiceCrew>
+        <div
+          style={{
+            width: "120rem",
+            margin: "7.5rem auto 0 auto",
+            display: "flex",
+            fontSize: "2rem",
+          }}
+        >
+          <CoiceCrew
+            status={choiceCrew}
+            type="button"
+            onClick={() => {
+              setChoicePopularCrew(true);
+              setSearchData([]);
+              setChoiceCrew(true);
+              setChoiceNewCrew(false);
+            }}
+          >
+            인기 크루
+          </CoiceCrew>
+          <CoiceCrew
+            status={choiceNewCrew}
+            type="button"
+            style={{ margin: "0 0 0 4rem" }}
+            onClick={() => {
+              setChoicePopularCrew(false);
+              setSearchData([]);
+              setChoiceCrew(false);
+              setChoiceNewCrew(true);
+            }}
+          >
+            신규 크루
+          </CoiceCrew>
         </div>
       </HeaderWrap>
-
           {choicePopularCrew === true ? 
             (<PopularCrew searchData={searchData}/>) : 
               (<NewCrew searchData={searchData}/>)}
@@ -130,5 +155,4 @@ right: 19%;
 bottom: 10%;
 cursor: pointer;
 `
-
 export default Crew;

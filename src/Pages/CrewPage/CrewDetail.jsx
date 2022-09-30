@@ -35,10 +35,11 @@ const CrewDetail = () => {
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   // console.log(crewDetail);
   const crew = crewDetail?.data;
-  // console.log(crew);
+  console.log(crew);
 
   //호스트 확인
   // const hostId = crew?.memberList[0]?.id;
+  const hostId = crew?.hostId;
   const userId = window?.localStorage?.getItem("userId");
 
   //크루 가입자 확인
@@ -133,16 +134,16 @@ const CrewDetail = () => {
 
   //크루 좋아요
   const handleHeartFill = () => {
-    if (crew?.like) {
-      dispatch(likeCrew(params));
-    } else {
+    if (crew?.like === true) {
       dispatch(unLikeCrew(params));
+    } else if (crew?.like === false) {
+      dispatch(likeCrew(params));
     }
   };
 
-if(!crewDetail) {
-  return <Loading />
-} 
+  if (!crewDetail) {
+    return <Loading />;
+  }
   return (
     <div>
       <Navbar />
@@ -160,14 +161,14 @@ if(!crewDetail) {
                   height="50px"
                   fill="#000000"
                   onClick={handleHeartFill}
-                  opacity={crew?.like ? "80%" : "30%"}
+                  opacity={crew?.like === true ? "80%" : "30%"}
                 />
               </HeartIcon>
               <img src={crewDetail?.data?.imgUrl} />
             </ImgBox>
             <ContentBox>
               <TextBox>
-                {crew?.memberList[0]?.id === Number(userId) ? (
+                {hostId === Number(userId) ? (
                   <TextButton>
                     <span type="button" onClick={onCrewEdit}>
                       수정
@@ -179,27 +180,23 @@ if(!crewDetail) {
                 ) : null}
                 <h1>{crewDetail?.data?.name}</h1>
                 <Keyword>
-                  <div>
-                    <p>#초보환영</p>
-                  </div>
-                  <div>
-                    <p>#주말모임</p>
-                  </div>
-                  <div>
-                    <p>#열정적인</p>
-                  </div>
+                  {crew?.keywords?.map((keyword, index) => (
+                    <div key={index}>
+                      <p>#{keyword}</p>
+                    </div>
+                  ))}
                 </Keyword>
                 <TextDetail>
                   <Text>
-                    <p>참여자</p> <p>{crewDetail?.data?.crewNum}명</p>
+                    <p>참여자</p> <p>{crew?.crewNum}명</p>
                   </Text>
                   <Text>
                     <p>주 활동 지역</p>
-                    <p>서울 신림/서울대/사당/동작</p>
+                    <p>{crew?.mainActivityArea}</p>
                   </Text>
                   <Text>
                     <p>주 활동 짐</p>
-                    <p>서울 강북구 삼양로173길 80 (북한산 국제클라이밍센터)</p>
+                    <p>{crew?.mainActivityGym}</p>
                   </Text>
                 </TextDetail>
               </TextBox>
@@ -244,7 +241,7 @@ if(!crewDetail) {
         <TabContainer>
           {introVisible && (
             <CrewIntro
-              content={crewDetail?.data?.content}
+              content={crew?.content}
               adminNickname={crew?.memberList[0]?.nickname}
               adminContent={crew?.memberList[0]?.content}
             />
