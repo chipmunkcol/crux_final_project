@@ -8,7 +8,6 @@ import { storage } from "../../Shared/firebase";
 import { createCrew } from "../../Redux/modules/crewSlice";
 import Select from "react-select";
 import DaumPostcode from "react-daum-postcode";
-import { add } from "date-fns";
 
 const CreateCrew = () => {
   const {
@@ -22,12 +21,16 @@ const CreateCrew = () => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // const payload = {
-    //   name: data.name,
-    //   content: data.content,
-    //   imgUrl: fileUrl,
-    // };
-    // dispatch(createCrew(payload));
+    const payload = {
+      name: data.name,
+      content: data.content,
+      imgUrl: fileUrl,
+      mainActivityGym: address.concat(" ", addressD),
+      mainActivityArea: addressDetail,
+      keywords: keyword,
+    };
+    console.log(payload);
+    dispatch(createCrew(payload));
   };
 
   const [imgUrl, setImgUrl] = useState(null);
@@ -87,20 +90,6 @@ const CreateCrew = () => {
   const [address, setAddress] = useState("");
   const [addressD, setAddressD] = useState("");
   const [keyword, setKeyword] = useState([]);
-
-  const options = [
-    { value: "2", label: "2명" },
-    { value: "3", label: "3명" },
-    { value: "4", label: "4명" },
-    { value: "5", label: "5명" },
-    { value: "6", label: "6명" },
-    { value: "7", label: "7명" },
-    { value: "8", label: "8명" },
-    { value: "9", label: "9명" },
-    { value: "10", label: "10명" },
-    { value: "20", label: "20명" },
-    { value: "999", label: "제한없음" },
-  ];
 
   const colourOptions = [
     { value: "초보환영", label: "초보환영", isFixed: true },
@@ -286,7 +275,7 @@ const CreateCrew = () => {
                 {imgTextVisible && (
                   <PhotoButton>
                     <Xbtn />
-                    <p>사진올리기</p>
+                    <p>크루대표사진</p>
                   </PhotoButton>
                 )}
               </ImgText>
@@ -301,21 +290,22 @@ const CreateCrew = () => {
               </TextBox>
               <TextBox>
                 <p>주 활동 지역</p>
-                //컨트롤러 사용해서 데이터 받아오는거 해보기,,
-                {/* <Controller control={control} name="mainActivityArea">
-                  <Select
-                    options={addressOptions}
-                    placeholder="시 선택"
-                    styles={customStyles1}
-                    onChange={(s) => setAddress(s.target.value)}
-                  />
-                  <Select
-                    options={seoulOptions}
-                    placeholder="상세주소"
-                    styles={customStyles2}
-                    onChange={(s) => setAddressD(s.target.value)}
-                  />
-                </Controller> */}
+                <Select
+                  options={addressOptions}
+                  placeholder="시 선택"
+                  styles={customStyles1}
+                  onChange={(s) => {
+                    setAddress(s.value);
+                  }}
+                />
+                <Select
+                  options={seoulOptions}
+                  placeholder="상세주소"
+                  styles={customStyles2}
+                  onChange={(s) => {
+                    setAddressD(s.value);
+                  }}
+                />
               </TextBox>
               <TextBox>
                 <p>주 활동 짐</p>
@@ -332,13 +322,13 @@ const CreateCrew = () => {
                 <p>키워드</p>
                 <Select
                   closeMenuOnSelect={false}
-                  placeholder="크루 키워드를 선택해주세요."
+                  placeholder="크루 키워드를 3개 선택해주세요."
                   isMulti
                   width="400px"
                   height="60px"
                   onChange={(s) => {
-                    setKeyword(s);
-                    console.log(s);
+                    let result = s.map((a) => a.value);
+                    setKeyword(result);
                   }}
                   options={colourOptions}
                   styles={customStyles}
@@ -348,7 +338,7 @@ const CreateCrew = () => {
                 <p>크루 소개</p>
                 <textarea
                   placeholder="크루에 대한 간단한 소개를 입력해주세요. 
-                  예) 직장인으로 구성된 크루입니다! 매주 토요일마다 정기모임이 있습니다."
+                  예) 직장인으로 구성된 크루입니다. 매주 토요일마다 정기모임이 있어요."
                   {...register("content", { required: true })}
                 />
               </TextDetail>
