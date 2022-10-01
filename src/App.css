@@ -1,10 +1,10 @@
 html {
   font-size: 62.5%;
+  
 }
-
 .App {
-  max-width: 192rem;
-  width: 100vw;
+  width: 192rem;
   margin: 0 auto;
   background-color: #141414;
+  
 }

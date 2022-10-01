@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const PopularCrew = ({searchData}) => {
-
-    const BASE_URL = "http://sparta-tim.shop";
+    const BASE_URL = "http://54.180.31.108";
+    // const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
@@ -36,8 +36,9 @@ const PopularCrew = ({searchData}) => {
   
   
       useEffect(()=> {
-            getCrew();
-          
+        if(page !== 0 ) {
+          getCrew();
+        }
       }, [page])
   
     
@@ -45,7 +46,8 @@ const PopularCrew = ({searchData}) => {
         const target = entries[0];
         if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
-          setPage(prev => prev+1 ); //페이지 값 증가
+            setPage(prev => prev+1 ); //페이지 값 증가
+          
           //setPage => setLastId 에 lastId max 받아다가  
         }
     })
@@ -113,10 +115,10 @@ return (
               ))
 
         }
-          
-            { load && <Loading />}
                         
             <div ref={obsRef} ></div>
+
+            { load && <Loading />}
           
         </Wrap>
       </Container>

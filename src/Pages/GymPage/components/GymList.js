@@ -18,7 +18,7 @@ const navigate = useNavigate()
                         
                             gyms?.map((gym, i)=>{
                                 return(
-                                    <div key={gym.id} style={{display:'flex', margin:'2rem auto', width:'50rem', height:'17rem', borderBottom:'1px solid #262626'}} 
+                                    <div key={gym.id} style={{display:'flex', margin:'2rem 0 0 3.5rem', width:'50rem', height:'17rem', borderBottom:'1px solid #262626'}} 
                                     onClick={()=>{onclickGymList(gym.lat, gym.lon)}}>
                                         <img src={gym.imgUrl !== null ? gym.imgUrl : 디폴트짐} alt='' style={{width:'15rem', height:'15rem'}}/>
                                         <GymContent style={{width:'35rem', padding:'1rem'}}>

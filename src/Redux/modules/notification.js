@@ -26,7 +26,7 @@ export const alamSlice = createSlice({
     name: 'alam',
     initialState:{
         alams: {
-            data: [{id: 0, content: {crewId: 0, content:"test"}, status: false}],
+            data: [],
             error: null,
             success: true,
         },

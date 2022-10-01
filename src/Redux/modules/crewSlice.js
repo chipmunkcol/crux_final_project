@@ -4,7 +4,8 @@ import axios from "axios";
 // const SERVERH = process.env.REACT_APP_SERVER_H;
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 // const BASE_URLM = "https://01192mg.shop";
-const BASE_URLM = "http://sparta-tim.shop";
+// const BASE_URLM = "http://sparta-tim.shop";
+const BASE_URLM = "http://54.180.31.108";
 
 const initialState = {
   crewDetail: [],
@@ -298,7 +299,7 @@ export const addCrewPhoto = createAsyncThunk(
     try {
       const response = await axios
         .post(
-          `http://sparta-tim.shop/crews/${payload.id}/posts`,
+          `${BASE_URLM}/crews/${payload.id}/posts`,
           {
             imgList: payload.imgUrl,
           },
@@ -325,7 +326,7 @@ export const getCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://sparta-tim.shop/crews/${payload}/posts?page=0&size=10`
+        `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
       );
       console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);

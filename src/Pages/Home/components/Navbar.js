@@ -88,7 +88,7 @@ const Navbar = () => {
 };
 
 const NavContainer = styled.div`
-  display: flex;
+   display: flex;
   background-color: transparent;
   color: #ffffff;
   z-index: 3;

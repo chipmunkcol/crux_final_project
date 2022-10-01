@@ -8,10 +8,12 @@ import { __getMyPage } from "../../Redux/modules/mypageSlice";
 import Loading from "../../Shared/Loading.js"
 import { useState } from "react";
 import EditMypage from "./components/EditMypage";
+import Footer from "../../Shared/Footer";
+import axios from "axios";
 
 
 const Mypage = () => {
-
+const BASE_URL = "http://sparta-tim.shop";
 const userId = window.localStorage.getItem("userId")
 
 const dispatch = useDispatch()
@@ -31,6 +33,25 @@ useEffect(()=>{
     dispatch(__getMyPage(params))
 },[editMypage])
 
+//회원 탈퇴
+const deleteId = async() => {
+    if(window.confirm("정말 탈퇴하시겠어요?")) {
+        await axios.delete(`${BASE_URL}/members/withdraw`, 
+        {headers: {Authorization: window.localStorage.getItem("access_token")}})
+        .then((res) => {
+            console.log(res)
+            alert(res.data.data)
+            localStorage.removeItem("access_token")
+            localStorage.removeItem("userId")
+            localStorage.removeItem("nickname")
+            navigate('/')
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }  
+}
+
     return(
         <>
 
@@ -48,9 +69,16 @@ useEffect(()=>{
                     <ProfileNickname>{myPage?.nickname}</ProfileNickname>
 
                     {userId !== params ? null :
+                        <>
                         <ButtonBox onClick={()=>{setEditMypage(true)}}>
-                            <button>프로필 편집</button>
+                            <button>수정하기</button>
                         </ButtonBox>
+                        
+                        <div style={{color:'#666666', fontWeight:'400', margin:'2.5rem 0 0 0'}} type="button"
+                            onClick={deleteId}>
+                            회원 탈퇴
+                        </div>
+                        </>
                     }
                     
                 </Flex1>
@@ -94,9 +122,8 @@ useEffect(()=>{
 
             </Container>
             }
-
             
-
+            <Footer />
         </>
     )
 }
@@ -118,7 +145,7 @@ border-right: 1px solid #393939;
 display: flex;
 flex-direction: column;
 align-items: center;
-padding: 4rem 0 0 30rem;
+padding: 0rem 0 0 30rem;
 `
 const ProfileImg = styled.img`
 width: 25rem;

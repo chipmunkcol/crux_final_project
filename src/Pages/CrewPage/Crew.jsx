@@ -10,6 +10,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PopularCrew from "./components/PopularCrew.js";
 import NewCrew from "./components/NewCrew.js";
 import 탑버튼 from "../../Image/TopBtn.png"
+import Footer from "../../Shared/Footer.js";
 
 const Crew = () => {
   const BASE_URL = "http://sparta-tim.shop";
@@ -90,6 +91,7 @@ const Crew = () => {
       <TopBtn onClick={()=>{window.scrollTo({ top: 0, left:0, behavior:"smooth" })}} >
         <img src={탑버튼} style={{width:'6rem'}}/>
       </TopBtn>
+      <Footer/>
     </CrewContainer>
   );
 };
@@ -120,7 +122,7 @@ const S_search = styled.input`
 const CoiceCrew = styled.div`
 font-size: 2rem;
 padding: 0 0 1rem 0;
-border-bottom: ${(props) => (props.status ? `1px solid #ffffff` : null)};
+border-bottom: ${(props) => (props.status ? `2px solid #ffffff` : null)};
 color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
 font-weight: ${(props) => (props.status ? `700` : `400`)};
 `

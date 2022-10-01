@@ -9,6 +9,7 @@ import Loading from "../../Shared/Loading.js"
 import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
+import Footer from "../../Shared/Footer";
 
 const GymDetail = () => {
 
@@ -53,6 +54,7 @@ return(
             </>
         }
             
+            <Footer />
 
         </div>
     );

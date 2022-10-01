@@ -5,6 +5,7 @@ import axios from "axios";
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 
 // const BASE_URL = SERVERM;
+const BASE_URLM = "http://54.180.31.108";
 
 const initialState = {
   user: [],
@@ -63,7 +64,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post(`http://sparta-tim.shop/members/login`, payload)
+        .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(

@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const NewCrew = ({searchData}) => {
-
-    const BASE_URL = "http://sparta-tim.shop";
+    const BASE_URL = "http://54.180.31.108";
+    // const BASE_URL = "http://sparta-tim.shop";
     // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const NewCrew = ({searchData}) => {
   
     // 무한스크롤 적용하기
       const [page, setPage] = useState(0); //현재 페이지
-      // console.log(page)
+      console.log(page)
       const obsRef = useRef(null); 	//observer Element
   
       const [load, setLoad] = useState(false); //로딩 스피너
@@ -34,9 +34,10 @@ const NewCrew = ({searchData}) => {
         return () => { observer.disconnect(); }
       }, [])
   
-  
       useEffect(()=> {
-            newCrew();
+        if(page !== 0) {
+          newCrew();
+        }
       }, [page])
   
     

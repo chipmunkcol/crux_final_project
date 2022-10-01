@@ -11,6 +11,7 @@ import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faL, faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import GymList from './components/GymList';
+import Footer from '../../Shared/Footer';
 
 
 const Gym = () => {
@@ -291,6 +292,12 @@ const Gym = () => {
       const [plusDg, setPlusDg] = useState(false)
       const [plusGj, setPlusGj] = useState(false)
 
+// 카테고리 폰트 하이라이트
+      const [hightlightSeoul, setHightlightSeoul] = useState(false)
+      const [hightlightGg, setHightlightGg] = useState(false)
+      const [hightlightBs, setHightlightBs] = useState(false)
+      const [hightlightDg, setHightlightDg] = useState(false)
+      const [hightlightGj, setHightlightGj] = useState(false)
 
     return (
         <div>
@@ -310,11 +317,11 @@ const Gym = () => {
               </div>
 
               <div style={{width:'120rem', margin:'4rem auto 0 auto', display:'flex'}}>
-                  <S_category onClick={onclickCategorySeoul} type="button"><h3>서울</h3></S_category>
-                  <S_category onClick={onclickCategoryGg} type="button"><h3>경기</h3></S_category>
-                  <S_category onClick={onclickCategoryBs} type="button"><h3>부산</h3></S_category>
-                  <S_category onClick={onclickCategoryDg} type="button"><h3>대구</h3></S_category>
-                  <S_category onClick={onclickCategoryGj} type="button"><h3>광주</h3></S_category>
+                  <S_category onClick={()=>{onclickCategorySeoul(); setHightlightSeoul(true); setHightlightGg(false); setHightlightBs(false); setHightlightDg(false); setHightlightGj(false)}} status={hightlightSeoul}>서울</S_category>
+                  <S_category onClick={()=>{onclickCategoryGg(); setHightlightSeoul(false); setHightlightGg(true); setHightlightBs(false); setHightlightDg(false); setHightlightGj(false)}} status={hightlightGg}>경기</S_category>
+                  <S_category onClick={()=>{onclickCategoryBs(); setHightlightSeoul(false); setHightlightGg(false); setHightlightBs(true); setHightlightDg(false); setHightlightGj(false)}} status={hightlightBs}>부산</S_category>
+                  <S_category onClick={()=>{onclickCategoryDg(); setHightlightSeoul(false); setHightlightGg(false); setHightlightBs(false); setHightlightDg(true); setHightlightGj(false)}} status={hightlightDg}>대구</S_category>
+                  <S_category onClick={()=>{onclickCategoryGj(); setHightlightSeoul(false); setHightlightGg(false); setHightlightBs(false); setHightlightDg(false); setHightlightGj(true)}} status={hightlightGj}>광주</S_category>
               </div>
 
             </div>
@@ -400,8 +407,8 @@ const Gym = () => {
                     
                 </GymContainer>
             </div>
-                
-            
+                  
+            <Footer />
         </div>
     );
 }
@@ -435,8 +442,6 @@ border-radius: 0 6px 6px 0;
 background: #fec200;
 `
 
-
-
 const S_input = styled.input`
 width: 60rem;
 height: 6rem;
@@ -452,7 +457,11 @@ color: #666666;
 const S_category = styled.div`
 margin: 0 4rem 0 0;
 padding: 0 0 1rem 0;
-border-bottom: 1px solid #999;
+cursor: pointer;
+font-size: 2rem;
+border-bottom: ${(props) => (props.status ? `2px solid #ffffff` : null)};
+color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
+font-weight: ${(props) => (props.status ? 700 : 400)};
 `
 
 const GymContainer = styled.div`

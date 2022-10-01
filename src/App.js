@@ -3,6 +3,7 @@ import './App.css';
 import { useNavigate } from 'react-router-dom';
 import Router from './Shared/router';
 import Navbar from './Shared/Navbar';
+import Footer from './Shared/Footer';
 
 
 function App() {
@@ -12,8 +13,6 @@ function App() {
       
       {/* router 연결 */}
       <Router />
-
-
 
     </div>
   );

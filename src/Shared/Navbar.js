@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import 알람종 from "../Image/알람종.png"
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ModalPortal from "../Pages/Login/MordalPortal";
 import LoginModal from "../Pages/Login/LoginModal";
 import Legister from "../Pages/Register/Register";
@@ -10,7 +11,7 @@ import Loading from "./Loading";
 import Alam from "./Alam";
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { __getAlam, _readAlam, _addAlam, _deleteAlam, _deleteAlams, __NreadAlam, _minusAlam, _plusAlam } from "../Redux/modules/notification";
-import { useEffect } from "react";
+import { __getMyPage } from "../Redux/modules/mypageSlice";
 
 
 const Navbar = () => {
@@ -20,8 +21,9 @@ const Navbar = () => {
   const removeToken = () => {
      localStorage.removeItem("access_token")
      localStorage.removeItem("userId")
+     localStorage.removeItem("nickname")
      alert('로그아웃 되었습니다.')
-     window.location.reload()
+     navigate('/')
   }
 
   const navigate = useNavigate();
@@ -49,41 +51,51 @@ const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰
 // console.log(lastEventId)
 
 let sse = undefined;
-useEffect(()=>{
-  if (userToken) {
-    sse = new EventSource(`http://sparta-tim.shop/subscribe`,   //구독
-    {headers: {Authorization: userToken}  })
-    // {"Last-Event-ID": lastEventId}
+// useEffect(()=>{
+//   if (userToken) {
+//     sse = new EventSource(`http://sparta-tim.shop/subscribe`,   //구독
+//     {headers: {Authorization: userToken}  })
     
-    
-    sse.onopen = e => {
-      console.log("연결완료")
-    }
+//     sse.onopen = e => {
+//       console.log("연결완료")
+//     }
 
-    sse.addEventListener('sse', e => {
-        if(e.data.startsWith('{')) {
-          console.log(e)
-          console.log(JSON.parse(e.data))
+//     sse.addEventListener('sse', e => {
+//         if(e.data.startsWith('{')) {
+//           console.log(e)
+//           console.log(JSON.parse(e.data))
 
-          dispatch(_addAlam(JSON.parse(e.data)))
-          dispatch(_plusAlam(1))
-          // setAlam(prev => [...prev, JSON.parse(e.data).content])
-        }}
-    )
+//           dispatch(_addAlam(JSON.parse(e.data)))
+//           dispatch(_plusAlam(1))
+//           // setAlam(prev => [...prev, JSON.parse(e.data).content])
+//         }}
+//     )
 
-    sse.onerror = e => {
-      console.log(e)
-      sse.close();
-    }
-  }
-  return () => {
-    sse.close();
-  }
-}, [])
+//     sse.onerror = e => {
+//       console.log(e)
+//       sse.close();
+//     }
+//   }
+//   return () => {
+//     sse.close();
+//   }
+// }, [userToken])
 
 useEffect(()=>{
   dispatch(__NreadAlam())
 },[dispatch])
+
+// 로그인 시 본인 사진 가져오기
+const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
+// console.log(isLoading, error, mypage)
+const profileImg = mypage?.data?.imgUrl
+console.log(profileImg)
+
+useEffect(()=>{
+  if (userToken) {
+    dispatch(__getMyPage(userId))
+  }
+},[userToken])
 
   return (
     <NavContainer>
@@ -111,7 +123,12 @@ useEffect(()=>{
           {
             userToken !== null ?
             <NavContentLogin>
-              {/* <Alam /> */}
+              
+              <AlamImg src={알람종} onClick={()=>{setShowAlam(!showAlam)}}/>
+              <NreadAlam>{NreadAlams.data.count}</NreadAlam>
+              { showAlam ? <Alam setShowAlam={setShowAlam} NreadAlams={NreadAlams}/> : null }
+              
+              {/* <ProfileImg src={profileImg} /> */}
               <NavLogin type="button" onClick={()=>{navigate(`/members/${userId}`)}}>
                 MYPAGE
               </NavLogin>
@@ -146,6 +163,7 @@ const NavContainer = styled.div`
   padding: 0 0 4.2rem 0;
   margin: 0;
   width: 192rem;
+  background-color: #141414;
 `;
 
 const NavContent = styled.div`
@@ -201,6 +219,30 @@ font-weight: 500;
 const NavRegister = styled.div`
 font-size: 16px;
 font-weight: 500;
+`
+
+const AlamImg = styled.img`
+width: 3rem;
+position: absolute;
+margin: -6px 0 0 58rem;
+cursor: pointer;
+`
+
+const NreadAlam = styled.div`
+width: 2rem;
+height: 2rem;
+background-color: #ffb80091;
+border-radius: 60%;
+position: absolute;
+margin: 0px 0 0 60rem;
+top: 12rem;
+padding: 3px 0 0 6.5px;
+`
+
+const ProfileImg = styled.img`
+width: 3rem;
+position: absolute;
+margin: -6px 0 0 55rem;
 `
 
 export default Navbar;

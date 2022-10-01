@@ -46,7 +46,7 @@ const settings = {
                     reviewData?.reviewPhotoList.map((review, i) => {
                         return(
                             <div key={i} >
-                                <img src={review?.imgUrl} style={{ width:'63rem', height:'63rem' }}/>
+                                <img src={review?.imgUrl} style={{ width:'100%', height:'100%' }}/>
                             </div>
                         )
                     })
@@ -71,16 +71,16 @@ background-color: rgba(0, 0, 0, 0.4);
 color:black
 `
 const Container = styled.div`
-width: 600px;
-height: 400px;
+width: 63rem;
+height: 63rem;
 z-index: 999;
 position: absolute;
-top: 30%;
+top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
-background-color: white;
+background-color: #ffffff;
 border: 1px solid black;
-border-radius: 8px;
+/* border-radius: 8px; */
 `
 
 const StyledSlider = styled(Slider)`

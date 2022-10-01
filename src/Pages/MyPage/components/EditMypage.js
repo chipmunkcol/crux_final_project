@@ -6,6 +6,7 @@ import { useCallback } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg"
+import 프로필편집 from "../../../Image/프로필수정.png"
 import { useDispatch } from 'react-redux';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGear } from "@fortawesome/free-solid-svg-icons";
@@ -82,7 +83,7 @@ const editProfile = async (payload) => {
                                         style={{ display: 'none' }}
                                         onChange={changeImage}
                                     />
-                                    <FontAwesomeIcon icon={faGear} size="4x" color='#666666' style={{margin:'-7rem 0 0 7rem', position:"absolute"}} type="button"/>
+                                    <img src={프로필편집} style={{width:'6rem', margin:'-7rem 0 0 7rem', position:"absolute"}} type="button"/>
                                 </label>
 
 
@@ -225,6 +226,9 @@ width: 83rem;
 height: 9rem;
 margin: 1.5rem 75.7rem 0rem 7rem;
 overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
 `
 const LikeGymTitle = styled.div`
 color: #666666;
@@ -237,6 +241,9 @@ width: 83rem;
 height: 13rem;
 margin: 1.5rem 75.7rem 0 7rem;
 overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
 `
 
 export default EditMypage;
