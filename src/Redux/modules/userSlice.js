@@ -5,6 +5,7 @@ import axios from "axios";
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 
 // const BASE_URL = SERVERM;
+const BASE_URLM = "https://sparta-tim.shop";
 
 const initialState = {
   user: [],
@@ -19,7 +20,7 @@ export const signup = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `https://sparta-tim.shop/members/signup`,
+        `${BASE_URLM}/members/signup`,
         {
           email: payload.email,
           nickname: payload.nickname,
@@ -63,7 +64,7 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post(`https://sparta-tim.shop/members/login`, payload)
+        .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(
@@ -107,7 +108,7 @@ export const kakaoLogin = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .get(`https://sparta-tim.shop/oauth/kakao/callback?code=${payload}`)
+        .get(`${BASE_URLM}/oauth/kakao/callback?code=${payload}`)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(
@@ -150,7 +151,7 @@ export const likeCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post(`http://sparta-tim.shop/crews/${payload}/like`, null, {
+        .post(`${BASE_URLM}/crews/${payload}/like`, null, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
@@ -173,7 +174,7 @@ export const unLikeCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/${payload}/like`, {
+        .delete(`${BASE_URLM}/crews/${payload}/like`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
@@ -216,7 +217,7 @@ export const withdrawCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/${payload.id}/members`, {
+        .delete(`${BASE_URLM}/crews/${payload.id}/members`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },

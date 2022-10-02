@@ -1,13 +1,15 @@
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { storage } from "../../../Shared/firebase";
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {storage} from '../../../Shared/firebase'
 
-import { useState } from "react";
-import { useCallback } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import styled from "styled-components";
-import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
-import { useDispatch } from "react-redux";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react"
+import { useCallback } from "react"
+import { useNavigate, useParams } from "react-router-dom"
+import styled from "styled-components"
+import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg"
+import 프로필편집 from "../../../Image/프로필수정.png"
+import { useDispatch } from 'react-redux';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
@@ -64,47 +66,39 @@ const EditMypage = ({ myPage, setEditMypage }) => {
       })
       .catch((err) => {
         console.log(err);
-      });
-  };
+    }) 
+}
 
-  return (
-    <>
-      <Container>
-        <Flex1>
-          <ProfileImg src={fileUrl !== "" ? fileUrl : 사용자기본이미지} />
 
-          <label htmlFor="upload-photo">
-            <input
-              encType="multipart/form-data"
-              accept="image/*"
-              type="file"
-              id="upload-photo"
-              name="upload-photo"
-              // ref={}
-              style={{ display: "none" }}
-              onChange={changeImage}
-            />
-            <FontAwesomeIcon
-              icon={faGear}
-              size="4x"
-              color="#666666"
-              style={{ margin: "-7rem 0 0 7rem", position: "absolute" }}
-              type="button"
-            />
-          </label>
+    return(
+        <>
+            <Container>
+                
+                <Flex1>
+                    <ProfileImg src={fileUrl !== "" ? fileUrl : 사용자기본이미지 }/>
+                    
+                                <label htmlFor="upload-photo">
+                                    <input
+                                        encType="multipart/form-data"
+                                        accept="image/*"
+                                        type="file"
+                                        id="upload-photo"
+                                        name="upload-photo"
+                                        // ref={}
+                                        style={{ display: 'none' }}
+                                        onChange={changeImage}
+                                    />
+                                    <img src={프로필편집} style={{width:'6rem', margin:'-7rem 0 0 7rem', position:"absolute"}} type="button"/>
+                                </label>
 
-          <ProfileNickname
-            placeholder={myPage?.nickname}
-            onChange={(e) => {
-              setEditNickname(e.target.value);
-            }}
-          />
 
-          <div style={{ display: "flex" }}>
-            <ButtonBox>
-              <button onClick={EditDone}>수정완료</button>
-            </ButtonBox>
-            {/* <ButtonBox onClick={()=>{setEditMypage(false)}}>
+                    <ProfileNickname placeholder={myPage?.nickname} onChange={(e)=>{setEditNickname(e.target.value)}}/>
+                    
+                    <div style={{display:'flex'}}>
+                        <ButtonBox>
+                            <button onClick={EditDone}>수정완료</button>
+                        </ButtonBox>
+                        {/* <ButtonBox onClick={()=>{setEditMypage(false)}}>
                             <button>취소</button>
                         </ButtonBox> */}
           </div>
@@ -229,23 +223,31 @@ const JoinCrewTitle = styled.div`
 `;
 
 const JoinCrewContent = styled.div`
-  color: #ffffff;
-  width: 83rem;
-  height: 9rem;
-  margin: 1.5rem 75.7rem 0rem 7rem;
-  overflow: auto;
-`;
+
+color: #FFFFFF;
+width: 83rem;
+height: 9rem;
+margin: 1.5rem 75.7rem 0rem 7rem;
+overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
+`
+
 const LikeGymTitle = styled.div`
   color: #666666;
   width: 20rem;
   margin: 5rem 85.7rem 1.5rem 7rem;
 `;
 const LikeGymContent = styled.div`
-  color: #ffffff;
-  width: 83rem;
-  height: 13rem;
-  margin: 1.5rem 75.7rem 0 7rem;
-  overflow: auto;
-`;
+color: #FFFFFF;
+width: 83rem;
+height: 13rem;
+margin: 1.5rem 75.7rem 0 7rem;
+overflow: auto;
+::-webkit-scrollbar {
+    display: none;
+}
+`
 
 export default EditMypage;

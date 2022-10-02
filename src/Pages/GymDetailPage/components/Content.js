@@ -11,11 +11,12 @@ import { __getGymDetail } from "../../../Redux/modules/gymDetilSlice";
 import Loading from "../../../Shared/Loading";
 import 노랑별 from "../../../Image/노랑별.png"
 import 검은별 from "../../../Image/검은별.png"
-
+import 사용자이미지 from "../../../Image/작은사용자이미지.png"
+import 하트 from "../../../Image/작은회색하트.png"
 
 
 const Content = ({setShowReview, showReview, setReload, reload}) => {
-    const BASE_URL = 'http://sparta-tim.shop'
+    const BASE_URL = 'https://sparta-tim.shop'
 
 const params = useParams().gymId
 const dispatch = useDispatch()
@@ -65,7 +66,7 @@ return(
             <div style={{width:'192rem', height:'81.5rem', margin:'auto', display:'flex', justifyContent:'center'}}>
                 <div style={{width:'60rem', height:'60rem', margin:'10rem 0 0 0'}}>
                     
-                    <img src={gym.reviews[0]?.reviewPhotoList[0]?.imgUrl !== undefined ? gym.reviews[0]?.reviewPhotoList[0]?.imgUrl : 클라이밍} 
+                    <img src={gym?.imgUrl !== undefined ? gym?.imgUrl : 클라이밍} 
                     style={{width:'100%', height:'100%'}}/>
                     <HeartIcon type="button" onClick={onclickLikeGym}>
                         { gym?.likeGym === false ? 
@@ -75,7 +76,13 @@ return(
 
                 <div style={{width:'60rem', height:'60rem', margin:'10rem 0 0 0', padding:'0rem 4rem 4rem 4rem', backgroundColor:'#262626', color:'#666666'}}>
                     
-                    <div style={{margin:'0 0 0 0', color:'#999999'}}> <span style={{margin:'0 16rem 0 0'}}>💛 {gym.likeNum}명 | 리뷰 {gym?.reviews.length}건 </span></div>
+                    <div style={{margin:'0 0 0 0', color:'#999999', fontSize:'1.2rem'}}> 
+                        <span style={{margin:'0 16rem 0 0'}}>
+                            <img src={하트} style={{width:'1.2rem', margin:'0 1px 0 0'}}/> {gym.likeNum}명  
+                            <span style={{margin:'0 0.2rem 0 0.2rem', color:'#333333'}}> | </span> 
+                            <img src={사용자이미지} style={{width:'1.1rem', height:'1.2rem', margin:'0 2px 0 0'}}/> {gym?.reviews.length}명 
+                        </span>
+                    </div>
                     <div style={{fontSize:'4.4rem', fontWeight:'700', color:'#ffffff',margin:'1rem 0 3.5rem 0'}}>{gym?.name}</div>
                     <S_title> 주소 <S_content> {gym.location} </S_content></S_title>
                     <S_title>전화번호 <S_content> {gym.phone} </S_content></S_title>
@@ -92,9 +99,9 @@ return(
                               <S_content style={{fontSize:'1.4rem', margin:'0 0 0 0'}}>({Number(gym?.avgScore).toFixed(2)}점)</S_content> 
                     </S_title>
                     
-                    <div style={{fontSize:'2rem', fontWeight:'700', margin:'6rem 0 0 0'}}>방문객 리뷰 {gym?.reviews.length}건</div>
+                    <S_title>방문객 리뷰 {gym?.reviews.length}건</S_title>
 
-                    <div style={{width:'38rem', height:'19rem', margin:'2rem 0 0 0'}}>
+                    <div style={{width:'55rem', height:'19rem', margin:'2rem 0 2.9rem 0'}}>
                         {
                             gym?.reviews.length === 0 ? 
                             
@@ -162,8 +169,8 @@ const ReviewWrap = styled.div`
     width: 90%;
     height: 30%;
     border-bottom: 1px solid #666666;
-    margin: 0 0 2rem 0;
-    padding: 10px;
+    margin: 0 0 1rem 0;
+    padding: 1rem 1rem 1rem 0;
     font-size: 1.4rem;
     color: #cccccc;
     overflow: hidden;
@@ -182,14 +189,14 @@ const ReviewContent = styled.div`
 `
 
 const ButtonBox = styled.div`
-  width: 18rem;
-  height: 4.5rem;
+  width: 26.5rem;
+  height: 6rem;
   display: flex;
   justify-content: space-between;
   font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 500;
-  font-size: 1.4rem;
+  font-size: 2rem;
   letter-spacing: -0.05em;
   margin: 1rem 0 0 0rem;
   /* position: absolute; */

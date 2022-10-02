@@ -16,7 +16,6 @@ function ApplicationListModal({ onClose }) {
   const params = useParams().crewId;
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getApplicationList(params));
   }, [dispatch]);
@@ -28,7 +27,7 @@ function ApplicationListModal({ onClose }) {
   async function permitCrew(memberId) {
     try {
       const response = await axios.post(
-        `http://sparta-tim.shop/crews/${params}/members/${memberId}?permit=true`,
+        `https://sparta-tim.shop/crews/${params}/members/${memberId}?permit=true`,
         null,
         {
           headers: {

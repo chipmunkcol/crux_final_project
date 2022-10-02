@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { storage } from "../../../Shared/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,6 +11,7 @@ import "slick-carousel/slick/slick-theme.css";
 // import 슬라이더왼쪽버튼 from "../../Image/btn_left.png";
 // import 슬라이더오른쪽버튼 from "../../Image/btn_left.png";
 import { addCrewPhoto } from "../../../Redux/modules/crewSlice";
+import { useCallback } from "react";
 
 function UploadPhotoModal({ onClose }) {
   //기본 세팅
@@ -19,8 +19,10 @@ function UploadPhotoModal({ onClose }) {
   const dispatch = useDispatch();
 
   const [files, setFileList] = useState([]); // 파일 리스트
+  const [fileUrl, setFileUrl] = useState([]); // 업로드 완료된 사진 링크들
   const [isUploading, setUploading] = useState(false); // 업로드 상태
-  const [photoURL, setPhotosURL] = useState([]); // 업로드 완료된 사진 링크들
+  console.log(fileUrl)
+  const storage = getStorage();
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
   const handleImageChange = (e) => {
@@ -30,28 +32,32 @@ function UploadPhotoModal({ onClose }) {
   };
 
   // 이미지 업로드 & dispatch
-  const handleImageUpload = async (e, fileList) => {
-    e.preventDefault();
-    try {
-      setUploading(true);
-      const urls = await Promise.all(
-        fileList?.map((file) => {
-          const storageRef = ref(storage, `images/${file.name}`);
-          const task = uploadBytes(storageRef, file);
-          return getDownloadURL(storageRef);
+    useEffect(()=>{
+      uploadFB(files)
+  },[files])
+
+  const uploadFB = useCallback(async (files) => {
+    const urls = await Promise.all(
+        files?.map((file) => {
+            const storageRef = ref(storage, `images/${file.name}`);
+            const task = uploadBytes(storageRef, file);
+            return getDownloadURL(storageRef);
         })
-      );
-      setPhotosURL(urls);
-      console.log(photoURL);
-      const payload = {
-        id: params,
-        imgUrl: photoURL,
-      };
-      dispatch(addCrewPhoto(payload));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    )
+    setFileUrl(urls);
+},[])
+
+  const onsubmit = () => {
+    uploadPhoto();
+};
+
+  const uploadPhoto = async() => {
+    const payload = {
+      id: params,
+      imgUrl: fileUrl,
+    };
+    dispatch(addCrewPhoto(payload));
+  }
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
@@ -100,7 +106,7 @@ function UploadPhotoModal({ onClose }) {
 
   return (
     <Background>
-      <Modal ref={modalRef} onSubmit={(e) => handleImageUpload(e, files)}>
+      <Modal ref={modalRef} onSubmit={onsubmit}>
         <Title>
           <h1>사진 ({imgPreview.length}/5)</h1>
         </Title>
@@ -255,8 +261,8 @@ const ButtonBox = styled.div`
     font-size:20px;
     font-weight:500;
     letter-spacing: -0.05em;
-    color:#262626
-    border:none;
+    color:#262626;
+    border: none;
     background-color:#FFB800
 }
 `;

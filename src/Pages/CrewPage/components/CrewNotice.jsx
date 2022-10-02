@@ -57,7 +57,9 @@ function CrewNotice() {
   return (
     <div>
       {editModal && (
-        <CrewNoticeEditModal onClose={handleModalClick} id={editProps} />
+        <CrewNoticeEditModal onClose={handleModalClick} 
+        // id={editProps} 
+        />
       )}
       {noticeList
         ?.slice(0)
@@ -70,7 +72,7 @@ function CrewNotice() {
                   <span
                     onClick={() => {
                       handleModalClick();
-                      setEditProps(notice.noticeId);
+                      // setEditProps(notice.noticeId);
                     }}
                   >
                     수정

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Loading from "../../../Shared/Loading";
 
 const GalaryArea = () => {
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
 const navigate = useNavigate()
 
 const [galarys, setGalarys] = useState([]) 
@@ -28,7 +28,7 @@ useEffect(()=>{
 
     return(
         <div style={{width:'1920px', height:'1180px', backgroundColor:'#111'}}>
-            <Title> 유저 갤러리 </Title>
+            <Title> 최신 갤러리 </Title>
 
             <div style={{width:'1206px', height:'804px', margin:'30px auto 0 auto' }}>
                 

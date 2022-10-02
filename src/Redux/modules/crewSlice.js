@@ -5,8 +5,8 @@ import axios from "axios";
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 // const BASE_URLM = "https://01192mg.shop";
 const BASE_URLM = "https://sparta-tim.shop";
-// const BASE_URL = "http://sparta-tim.shop";
 // const BASE_URLM = "http://54.180.31.108";
+
 
 const initialState = {
   crewDetail: [],
@@ -45,7 +45,7 @@ export const editCrew = createAsyncThunk(
     try {
       const response = await axios
         .put(
-          `https://sparta-tim.shop/crews/${payload.id}`,
+          `${BASE_URLM}/crews/${payload.id}`,
           {
             name: payload.name,
             content: payload.content,
@@ -99,7 +99,7 @@ export const getCrewDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://54.180.31.108/crews/${payload}`,
+        `${BASE_URLM}/crews/${payload}`,
         {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
@@ -122,7 +122,7 @@ export const joinCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `http://sparta-tim.shop/crews/${payload}/members`,
+        `${BASE_URLM}/crews/${payload}/members`,
         null,
         {
           headers: {
@@ -143,7 +143,7 @@ export const getApplicationList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await axios.get(
-        `http://sparta-tim.shop/crews/${payload}/members`,
+        `${BASE_URLM}/crews/${payload}/members`,
         {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
@@ -165,7 +165,7 @@ export const permitCrew = createAsyncThunk(
     try {
       const response = await axios
         .post(
-          `http://sparta-tim.shop/crews/${payload.crewId}/members/${payload.memberId}?permit=true`,
+          `${BASE_URLM}/crews/${payload.crewId}/members/${payload.memberId}?permit=true`,
           null,
           {
             headers: {
@@ -193,7 +193,7 @@ export const createCrewNotice = createAsyncThunk(
     try {
       console.log(payload);
       const response = await axios.post(
-        `https://sparta-tim.shop/notices/${payload.id}`,
+        `${BASE_URLM}/notices/${payload.id}`,
         {
           content: payload.content,
           date: payload.date,
@@ -219,7 +219,7 @@ export const editCrewNotice = createAsyncThunk(
     try {
       const response = await axios
         .put(
-          `https://sparta-tim.shop/notices/${payload.id}`,
+          `${BASE_URLM}/notices/${payload.id}`,
           {
             name: payload.name,
             content: payload.content,
@@ -275,7 +275,7 @@ export const addCrewPhoto = createAsyncThunk(
     try {
       const response = await axios
         .post(
-          `http://sparta-tim.shop/crews/${payload.id}/posts`,
+          `${BASE_URLM}/crews/${payload.id}/posts`,
           {
             imgList: payload.imgUrl,
           },
@@ -302,7 +302,7 @@ export const getCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.get(
-        `http://sparta-tim.shop/crews/${payload}/posts?page=0&size=10`
+        `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
       );
       console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
@@ -319,7 +319,7 @@ export const deleteCrewPhoto = createAsyncThunk(
     console.log(payload);
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/posts/${payload}`, {
+        .delete(`${BASE_URLM}/crews/posts/${payload}`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
@@ -363,6 +363,9 @@ export const crewSlice = createSlice({
         ...state.crewDetail.data.noticeList,
         action.payload,
       ];
+    },
+    _crewLike(state, action) {
+      state.crewDetail.data.like = action.payload
     },
   },
   extraReducers: {
@@ -446,6 +449,6 @@ export const crewSlice = createSlice({
   },
 });
 
-export const { expelCrew, acceptCrew, deleteCrewNotice, addCrewNotice } =
+export const { expelCrew, acceptCrew, deleteCrewNotice, addCrewNotice, _crewLike } =
   crewSlice.actions;
 export default { crewSlice }.reducer;

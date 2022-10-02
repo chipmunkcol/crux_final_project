@@ -34,7 +34,8 @@ margin: 0 auto;
 `
 const Title = styled.div`
 width: 120rem;
-margin: 14rem auto 0 auto;
+margin: 0 auto 0 auto;
+padding: 14rem 0 0 0;
 font-size: 4.8rem;
 `
 const Wrap = styled.div`

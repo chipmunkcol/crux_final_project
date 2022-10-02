@@ -4,7 +4,7 @@ import styled from "styled-components"
 import { Rating } from 'react-simple-star-rating'
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from 'react-router-dom';
-import 이미지업로드 from "../../../Image/이미지업로드.png"
+import 이미지업로드 from "../../../Image/프리뷰box.png"
 import 리뷰기본이미지 from '../../../Image/리뷰기본이미지.jpg'
 import { useRef } from "react";
 import { useCallback } from "react";
@@ -12,7 +12,7 @@ import axios from "axios";
 
 
 function ModalReview({ setModal, gym, reload, setReload }) {
-    const BASE_URL = "http://sparta-tim.shop";
+    const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = "https://01192mg.shop";
 
     const navigate = useNavigate();
@@ -42,15 +42,12 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     const storage = getStorage();
     // const storageRef = ref(storage);
     const handleImageChange = (e) => {
-        let fileSlice = [...files]
-        for (const image of e.target.files) {
-           setFileList((prevState) => [...prevState, image]);
+        if (files.length < 3) {
+            for (const image of e.target.files) {
+            setFileList((prevState) => [...prevState, image]);
+            }
         }
-        if(files.length > 3) {
-            fileSlice = files.slice(0,3)
-            setFileList(fileSlice)
-        }
-      };
+    };
       console.log(files)
       console.log(fileUrl)
 
@@ -129,7 +126,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
 
 
     return (
-        <ModalPage onClick={closeModal}>
+        <ModalPage>
             <Container onClick={(e) => e.stopPropagation()}>
 
                 <div style={{ margin: '8rem auto 0 auto', width: '98rem' }}>
@@ -154,7 +151,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
                         style={{ display: 'none' }}
                         onChange={(e)=>{ handleImageChange(e); handleAddImages(e)}} />
                     <div style={{display:'flex', position:'absolute', margin:'-3rem 0 0 6rem'}}>
-                        <UploadImg> <img src={이미지업로드} style={{ width:"100%", height:'100%'}} type="button"/> </UploadImg>
+                        <UploadImg> <img src={이미지업로드} style={{ width:"20rem", height:'100%'}} type="button"/> </UploadImg>
                         
                         {imgPreview?.map((image, i) => (
                                 <ImgPreview key={i}>
@@ -229,7 +226,11 @@ width: 26.5rem;
 height: 6rem;
 margin: 0rem 0 0 0;
 font-size: 2rem;
-background-color: #ffb800;
+background-color: #999999;
+:hover{
+    background-color: #ffb800;
+}
+
 `
 
 // const Imgbox = styled.div`

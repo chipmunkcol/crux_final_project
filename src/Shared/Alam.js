@@ -9,7 +9,7 @@ import axios from "axios";
 
 const Alam = ({setShowAlam, NreadAlams}) => {
 
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
 // const BASE_URL = 'https://01192mg.shop'
 
 const {isLoading, error, alams} = useSelector((state) => state.alams)
@@ -141,7 +141,7 @@ useEffect(()=>{
 const ModalPage = styled.div`
 position: absolute;
 top: 0;
-margin: 0 -36rem 0 -36rem;
+margin: 0 0 0 -101rem;
 width: 1920px;
 height: 100%;
 z-index: 900;
@@ -153,8 +153,8 @@ height: 55rem;
 box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.4);
 border-radius: 15px;
 position: absolute;
-top: 45rem;
-left: 67%;
+top: 44.5rem;
+left: 72.5%;
 transform: translate(-50%, -50%);
 background: #262626;
 color: #cccccc;

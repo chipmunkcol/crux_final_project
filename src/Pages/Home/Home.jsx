@@ -5,29 +5,38 @@ import ImgBannerArea from './components/ImgBannerArea';
 import GalaryArea from './components/GalaryArea';
 import Navbar from './components/Navbar'
 import MainBanner from './components/MainBanner';
+import Footer from '../../Shared/Footer';
+import styled from 'styled-components';
+
 
 function Home() {
 
 
   return (
-    <div>
-      <Navbar />
+    <Container>
+        <Navbar />
 
-      <NavSlider />
+        <NavSlider />
 
-    {/* 메인 배너 */}
-      <MainBanner />
+      {/* 메인 배너 */}
+        <MainBanner />
 
-      <CrewArea />
+        <CrewArea />
 
-      <GymArea />
+        <GymArea />
 
-      <ImgBannerArea />
+        <ImgBannerArea />
 
-      <GalaryArea />
+        <GalaryArea />
 
-    </div>
+        <Footer />
+
+    </Container>
   );
 }
+
+const Container = styled.div`
+width: 192rem;
+`
 
 export default Home;

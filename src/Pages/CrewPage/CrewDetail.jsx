@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getCrewDetail, deleteCrew } from "../../Redux/modules/crewSlice";
+import { getCrewDetail, deleteCrew, _crewLike } from "../../Redux/modules/crewSlice";
 import Navbar from "../../Shared/Navbar";
 import CrewIntro from "./components/CrewIntro";
 import CrewMember from "./components/CrewMember";
@@ -14,6 +14,7 @@ import CrewNoticeModal from "./components/CrewNoticeModal";
 import ApplicationListModal from "./components/ApplicationListModal";
 import { ReactComponent as Heart } from "../../Image/heart.svg";
 import Loading from "../../Shared/Loading";
+import Footer from "../../Shared/Footer";
 
 const CrewDetail = () => {
   const params = useParams().crewId;
@@ -133,9 +134,9 @@ const CrewDetail = () => {
         })
         .then((response) => {
           console.log(response);
+          window.alert("좋아요 완료");
+          dispatch(_crewLike(!crew?.like))
         });
-      window.alert("좋아요 완료");
-      window.location.reload();
       return response.data;
     } catch (error) {
       return error.data;
@@ -153,10 +154,9 @@ const CrewDetail = () => {
         })
         .then((response) => {
           console.log(response);
+          window.alert("좋아요 취소");
+          dispatch(_crewLike(!crew?.like))
         });
-      window.alert("좋아요 취소");
-      setLikeClick(!likeClick);
-      window.location.reload();
       return response.data;
     } catch (error) {
       return error.data;
@@ -320,6 +320,8 @@ const CrewDetail = () => {
           {photosVisible && <CrewPhotos />}
         </TabContainer>
       </Warp>
+      
+      <Footer />
     </div>
   );
 };

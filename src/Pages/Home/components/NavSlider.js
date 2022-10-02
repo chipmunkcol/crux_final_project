@@ -119,7 +119,7 @@ const StopButton = styled.img`
 width: 1rem;
 height: 2rem;
 position: absolute;
-margin: 79.2rem 0 0 41.2rem;
+margin: 78.8rem 0 0 41.2rem;
 z-index: 5;
 `
 

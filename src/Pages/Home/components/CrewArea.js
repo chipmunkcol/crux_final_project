@@ -11,7 +11,7 @@ const [choiceCrew, setChoiceCrew] = useState(true)
 const [choiceNewCrew, setChoiceNewCrew] = useState(false)
 
 return(
-        <div style={{width:'1920px',height:'560px', padding:'74px 0 0 0', backgroundColor:'#111', margin:'0 auto'}}>
+        <div style={{width:'100%',height:'560px', padding:'74px 0 0 0', backgroundColor:'#111', margin:'0 auto'}}>
             <div style={{width:'1220px', fontSize:'32px', margin:'0 auto', color:'white'}}>
                 <ChoiceCrew status={choiceCrew} type="button"
                     onClick={()=>{setShowNewCrew(false); setChoiceCrew(true); setChoiceNewCrew(false)}}>
