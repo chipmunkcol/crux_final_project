@@ -4,11 +4,9 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  createCrewNotice,
-  deleteCrewNotice,
-} from "../../../Redux/modules/crewSlice";
+import { deleteCrewNotice } from "../../../Redux/modules/crewSlice";
 import CrewNoticeEditModal from "./CrewNoticeEditModal";
+import { date } from "yup";
 
 function CrewNotice() {
   const dispatch = useDispatch();
@@ -43,8 +41,24 @@ function CrewNotice() {
     }
   }
 
+  //수정모달 띄우기
+  const [editModal, setEditModal] = useState(false);
+
+  const handleModalClick = () => {
+    setEditModal(!editModal);
+  };
+
+  //데이터 전달
+  const [editid, setEditid] = useState("");
+  const [editplace, setEditplace] = useState("");
+  const [editcontent, setEditcontent] = useState("");
+  const [editdate, setEditdate] = useState("");
+
   return (
     <div>
+      {editModal && (
+        <CrewNoticeEditModal onClose={handleModalClick} id={editProps} />
+      )}
       {noticeList
         ?.slice(0)
         ?.reverse()
@@ -53,7 +67,14 @@ function CrewNotice() {
             <IntroContent>
               {Number(userId) === notice.authorId ? (
                 <TextButton>
-                  <span>수정</span>
+                  <span
+                    onClick={() => {
+                      handleModalClick();
+                      setEditProps(notice.noticeId);
+                    }}
+                  >
+                    수정
+                  </span>
                   <span>|</span>
                   <span
                     onClick={() => {

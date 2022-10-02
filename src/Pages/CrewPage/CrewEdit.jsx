@@ -411,7 +411,7 @@ const CrewEdit = () => {
               </TextDetail>
               <ButtonBox>
                 <button type="submit" disabled={isSubmitting}>
-                  크루 등록
+                  크루 수정
                 </button>
               </ButtonBox>
             </ContentBox>

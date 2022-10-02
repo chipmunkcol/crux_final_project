@@ -8,7 +8,10 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
-import { createCrewNotice } from "../../../Redux/modules/crewSlice";
+import {
+  createCrewNotice,
+  addCrewNotice,
+} from "../../../Redux/modules/crewSlice";
 import { ReactComponent as ChatXbtn } from "../../../Image/chatx.svg";
 
 function CrewNoticeModal({ onClose }) {
@@ -20,12 +23,11 @@ function CrewNoticeModal({ onClose }) {
   const onSubmit = (data) => {
     const payload = {
       id: params,
-      time: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
+      date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
       place: addressDetail,
       content: data.content,
     };
-    // dispatch(createCrewNotice(payload));
-    window.location.reload();
+    dispatch(createCrewNotice(payload));
   };
 
   //일시 설정 저장

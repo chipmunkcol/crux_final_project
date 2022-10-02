@@ -196,7 +196,7 @@ export const createCrewNotice = createAsyncThunk(
         `https://sparta-tim.shop/notices/${payload.id}`,
         {
           content: payload.content,
-          date: payload.time,
+          date: payload.date,
           place: payload.place,
         },
         {
@@ -207,7 +207,6 @@ export const createCrewNotice = createAsyncThunk(
       );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
-      // console.log(error)
       return thunkAPI.rejectWithValue(error.data);
     }
   }
@@ -360,11 +359,10 @@ export const crewSlice = createSlice({
         );
     },
     addCrewNotice(state, action) {
-      const id = action.payload;
-      state.crewDetail.data.noticeList =
-        state.crewDetail.data.noticeList.filter(
-          (notice) => notice.noticeId !== id
-        );
+      state.crewDetail.data.noticeList = [
+        ...state.crewDetail.data.noticeList,
+        action.payload,
+      ];
     },
   },
   extraReducers: {
@@ -448,5 +446,6 @@ export const crewSlice = createSlice({
   },
 });
 
-export const { expelCrew, acceptCrew, deleteCrewNotice } = crewSlice.actions;
+export const { expelCrew, acceptCrew, deleteCrewNotice, addCrewNotice } =
+  crewSlice.actions;
 export default { crewSlice }.reducer;

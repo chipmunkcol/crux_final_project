@@ -10,15 +10,17 @@ import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
 import { createCrewNotice } from "../../../Redux/modules/crewSlice";
 
-function CrewNoticeEditModal({ onClose }) {
+function CrewNoticeEditModal({ onClose, id }) {
   const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
 
+  console.log(id);
+
   const onSubmit = (data) => {
     const payload = {
-      id: params,
+      // id: id,
       time: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
       place: addressDetail,
       content: data.content,
@@ -98,6 +100,7 @@ function CrewNoticeEditModal({ onClose }) {
               showPopperArrow={false}
               minDate={new Date()}
               onChange={(date) => setStartDate(date)}
+              // defaultValue={date}
             />
           </Time>
           <Place>
@@ -107,13 +110,14 @@ function CrewNoticeEditModal({ onClose }) {
               readOnly={true}
               onClick={onChangeOpenPost}
               placeholder="장소를 선택해주세요."
-              defaultValue={addressDetail}
+              // defaultValue={place}
             />
           </Place>
           <Intro>
             <h3>상세소개</h3>
             <textarea
               {...register("content", { required: true })}
+              // defaultValue={content}
               maxLength="100"
               spellCheck="false"
               placeholder="주최하는 모임에 대한 소개를 100자 이내로 작성해주세요.
