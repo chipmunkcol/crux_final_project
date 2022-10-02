@@ -23,9 +23,12 @@ function CrewNoticeEditModal({ onClose }) {
       place: addressDetail,
       content: data.content,
     };
-    console.log(payload);
-    // dispatch(createCrew(payload));
-    dispatch(createCrewNotice(payload), [dispatch]);
+    //axios로 보내고
+    dispatch(createCrewNotice(payload), []);
+
+    //dispatch로 설정하고
+
+    //모달 닫기
   };
 
   //일시 설정 저장

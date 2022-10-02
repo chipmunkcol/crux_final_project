@@ -4,10 +4,13 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 import {
   getApplicationList,
   permitCrew,
+  acceptCrew,
 } from "../../../Redux/modules/crewSlice";
+import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
 function ApplicationListModal({ onClose }) {
   const params = useParams().crewId;
@@ -21,16 +24,24 @@ function ApplicationListModal({ onClose }) {
   const applicationList = useSelector((state) => state.crews.crewApplication);
   const applicants = applicationList.data;
 
-  //크루 등록 승인
-
-  const handlePermit = (data) => {
-    const payload = {
-      memberId: data,
-      crewId: params,
-    };
-    console.log(payload);
-    dispatch(permitCrew(payload));
-  };
+  //크루 가입 승인
+  async function permitCrew(memberId) {
+    try {
+      const response = await axios.post(
+        `http://sparta-tim.shop/crews/${params}/members/${memberId}?permit=true`,
+        null,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      window.alert("크루 가입 승인 완료.");
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
 
   return (
     <Background>
@@ -46,7 +57,13 @@ function ApplicationListModal({ onClose }) {
                 <Container key={applicant.id}>
                   <IntroContent>
                     <HostDetailBox>
-                      <img src={applicant.imgUrl}></img>
+                      <img
+                        src={
+                          applicant.imgUrl === null
+                            ? 사용자기본이미지
+                            : applicant.imgUrl
+                        }
+                      ></img>
                       <HostDetail>
                         <p>{applicant.nickname}</p>
                         <div>
@@ -55,7 +72,8 @@ function ApplicationListModal({ onClose }) {
                       </HostDetail>
                       <button
                         onClick={() => {
-                          handlePermit(applicant.id);
+                          permitCrew(applicant.id);
+                          dispatch(acceptCrew(applicant.id));
                         }}
                       >
                         승인

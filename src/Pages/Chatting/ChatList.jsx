@@ -4,6 +4,7 @@ import { getChatRoom } from "../../Redux/modules/chatSlice";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ChatRoom from "./ChatRoom";
+import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 
 function ChatList() {
   const dispatch = useDispatch();
@@ -19,10 +20,24 @@ function ChatList() {
   //채팅방 들어가기
   const [isVisible, setIsVisible] = useState(true);
 
-  //
   const handleChange = () => {
     setIsVisible(!isVisible);
   };
+
+  //세부 채팅방  id 전달
+  const [chatRoomId, setchatRoomId] = useState("");
+  //세부 채팅방 이름 전달
+  const [chatRoomName, setChatRoomName] = useState("");
+  //세부 채팅방 url 전달
+  const [chatRoomImg, setChatRoomImg] = useState("");
+
+  const handleEnterRoom = (id, name, url) => {
+    setchatRoomId(id);
+    setChatRoomName(name);
+    setChatRoomImg(url);
+  };
+
+  //채팅방 목록 필터할 것,,
 
   return (
     <div style={{ padding: "10px" }}>
@@ -31,14 +46,17 @@ function ChatList() {
           <>
             <Title>
               <h3>크루리스트</h3>
-              <h3>X</h3>
+              <ChatXbtn />
             </Title>
             <List>
               {chatRoomList?.map((room) => (
                 <Room
                   key={room.roomId}
                   style={{ cursor: "pointer" }}
-                  onClick={handleChange}
+                  onClick={() => {
+                    handleChange();
+                    handleEnterRoom(room.roomId, room.crewName, room.imgUrl);
+                  }}
                 >
                   <Content>
                     <div>
@@ -47,13 +65,13 @@ function ChatList() {
                     <Text>
                       <div>
                         <h3>{room.crewName}</h3>
-                        {/* <p>22-09-27 07:19 AM </p> */}
+                        <p>{room?.lastMessage?.createdAt}</p>
                       </div>
                       <div>
-                        {room.lastMessage === null ? (
-                          <p>아직 메시지가 없습니다.</p>
+                        {room?.lastMessage?.message ? (
+                          <p>{room?.lastMessage?.message}</p>
                         ) : (
-                          <p>{room.lastMessage}</p>
+                          <p>아직 메시지가 없습니다</p>
                         )}
                       </div>
                     </Text>
@@ -63,7 +81,12 @@ function ChatList() {
             </List>
           </>
         ) : (
-          <ChatRoom onClose={handleChange} />
+          <ChatRoom
+            onClose={handleChange}
+            roomId={chatRoomId}
+            roomName={chatRoomName}
+            roomImg={chatRoomImg}
+          />
         )}
       </ChatWarp>
     </div>
@@ -139,6 +162,8 @@ const Content = styled.div`
 const Text = styled.div`
   hegith: 60px;
   width: 230px;
+  word-break: break-all;
+  overflow: hidden;
   p {
     font-weight: 400;
     font-size: 12px;

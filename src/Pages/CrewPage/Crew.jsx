@@ -9,10 +9,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PopularCrew from "./components/PopularCrew.js";
 import NewCrew from "./components/NewCrew.js";
-import 탑버튼 from "../../Image/TopBtn.png"
+import 탑버튼 from "../../Image/TopBtn.png";
 
 const Crew = () => {
-  const BASE_URL = "http://sparta-tim.shop";
+  const BASE_URL = "https://sparta-tim.shop";
+  // const BASE_URL = "http://54.180.31.108";
 
   const [choicePopularCrew, setChoicePopularCrew] = useState(true);
 
@@ -109,19 +110,25 @@ const Crew = () => {
           </CoiceCrew>
         </div>
       </HeaderWrap>
-          {choicePopularCrew === true ? 
-            (<PopularCrew searchData={searchData}/>) : 
-              (<NewCrew searchData={searchData}/>)}
-      <TopBtn onClick={()=>{window.scrollTo({ top: 0, left:0, behavior:"smooth" })}} >
-        <img src={탑버튼} style={{width:'6rem'}}/>
+      {choicePopularCrew === true ? (
+        <PopularCrew searchData={searchData} />
+      ) : (
+        <NewCrew searchData={searchData} />
+      )}
+      <TopBtn
+        onClick={() => {
+          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        }}
+      >
+        <img src={탑버튼} style={{ width: "6rem" }} />
       </TopBtn>
     </CrewContainer>
   );
 };
 const CrewContainer = styled.div`
-width: 100%;
-height: 100%;
-`
+  width: 100%;
+  height: 100%;
+`;
 
 const HeaderWrap = styled.div`
   width: 192rem;
@@ -143,16 +150,16 @@ const S_search = styled.input`
 `;
 
 const CoiceCrew = styled.div`
-font-size: 2rem;
-padding: 0 0 1rem 0;
-border-bottom: ${(props) => (props.status ? `1px solid #ffffff` : null)};
-color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
-font-weight: ${(props) => (props.status ? `700` : `400`)};
-`
+  font-size: 2rem;
+  padding: 0 0 1rem 0;
+  border-bottom: ${(props) => (props.status ? `1px solid #ffffff` : null)};
+  color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
+  font-weight: ${(props) => (props.status ? `700` : `400`)};
+`;
 const TopBtn = styled.div`
-position: fixed;
-right: 19%;
-bottom: 10%;
-cursor: pointer;
-`
+  position: fixed;
+  right: 19%;
+  bottom: 10%;
+  cursor: pointer;
+`;
 export default Crew;

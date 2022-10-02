@@ -9,6 +9,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
 import { createCrewNotice } from "../../../Redux/modules/crewSlice";
+import { ReactComponent as ChatXbtn } from "../../../Image/chatx.svg";
 
 function CrewNoticeModal({ onClose }) {
   const { register, handleSubmit } = useForm();
@@ -23,9 +24,8 @@ function CrewNoticeModal({ onClose }) {
       place: addressDetail,
       content: data.content,
     };
-    console.log(payload);
-    // dispatch(createCrew(payload));
-    dispatch(createCrewNotice(payload), [dispatch]);
+    // dispatch(createCrewNotice(payload));
+    window.location.reload();
   };
 
   //일시 설정 저장
@@ -66,17 +66,32 @@ function CrewNoticeModal({ onClose }) {
     height: "400px",
     zIndex: 100,
     position: "absolute",
-    top: "300px",
+    top: "250px",
+    right: "-800px",
   };
 
   return (
     <Background>
       {isOpenPost && (
-        <DaumPostcode
-          style={postCodeStyle}
-          onComplete={onCompletePost}
-          autoClose={false}
-        />
+        <div style={{ position: "relative" }}>
+          <DaumPostcode
+            style={postCodeStyle}
+            onComplete={onCompletePost}
+            autoClose={false}
+          />
+          <ChatXbtn
+            style={{
+              position: "absolute",
+              top: "230px",
+              right: "-797px",
+              zIndex: 150,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setIsOpenPost(false);
+            }}
+          />
+        </div>
       )}
       <Modal onSubmit={handleSubmit(onSubmit)}>
         <Xbtn onClick={onClose} />

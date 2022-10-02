@@ -88,15 +88,15 @@ function UploadPhotoModal({ onClose }) {
   };
 
   //모달 스크롤 방지
-  useEffect(() => {
-    const $body = document.querySelector("body");
-    $body.style.overflow = "hidden";
-    return () => ($body.style.overflow = "auto");
-  }, []);
+  // useEffect(() => {
+  //   const $body = document.querySelector("body");
+  //   $body.style.overflow = "hidden";
+  //   return () => ($body.style.overflow = "auto");
+  // }, []);
 
   //모달 바깎 클릭시 close
   const modalRef = useRef(null);
-  useOutSideClick(modalRef, onClose);
+  // useOutSideClick(modalRef, onClose);
 
   return (
     <Background>

@@ -4,7 +4,9 @@ import axios from "axios";
 // const SERVERH = process.env.REACT_APP_SERVER_H;
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 // const BASE_URLM = "https://01192mg.shop";
-const BASE_URLM = "http://sparta-tim.shop";
+const BASE_URLM = "https://sparta-tim.shop";
+// const BASE_URL = "http://sparta-tim.shop";
+// const BASE_URLM = "http://54.180.31.108";
 
 const initialState = {
   crewDetail: [],
@@ -23,15 +25,11 @@ export const createCrew = createAsyncThunk(
   "post/createCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/crews`,
-        payload,
-        {
-          headers: {
-            Authorization: window.localStorage.getItem("access_token"),
-          },
-        }
-      );
+      const response = await axios.post(`${BASE_URLM}/crews`, payload, {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
+        },
+      });
       window.location.replace("/crews");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -47,11 +45,14 @@ export const editCrew = createAsyncThunk(
     try {
       const response = await axios
         .put(
-          `${BASE_URLM}/crews/${payload.id}`,
+          `https://sparta-tim.shop/crews/${payload.id}`,
           {
             name: payload.name,
             content: payload.content,
             imgUrl: payload.imgUrl,
+            mainActivityGym: payload.mainActivityGym,
+            mainActivityArea: payload.mainActivityArea,
+            keywords: payload.keywords,
           },
           {
             headers: {
@@ -62,7 +63,7 @@ export const editCrew = createAsyncThunk(
         .then((response) => {
           console.log(response);
         });
-      window.location.replace("/crews");
+      window.location.replace(`/crews/${payload.id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -98,9 +99,13 @@ export const getCrewDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.get(
-        `${BASE_URLM}/crews/${payload}`
+        `http://54.180.31.108/crews/${payload}`,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
       );
-      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -178,30 +183,6 @@ export const permitCrew = createAsyncThunk(
   }
 );
 
-//크루 추방--> 확인
-export const expelCrew = createAsyncThunk(
-  "delete/expelCrew",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await axios
-        .delete(
-          `http://sparta-tim.shop/crews/${payload.crewId}/members/${payload.memberId}`,
-          {
-            headers: {
-              Authorization: window.localStorage.getItem("access_token"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.data);
-    }
-  }
-);
-
 //크루 공지사항 CRUD
 /////////////////////////////////////////////////////////////////////
 
@@ -210,24 +191,20 @@ export const createCrewNotice = createAsyncThunk(
   "post/createCrew",
   async (payload, thunkAPI) => {
     try {
-      // console.log(payload.id)
-      const response = await axios
-        .post(
-          `http://sparta-tim.shop/notices/${payload.id}`,
-          {
-            content: payload.content,
-            date: payload.time,
-            place: payload.place,
+      console.log(payload);
+      const response = await axios.post(
+        `https://sparta-tim.shop/notices/${payload.id}`,
+        {
+          content: payload.content,
+          date: payload.time,
+          place: payload.place,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
           },
-          {
-            headers: {
-              Authorization: window.localStorage.getItem("access_token"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       // console.log(error)
@@ -243,7 +220,7 @@ export const editCrewNotice = createAsyncThunk(
     try {
       const response = await axios
         .put(
-          `http://sparta-tim.shop/notices/${payload.id}`,
+          `https://sparta-tim.shop/notices/${payload.id}`,
           {
             name: payload.name,
             content: payload.content,
@@ -258,7 +235,8 @@ export const editCrewNotice = createAsyncThunk(
         .then((response) => {
           console.log(response);
         });
-      window.location.replace("/crews");
+      window.alert("등록완료!");
+      window.location.reload();
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -267,25 +245,25 @@ export const editCrewNotice = createAsyncThunk(
 );
 
 //크루 공지사항 삭제-->확인
-export const deleteCrewNotice = createAsyncThunk(
-  "delete/CrewNotice",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await axios
-        .delete(`${BASE_URLM}/notices/${payload}`, {
-          headers: {
-            Authorization: window.localStorage.getItem("access_token"),
-          },
-        })
-        .then((response) => {
-          console.log(response);
-        });
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.data);
-    }
-  }
-);
+// export const deleteCrewNotice = createAsyncThunk(
+//   "delete/CrewNotice",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const response = await axios
+//         .delete(`${BASE_URLM}/notices/${payload}`, {
+//           headers: {
+//             Authorization: window.localStorage.getItem("access_token"),
+//           },
+//         })
+//         .then((response) => {
+//           console.log(response);
+//         });
+//       return thunkAPI.fulfillWithValue(response.data);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.data);
+//     }
+//   }
+// );
 
 //크루 사진 CRUD
 /////////////////////////////////////////////////////////////////////
@@ -361,7 +339,34 @@ export const deleteCrewPhoto = createAsyncThunk(
 export const crewSlice = createSlice({
   name: "crew",
   initialState,
-  reducers: {},
+  reducers: {
+    expelCrew(state, action) {
+      const id = action.payload;
+      state.crewDetail.data.memberList =
+        state.crewDetail.data.memberList.filter((crew) => crew.id !== id);
+    },
+    acceptCrew(state, action) {
+      const id = action.payload;
+      console.log(id);
+      state.crewApplication.data = state.crewApplication.data.filter(
+        (crew) => crew.id !== id
+      );
+    },
+    deleteCrewNotice(state, action) {
+      const id = action.payload;
+      state.crewDetail.data.noticeList =
+        state.crewDetail.data.noticeList.filter(
+          (notice) => notice.noticeId !== id
+        );
+    },
+    addCrewNotice(state, action) {
+      const id = action.payload;
+      state.crewDetail.data.noticeList =
+        state.crewDetail.data.noticeList.filter(
+          (notice) => notice.noticeId !== id
+        );
+    },
+  },
   extraReducers: {
     [createCrew.pending]: (state) => {
       state.isLoading = true;
@@ -391,7 +396,6 @@ export const crewSlice = createSlice({
     },
     [joinCrew.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.crewDetail = action.payload;
     },
     [joinCrew.rejected]: (state, action) => {
       state.isLoading = false;
@@ -444,4 +448,5 @@ export const crewSlice = createSlice({
   },
 });
 
+export const { expelCrew, acceptCrew, deleteCrewNotice } = crewSlice.actions;
 export default { crewSlice }.reducer;

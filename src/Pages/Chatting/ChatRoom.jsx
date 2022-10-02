@@ -1,15 +1,24 @@
-import { React, useState, useEffect } from "react";
+import { React, useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 import styled from "styled-components";
-import { addMessage } from "../../Redux/modules/chatSlice";
+import { addMessage, loadMessage } from "../../Redux/modules/chatSlice";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 import { ReactComponent as ChatBackbtn } from "../../Image/chatback.svg";
 import { ReactComponent as ChatSendbtn } from "../../Image/chatsend.svg";
+import Me from "./components/Me";
+import Friends from "./components/Friends";
 
-function ChatRoom({ onClose }) {
+function ChatRoom({ onClose, roomId, roomName, roomImg }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm();
+
   //기본설정---헤더, 토큰, 주소설정
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
@@ -28,26 +37,29 @@ function ChatRoom({ onClose }) {
   }, []);
 
   //데이터 불러오기
-  // useEffect(() => {
-  //   dispatch(loadMessage(roomId.id));
-  // }, []);
+  useEffect(() => {
+    dispatch(loadMessage(roomId));
+  }, [dispatch]);
+
+  const chatList = useSelector((state) => state?.chat?.chat?.data);
+  console.log(chatList);
 
   //   엔터 누르면 데이터 전송
-  //   const handleEnterPress = (e) => {
-  //     if (message.trim() === "") {
-  //       e.preventDefault();
-  //     }
-  //     if (e.keyCode === 13 && e.shiftKey == false) {
-  //       sendMessage();
-  //     }
-  //   };
+  const handleEnterPress = (e) => {
+    if (message.trim() === "") {
+      e.preventDefault();
+    }
+    if (e.keyCode === 13 && e.shiftKey == false) {
+      sendMessage();
+    }
+  };
 
   //   연결&구독
   function onConneted() {
     try {
       client.connect(headers, () => {
         client.subscribe(
-          `/sub/chat/room/29`,
+          `/sub/chat/room/${roomId}`,
           (data) => {
             const newMessage = JSON.parse(data.body);
             dispatch(addMessage(newMessage));
@@ -58,62 +70,87 @@ function ChatRoom({ onClose }) {
     } catch (error) {}
   }
 
+  const nickname = window?.localStorage?.getItem("nickname");
+
   //메시지 보내기
   const sendMessage = () => {
     client.send(
       `/pub/chat/message`,
       headers,
       JSON.stringify({
-        content: message,
+        roomId: roomId,
+        message: message,
+        writer: nickname,
       })
     );
     setMessage("");
   };
+
+  //
+  const messageEndRef = useRef();
+
+  useEffect(() => {
+    const setTimeoutId = setTimeout(() => {
+      messageEndRef.current.scrollIntoView({ behavior: "smooth" }, 2000);
+    });
+    return () => {
+      clearTimeout(setTimeoutId);
+    };
+  }, [chatList?.message?.length]);
 
   return (
     <div>
       <Top>
         <div>
           <ChatBackbtn onClick={onClose} style={{ cursor: "pointer" }} />
-          <h3>와우산어쩌고크루</h3>
-          <p>22-09-27 07:19 AM</p>
+          <h3>{roomName}</h3>
+          {/* <p>22-09-27 07:19 AM</p> */}
         </div>
         <ChatXbtn style={{ cursor: "pointer" }} />
       </Top>
-      <CrewImgBox>
-        <div>
-          <img src="#" />
-        </div>
-        <div>
-          <h3>크루 이름</h3>
-          <p>22-09-27 07:19 AM</p>
-        </div>
-      </CrewImgBox>
-      <ChatContainer>
-        <CrewMessageBox>
+      <ChatWarp>
+        <CrewImgBox>
           <div>
-            <img src="#" />
+            <img src={roomImg} />
           </div>
-          <CrewMessage>
-            <div>
-              <p>크루 메시지입니다..</p>
-            </div>
-            <div>
-              <p>시간임</p>
-            </div>
-          </CrewMessage>
-        </CrewMessageBox>
-        <MyMessageBox>
-          <MyMessage>
-            <div>
-              <p>lsdfjkasldfjkladsjafklasdjfklasjdfkj</p>
-            </div>
-          </MyMessage>
-        </MyMessageBox>
-      </ChatContainer>
+          <div>
+            <h3>{roomName}</h3>
+            {/* <p>22-09-27 07:19 AM</p> */}
+          </div>
+        </CrewImgBox>
+        <ChatContainer>
+          {chatList &&
+            chatList.map((chat, index) => {
+              if (chat.sender === nickname) {
+                return (
+                  <div key={index}>
+                    <Me content={chat.message} time={chat.createdAt} />
+                  </div>
+                );
+              } else {
+                return (
+                  <div key={index}>
+                    <Friends
+                      content={chat.message}
+                      nickname={chat.sender}
+                      imgUrl={chat.imgUrl}
+                      time={chat.createdAt}
+                    />
+                  </div>
+                );
+              }
+            })}
+          <div ref={messageEndRef}></div>
+        </ChatContainer>
+      </ChatWarp>
       <ChatInput>
-        <input placeholder="메시지를 입력해주세요."></input>
-        <ChatSendbtn style={{ cursor: "pointer" }} />
+        <input
+          placeholder="메시지를 입력해주세요."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleEnterPress}
+        ></input>
+        <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
       </ChatInput>
     </div>
   );
@@ -168,6 +205,7 @@ const CrewMessage = styled.div`
   display: flex;
   position: relatvie;
   width: 100%;
+  margin-bottom: 10px;
   div {
     &:nth-child(1) {
       width: auto;
@@ -204,7 +242,7 @@ const CrewMessage = styled.div`
 const MyMessage = styled.div`
   div {
     text-align: right;
-
+    margin-bottom: 10px;
     &:nth-child(1) {
       width: auto;
       position: relative;
@@ -296,6 +334,11 @@ const CrewImgBox = styled.div`
       height: 100px;
       background: #e8e8e8;
       border-radius: 199.63px;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 199.63px;
+      }
     }
     &:nth-child(2) {
       width: 100px;
@@ -318,10 +361,11 @@ const CrewImgBox = styled.div`
 `;
 
 const ChatWarp = styled.div`
-  width: 430px;
-  height: 550px;
-  box-shadow: 10px 20px 20px rgba(0, 0, 0, 0.4);
-  border-radius: 15px;
-  background-color: #262626;
-  padding: 40px 25px 47px 25px;
+  height: 364px;
+  max-height: 364px;
+  margin-bottom: 25px;
+  overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;

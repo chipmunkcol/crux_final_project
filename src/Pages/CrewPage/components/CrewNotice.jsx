@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
@@ -15,36 +16,39 @@ function CrewNotice() {
 
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
-  const { noticeList } = crewDetail?.data;
+  const noticeList = crewDetail?.data?.noticeList;
   console.log(noticeList);
 
   //userId가져오기
   const userId = window?.localStorage?.getItem("userId");
-  console.log(userId);
+  // console.log(userId);
 
-  const onSubmit = (data) => {
-    const payload = {
-      id: params,
-      content: data.content,
-    };
-    // console.log(payload);
-    dispatch(createCrewNotice(payload), [dispatch]);
-  };
+  //삭제하기
+  async function delteNotice(payload) {
+    if (window.confirm("삭제하시겠습니까?")) {
+      try {
+        const response = await axios.delete(
+          `https://sparta-tim.shop/notices/${payload}`,
+          {
+            headers: {
+              Authorization: window.localStorage.getItem("access_token"),
+            },
+          }
+        );
+        window.alert("삭제 완료");
+        return response.data;
+      } catch (error) {
+        return error.data;
+      }
+    }
+  }
 
-  //props
-  const [noticeData, setNoticeData] = useState({
-    id: "",
-    date: "",
-    place: "",
-    noticeId: "",
-  });
-
-return (
+  return (
     <div>
       {noticeList
-        .slice(0)
-        .reverse()
-        .map((notice) => (
+        ?.slice(0)
+        ?.reverse()
+        ?.map((notice) => (
           <Container key={notice.noticeId}>
             <IntroContent>
               {Number(userId) === notice.authorId ? (
@@ -53,6 +57,7 @@ return (
                   <span>|</span>
                   <span
                     onClick={() => {
+                      delteNotice(notice.noticeId);
                       dispatch(deleteCrewNotice(notice.noticeId));
                     }}
                   >
