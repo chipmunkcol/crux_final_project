@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Router from './Shared/router';
 import Navbar from './Shared/Navbar';
 import Footer from './Shared/Footer';
+import TopBotton from './Shared/TopBotton';
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
       {/* router 연결 */}
       <Router />
 
+      <TopBotton />
     </div>
   );
 }

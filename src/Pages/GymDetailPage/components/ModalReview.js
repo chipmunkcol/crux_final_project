@@ -12,7 +12,7 @@ import axios from "axios";
 
 
 function ModalReview({ setModal, gym, reload, setReload }) {
-    const BASE_URL = "http://sparta-tim.shop";
+    const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = "https://01192mg.shop";
 
     const navigate = useNavigate();

@@ -111,6 +111,7 @@ font-size: 40px;
 font-weight: 700;
 letter-spacing: -2px;
 text-align: left;
+cursor: pointer;
 `
 
 const NavCrew = styled.div`
@@ -119,6 +120,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 
 const NavCreateCrew = styled.div`
@@ -127,6 +129,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 const NavGym = styled.div`
 margin: 0 0 0 0;
@@ -134,6 +137,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 const NavContentLogin = styled.div`
 display: flex;
@@ -145,11 +149,13 @@ const NavLogin = styled.div`
 margin: 0 25px 0 390px;
 font-size: 16px;
 font-weight: 500;
+cursor: pointer;
 `
 
 const NavRegister = styled.div`
 font-size: 16px;
 font-weight: 500;
+cursor: pointer;
 `
 
 export default Navbar;

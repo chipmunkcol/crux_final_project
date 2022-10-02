@@ -9,8 +9,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const NewCrew = ({searchData}) => {
-    const BASE_URL = "http://54.180.31.108";
-    // const BASE_URL = "http://sparta-tim.shop";
+    // const BASE_URL = "http://54.180.31.108";
+    const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
@@ -35,9 +35,7 @@ const NewCrew = ({searchData}) => {
       }, [])
   
       useEffect(()=> {
-        if(page !== 0) {
           newCrew();
-        }
       }, [page])
   
     
@@ -45,7 +43,9 @@ const NewCrew = ({searchData}) => {
         const target = entries[0];
         if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
-          setPage(prev => prev+1 ); //페이지 값 증가
+          setTimeout(() => {
+            setPage(prev => prev+1 ); //페이지 값 증가  
+          }, 0);
         }
     })
 
@@ -143,7 +143,7 @@ padding: 4rem 0 0 0;
 const CrewList = styled.div`
 width: 38rem;
 height: 49rem;
-margin: 2rem 1rem 0 2rem;
+margin: 2rem 1rem 0 0.4rem;
 padding: 0;
 overflow: hidden;
 `

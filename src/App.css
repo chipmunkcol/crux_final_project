@@ -3,7 +3,8 @@ html {
   
 }
 .App {
-  width: 192rem;
+  max-width: 192rem;
+  width: 100vw;
   margin: 0 auto;
   background-color: #141414;
   

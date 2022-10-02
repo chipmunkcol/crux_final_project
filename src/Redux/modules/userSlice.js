@@ -5,7 +5,7 @@ import axios from "axios";
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 
 // const BASE_URL = SERVERM;
-const BASE_URLM = "http://54.180.31.108";
+const BASE_URLM = "https://sparta-tim.shop";
 
 const initialState = {
   user: [],

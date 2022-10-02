@@ -62,7 +62,7 @@ const deleteId = async() => {
                 editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage}/> :
 
                 <Container>
-                
+
                 <Flex1>
                     <ProfileImg src={myPage?.imgUrl !== "" ? myPage?.imgUrl : 사용자기본이미지}/>
                         

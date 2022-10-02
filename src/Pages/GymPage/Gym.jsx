@@ -15,8 +15,9 @@ import Footer from '../../Shared/Footer';
 
 
 const Gym = () => {
-    const BASE_URL = "http://sparta-tim.shop"
+    const BASE_URL = "https://sparta-tim.shop"
     // const BASE_URL = 'https://01192mg.shop'
+    // const BASE_URL = "http://54.180.31.108";
     const navigate = useNavigate()
 
     const [location, setLocation] = useState('내 주변 클라이밍짐')
@@ -304,7 +305,7 @@ const Gym = () => {
 
             <Navbar />
 
-            <div style={{width:'192rem', height:'33rem', padding:'8rem 0 0 0', backgroundColor:'#141414', color:'#ffffff'}}>
+            <div style={{width:'192rem', height:'26.8rem', padding:'8rem 0 0 0', backgroundColor:'#141414', color:'#ffffff'}}>
               
               <div style={{width:'120rem', margin:'0 auto 0 auto'}}>
                   <h1 style={{width:'38rem', margin:'0 35.2rem 0 0'}}>클라이밍짐 후기</h1>
@@ -389,7 +390,7 @@ const Gym = () => {
 
 
                 <GymContainer>
-                    <div style={{width:'58rem', position:'absolute', borderBottom:'1px solid #666',padding:'3.5rem 3.5rem 3rem 3.5rem'}}>
+                    <div style={{width:'51rem', position:'absolute', borderBottom:'1px solid #666',padding:'3.5rem 3.5rem 3rem 3.5rem'}}>
                         <span style={{fontWeight:'700', fontSize:'2rem'}}>{location}</span>
                         
                         {

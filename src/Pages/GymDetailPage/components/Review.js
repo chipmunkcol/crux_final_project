@@ -14,7 +14,7 @@ import 검은별 from "../../../Image/검은별.png"
 
 
 const Review = ({gym, reload, setReload}) => {
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
 const navigate = useNavigate()
 const [editModal, setEditModal] = useState(false)
 const [reviewId, setReviewId] = useState('')

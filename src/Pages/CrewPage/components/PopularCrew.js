@@ -9,15 +9,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const PopularCrew = ({searchData}) => {
-    const BASE_URL = "http://54.180.31.108";
-    // const BASE_URL = "https://sparta-tim.shop";
+    // const BASE_URL = "http://54.180.31.108";
+    const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
   
     const [list, setList] = useState([]);
     console.log(list)
-    
   
     // 무한스크롤 적용하기
       const [page, setPage] = useState(0); //현재 페이지
@@ -34,11 +33,8 @@ const PopularCrew = ({searchData}) => {
         return () => { observer.disconnect(); }
       }, [])
   
-  
       useEffect(()=> {
-        if(page !== 0 ) {
           getCrew();
-        }
       }, [page])
   
     
@@ -46,8 +42,9 @@ const PopularCrew = ({searchData}) => {
         const target = entries[0];
         if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
-            setPage(prev => prev+1 ); //페이지 값 증가
-          
+          setTimeout(() => {
+            setPage(prev => prev+1 ); //페이지 값 증가  
+          }, 0);
           //setPage => setLastId 에 lastId max 받아다가  
         }
     })
@@ -70,7 +67,6 @@ const PopularCrew = ({searchData}) => {
 return (
     <Container >
         <Wrap>
-        <Topbar ></Topbar>
         {
             searchData?.length !== 0 ? 
             
@@ -143,7 +139,7 @@ padding: 4rem 0 0 0;
 const CrewList = styled.div`
 width: 38rem;
 height: 49rem;
-margin: 2rem 1rem 0 2rem;
+margin: 2rem 1rem 0 0.4rem;
 padding: 0;
 overflow: hidden;
 `

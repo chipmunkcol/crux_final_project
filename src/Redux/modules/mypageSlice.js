@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
 
 export const __getMyPage = createAsyncThunk(
   "getMyPage",

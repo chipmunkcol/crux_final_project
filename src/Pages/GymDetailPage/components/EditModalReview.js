@@ -13,7 +13,7 @@ import Loading from '../../../Shared/Loading';
 
 
 function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
-    const BASE_URL = "http://sparta-tim.shop";
+    const BASE_URL = "https://sparta-tim.shop";
 
     console.log(reviewId)
     const closeModal = () => {

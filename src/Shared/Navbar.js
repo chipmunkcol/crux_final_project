@@ -12,6 +12,7 @@ import Alam from "./Alam";
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
 import { __getAlam, _readAlam, _addAlam, _deleteAlam, _deleteAlams, __NreadAlam, _minusAlam, _plusAlam } from "../Redux/modules/notification";
 import { __getMyPage } from "../Redux/modules/mypageSlice";
+import NavbarDropdown from "./NavbarDropdown";
 
 
 const Navbar = () => {
@@ -91,6 +92,8 @@ const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 const profileImg = mypage?.data?.imgUrl
 console.log(profileImg)
 
+const [showMypage, setShowMypage] = useState(false)
+
 useEffect(()=>{
   if (userToken) {
     dispatch(__getMyPage(userId))
@@ -124,18 +127,19 @@ useEffect(()=>{
             userToken !== null ?
             <NavContentLogin>
               
-              <AlamImg src={알람종} onClick={()=>{setShowAlam(!showAlam)}}/>
+              {/* 알림 드롭다운 */}
+              <AlamImg src={알람종} 
+                onClick={()=>{setShowAlam(!showAlam)}}/>
               <NreadAlam>{NreadAlams.data.count}</NreadAlam>
+              
               { showAlam ? <Alam setShowAlam={setShowAlam} NreadAlams={NreadAlams}/> : null }
               
-              {/* <ProfileImg src={profileImg} /> */}
-              <NavLogin type="button" onClick={()=>{navigate(`/members/${userId}`)}}>
-                MYPAGE
-              </NavLogin>
-
-              <NavRegister type="button" onClick={removeToken} >
-                LOGOUT
-              </NavRegister>
+              {/* 프로필 이미지 드롭다운 */}
+              <ProfileImg src={profileImg} 
+                onClick={()=>{setShowMypage(!showMypage)}}/>
+              
+              { showMypage ? <NavbarDropdown setShowMypage={setShowMypage} userId={userId} removeToken={removeToken}/> : null }
+              
             </NavContentLogin>
 
             :
@@ -163,7 +167,7 @@ const NavContainer = styled.div`
   padding: 0 0 4.2rem 0;
   margin: 0;
   width: 192rem;
-  background-color: #141414;
+  background-color: #000000;
 `;
 
 const NavContent = styled.div`
@@ -171,6 +175,7 @@ const NavContent = styled.div`
   margin: 10rem 0 0 36rem;
   align-items: baseline;
   display: flex;
+  
 `;
 
 const NavMain = styled.div`
@@ -180,6 +185,7 @@ font-size: 40px;
 font-weight: 700;
 letter-spacing: -2px;
 text-align: left;
+cursor: pointer;
 `
 
 const NavCrew = styled.div`
@@ -188,6 +194,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 
 const NavCreateCrew = styled.div`
@@ -196,6 +203,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 const NavGym = styled.div`
 margin: 0 0 0 0;
@@ -203,6 +211,7 @@ font-size: 20px;
 font-weight: 500;
 letter-spacing: -1px;
 text-align: left;
+cursor: pointer;
 `
 const NavContentLogin = styled.div`
 display: flex;
@@ -214,17 +223,19 @@ const NavLogin = styled.div`
 margin: 0 25px 0 390px;
 font-size: 16px;
 font-weight: 500;
+cursor: pointer;
 `
 
 const NavRegister = styled.div`
 font-size: 16px;
 font-weight: 500;
+cursor: pointer;
 `
 
 const AlamImg = styled.img`
 width: 3rem;
 position: absolute;
-margin: -6px 0 0 58rem;
+margin: -6px 0 0 50rem;
 cursor: pointer;
 `
 
@@ -237,12 +248,13 @@ position: absolute;
 margin: 0px 0 0 60rem;
 top: 12rem;
 padding: 3px 0 0 6.5px;
+
 `
 
 const ProfileImg = styled.img`
-width: 3rem;
+width: 5rem;
 position: absolute;
-margin: -6px 0 0 55rem;
+margin: -6px 0 0 58rem;
 `
 
 export default Navbar;

@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const BASE_URL = 'http://sparta-tim.shop'
+const BASE_URL = 'https://sparta-tim.shop'
 // const BASE_URL = 'https://01192mg.shop'
+// const BASE_URL = "http://54.180.31.108";
 
 export const __getGymDetail = createAsyncThunk(
     'getGymDetail',
