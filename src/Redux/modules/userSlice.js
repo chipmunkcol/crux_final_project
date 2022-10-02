@@ -20,7 +20,7 @@ export const signup = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios.post(
-        `http://sparta-tim.shop/members/signup`,
+        `https://sparta-tim.shop/members/signup`,
         {
           email: payload.email,
           nickname: payload.nickname,
@@ -65,6 +65,7 @@ export const login = createAsyncThunk(
     try {
       const response = await axios
         .post(`${BASE_URLM}/members/login`, payload)
+
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(
@@ -108,7 +109,7 @@ export const kakaoLogin = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .get(`http://3.39.237.124/oauth/kakao/callback?code=${payload}`)
+        .get(`https://sparta-tim.shop/oauth/kakao/callback?code=${payload}`)
         .then((response) => {
           console.log(response);
           window.localStorage.setItem(
@@ -174,7 +175,7 @@ export const unLikeCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/${payload}/like`, null, {
+        .delete(`http://sparta-tim.shop/crews/${payload}/like`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },

@@ -1,18 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import {
-  getCrewDetail,
-  joinCrew,
-  deleteCrew,
-} from "../../Redux/modules/crewSlice";
-import {
-  likeCrew,
-  unLikeCrew,
-  withdrawCrew,
-} from "../../Redux/modules/userSlice";
+import { getCrewDetail, deleteCrew } from "../../Redux/modules/crewSlice";
 import Navbar from "../../Shared/Navbar";
 import CrewIntro from "./components/CrewIntro";
 import CrewMember from "./components/CrewMember";
@@ -33,41 +25,39 @@ const CrewDetail = () => {
   }, []);
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
-  // console.log(crewDetail);
   const crew = crewDetail?.data;
-  // console.log(crew);
+  console.log(crew);
 
   //호스트 확인
-  // const hostId = crew?.memberList[0]?.id;
+  const hostId = crew?.hostId;
   const userId = window?.localStorage?.getItem("userId");
 
   //크루 가입자 확인
   const memberList = crew?.memberList;
   console.log(memberList);
   const checkmember = memberList?.findIndex((x) => x?.id === Number(userId));
-  // console.log(checkmember);
 
   //크루 삭제
-  const onCrewDelte = () => {
-    if (window.confirm("삭제하시겠습니까?")) {
-      dispatch(deleteCrew(crew?.id));
-    } else {
-      return;
+  async function onCrewDelte() {
+    if (window.confirm("크루를 삭제하시겠습니까?")) {
+      try {
+        const response = await axios
+          .delete(`https://sparta-tim.shop/crews/${params}`, {
+            headers: {
+              Authorization: window.localStorage.getItem("access_token"),
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          });
+        window.alert("삭제 완료");
+        window.location.replace("/crews");
+        return response.data;
+      } catch (error) {
+        return error.data;
+      }
     }
-  };
-
-  //크루 탈퇴
-  const handleWithDrawCrew = () => {
-    if (window.confirm("삭제하시겠습니까?")) {
-      const payload = {
-        id: params,
-        memberId: userId,
-      };
-      dispatch(withdrawCrew(payload));
-    } else {
-      return;
-    }
-  };
+  }
 
   //크루 수정
   const onCrewEdit = () => {
@@ -78,12 +68,100 @@ const CrewDetail = () => {
           name: crew?.name,
           content: crew?.content,
           imgURL: crew?.imgUrl,
+          keywords: crew?.keywords,
+          mainGym: crew?.mainActivityGym,
+          mainArea: crew?.mainActivityArea,
         },
       });
     } else {
       return;
     }
   };
+
+  //크루 가입 신청
+  async function joinCrews() {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/crews/${params}/members`,
+        null,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      window.alert("신청되었습니다.");
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
+
+  //크루 탈퇴
+  async function withdrawCrew() {
+    if (window.confirm("탈퇴하시겠습니까?")) {
+      try {
+        const response = await axios
+          .delete(`https://sparta-tim.shop/crews/${params}/members`, {
+            headers: {
+              Authorization: window.localStorage.getItem("access_token"),
+            },
+          })
+          .then((response) => {
+            console.log(response);
+          });
+        window.alert("탈퇴 완료");
+        window.location.reload();
+        return response.data;
+      } catch (error) {
+        return error.data;
+      }
+    }
+  }
+
+  //크루 좋아요 변경용
+  const [likeClick, setLikeClick] = useState(crew?.like);
+
+  //크루 좋아요
+  async function likeCrew() {
+    try {
+      const response = await axios
+        .post(`https://sparta-tim.shop/crews/${params}/like`, null, {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+      window.alert("좋아요 완료");
+      window.location.reload();
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
+
+  //크루 좋아요 취소
+  async function dislikeCrew() {
+    try {
+      const response = await axios
+        .delete(`https://sparta-tim.shop/crews/${params}/like`, {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        })
+        .then((response) => {
+          console.log(response);
+        });
+      window.alert("좋아요 취소");
+      setLikeClick(!likeClick);
+      window.location.reload();
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
 
   //탭 보이게 하기
   const [introVisible, setIntroVisible] = useState(true);
@@ -131,18 +209,9 @@ const CrewDetail = () => {
     setIsNoticemodal(!isNoticemodal);
   };
 
-  //크루 좋아요
-  const handleHeartFill = () => {
-    if (crew?.like) {
-      dispatch(likeCrew(params));
-    } else {
-      dispatch(unLikeCrew(params));
-    }
-  };
-
-if(!crewDetail) {
-  return <Loading />
-} 
+  if (!crewDetail) {
+    return <Loading />;
+  }
   return (
     <div>
       <Navbar />
@@ -159,15 +228,15 @@ if(!crewDetail) {
                   width="50px"
                   height="50px"
                   fill="#000000"
-                  onClick={handleHeartFill}
-                  opacity={crew?.like ? "80%" : "30%"}
+                  onClick={crew?.like === true ? dislikeCrew : likeCrew}
+                  opacity={crew?.like === true ? "80%" : "30%"}
                 />
               </HeartIcon>
               <img src={crewDetail?.data?.imgUrl} />
             </ImgBox>
             <ContentBox>
               <TextBox>
-                {crew?.memberList[0]?.id === Number(userId) ? (
+                {hostId === Number(userId) ? (
                   <TextButton>
                     <span type="button" onClick={onCrewEdit}>
                       수정
@@ -179,27 +248,23 @@ if(!crewDetail) {
                 ) : null}
                 <h1>{crewDetail?.data?.name}</h1>
                 <Keyword>
-                  <div>
-                    <p>#초보환영</p>
-                  </div>
-                  <div>
-                    <p>#주말모임</p>
-                  </div>
-                  <div>
-                    <p>#열정적인</p>
-                  </div>
+                  {crew?.keywords?.map((keyword, index) => (
+                    <div key={index}>
+                      <p>#{keyword}</p>
+                    </div>
+                  ))}
                 </Keyword>
                 <TextDetail>
                   <Text>
-                    <p>참여자</p> <p>{crewDetail?.data?.crewNum}명</p>
+                    <p>참여자</p> <p>{crew?.crewNum}명</p>
                   </Text>
                   <Text>
                     <p>주 활동 지역</p>
-                    <p>서울 신림/서울대/사당/동작</p>
+                    <p>{crew?.mainActivityArea}</p>
                   </Text>
                   <Text>
                     <p>주 활동 짐</p>
-                    <p>서울 강북구 삼양로173길 80 (북한산 국제클라이밍센터)</p>
+                    <p>{crew?.mainActivityGym}</p>
                   </Text>
                 </TextDetail>
               </TextBox>
@@ -207,7 +272,7 @@ if(!crewDetail) {
                 <ButtonBox>
                   <button
                     onClick={() => {
-                      dispatch(joinCrew(crew?.id));
+                      joinCrews();
                     }}
                   >
                     크루 가입
@@ -221,7 +286,7 @@ if(!crewDetail) {
               ) : (
                 <ButtonBox>
                   <button onClick={handleNoticeClick}>모임 공지</button>
-                  <button onClick={handleWithDrawCrew}>크루 탈퇴</button>
+                  <button onClick={withdrawCrew}>크루 탈퇴</button>
                 </ButtonBox>
               )}
             </ContentBox>
@@ -244,7 +309,8 @@ if(!crewDetail) {
         <TabContainer>
           {introVisible && (
             <CrewIntro
-              content={crewDetail?.data?.content}
+              img={crew?.memberList[0]?.imgUrl}
+              content={crew?.content}
               adminNickname={crew?.memberList[0]?.nickname}
               adminContent={crew?.memberList[0]?.content}
             />

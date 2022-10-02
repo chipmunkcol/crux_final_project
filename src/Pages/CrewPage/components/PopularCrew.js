@@ -121,20 +121,21 @@ return (
     )
 }
 
+
 const Container = styled.div`
-width: 192rem;
-background-color: #141414;
-color: #999999;
-`
+  width: 192rem;
+  background-color: #141414;
+  color: #999999;
+`;
 
 const Wrap = styled.div`
-display: grid;
-grid-template-columns: 41rem 41rem 39rem;
-justify-content: center;
-width: 123rem;
-margin: 0 auto;
-padding: 4rem 0 0 0;
-`
+  display: grid;
+  grid-template-columns: 41rem 41rem 39rem;
+  justify-content: center;
+  width: 123rem;
+  margin: 0 auto;
+  padding: 4rem 0 0 0;
+`;
 
 const CrewList = styled.div`
 width: 38rem;
@@ -144,10 +145,11 @@ padding: 0;
 overflow: hidden;
 `
 
+
 const Topbar = styled.div`
-width: 122rem;
-margin: 0 auto;
-height: 0.1rem;
-`
+  width: 122rem;
+  margin: 0 auto;
+  height: 0.1rem;
+`;
 
 export default PopularCrew;

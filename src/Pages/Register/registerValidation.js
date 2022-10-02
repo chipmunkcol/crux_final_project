@@ -10,21 +10,22 @@ const RegisterValidation = () => {
         email: yup
           .string()
           .email("이메일을 정확히 입력해주세요.")
-          .required("이메일을 입력해주세요."),
-        //   .test(
-        //     "verifyEmail",
-        //     "중복된 이메일입니다",
-        //     async function verifyEmail(value) {
-        //       try {
-        //         const response = await axios.get(
-        //           `http://3.39.237.124/members/email-check?email=${value}`
-        //         );
-        //         console.log(response.data);
-        //         return response.data.success;
-        //       } catch (error) {
-        //         return false;
-        //       }
-        //     })
+          .required("이메일을 입력해주세요.")
+          .test(
+            "verifyEmail",
+            "중복된 이메일입니다.",
+            async function verifyEmail(value) {
+              try {
+                const response = await axios.get(
+                  `http://sparta-tim.shop/members/email-check?email=${value}`
+                );
+                console.log(response.data);
+                return response.data.success;
+              } catch (error) {
+                return false;
+              }
+            }
+          ),
         nickname: yup
           .string()
           .required("닉네임을 입력해주세요.")
@@ -32,21 +33,22 @@ const RegisterValidation = () => {
           .matches(
             /^[ㄱ-ㅎ가-힣a-zA-Z0-9-_]{2,10}$/,
             "닉네임은 한글, 영어, 숫자만 입력할 수 있습니다."
+          )
+          .test(
+            "verifyNickname",
+            "중복된 닉네임입니다",
+            async function verifyNickname(value) {
+              try {
+                const response = await axios.get(
+                  `http://sparta-tim.shop/members/nickname-check?nickname=${value}`
+                );
+                console.log(response);
+                return response.data.success;
+              } catch (error) {
+                return false;
+              }
+            }
           ),
-        //   .test(
-        //     "verifyNickname",
-        //     "중복된 닉네임입니다",
-        //     async function verifyNickname(value) {
-        //       try {
-        //         const response = await axios.get(
-        //           `https://01192mg.shop/members/nickname-check?nickname=${value}`
-        //         );
-        //         return response.data.success;
-        //       } catch (error) {
-        //         return false;
-        //       }
-        //     }
-        //   )
         password: yup
           .string()
           .required("비밀번호를 입력해주세요.")

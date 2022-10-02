@@ -11,23 +11,21 @@ const initialState = {
 };
 
 //이전 채팅내용 가져오기
-// export const loadMessage = createAsyncThunk(
-//   "get/chat",
-//   async (payload, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.get(`${BASE_URL}/api/room/${payload}`, {
-//         headers: {
-//           contentType: "application/json",
-//           authorization: accessToken,
-//           "refresh-token": refreshToken,
-//         },
-//       });
-//       return response.data;
-//     } catch (error) {
-//       return rejectWithValue(error.response.data);
-//     }
-//   }
-// );
+export const loadMessage = createAsyncThunk(
+  "get/chat",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/chat/messages/${payload}`, {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
 
 //채팅방 전체 불러오기
 export const getChatRoom = createAsyncThunk(
@@ -36,8 +34,7 @@ export const getChatRoom = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/chat/rooms`, {
         headers: {
-          contentType: "application/json",
-          authorization: accessToken,
+          Authorization: window.localStorage.getItem("access_token"),
         },
       });
       return response.data;
@@ -52,18 +49,15 @@ export const ChatSlice = createSlice({
   initialState,
   reducers: {
     addMessage: (state, { payload }) => {
-      state.chat = [payload, ...state.chat];
+      console.log({ payload });
+      state.chat.data = [payload, ...state.chat.data];
     },
   },
   extraReducers: {
-    // [addChatroom.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false;
-    //   state.roomId = payload;
-    // },
-    // [loadMessage.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false;
-    //   state.chat = payload;
-    // },
+    [loadMessage.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.chat = payload;
+    },
     [getChatRoom.fulfilled]: (state, { payload }) => {
       state.isLoading = false;
       state.chatRoom = payload;

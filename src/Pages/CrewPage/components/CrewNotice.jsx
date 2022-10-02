@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
-import {
-  createCrewNotice,
-  deleteCrewNotice,
-} from "../../../Redux/modules/crewSlice";
+import { deleteCrewNotice } from "../../../Redux/modules/crewSlice";
 import CrewNoticeEditModal from "./CrewNoticeEditModal";
+import { date } from "yup";
 
 function CrewNotice() {
   const dispatch = useDispatch();
@@ -15,44 +14,71 @@ function CrewNotice() {
 
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
-  const { noticeList } = crewDetail?.data;
+  const noticeList = crewDetail?.data?.noticeList;
   console.log(noticeList);
 
   //userId가져오기
   const userId = window?.localStorage?.getItem("userId");
-  console.log(userId);
+  // console.log(userId);
 
-  const onSubmit = (data) => {
-    const payload = {
-      id: params,
-      content: data.content,
-    };
-    // console.log(payload);
-    dispatch(createCrewNotice(payload), [dispatch]);
+  //삭제하기
+  async function delteNotice(payload) {
+    if (window.confirm("삭제하시겠습니까?")) {
+      try {
+        const response = await axios.delete(
+          `https://sparta-tim.shop/notices/${payload}`,
+          {
+            headers: {
+              Authorization: window.localStorage.getItem("access_token"),
+            },
+          }
+        );
+        window.alert("삭제 완료");
+        return response.data;
+      } catch (error) {
+        return error.data;
+      }
+    }
+  }
+
+  //수정모달 띄우기
+  const [editModal, setEditModal] = useState(false);
+
+  const handleModalClick = () => {
+    setEditModal(!editModal);
   };
 
-  //props
-  const [noticeData, setNoticeData] = useState({
-    id: "",
-    date: "",
-    place: "",
-    noticeId: "",
-  });
+  //데이터 전달
+  const [editid, setEditid] = useState("");
+  const [editplace, setEditplace] = useState("");
+  const [editcontent, setEditcontent] = useState("");
+  const [editdate, setEditdate] = useState("");
 
-return (
+  return (
     <div>
+      {editModal && (
+        <CrewNoticeEditModal onClose={handleModalClick} id={editProps} />
+      )}
       {noticeList
-        .slice(0)
-        .reverse()
-        .map((notice) => (
+        ?.slice(0)
+        ?.reverse()
+        ?.map((notice) => (
           <Container key={notice.noticeId}>
             <IntroContent>
               {Number(userId) === notice.authorId ? (
                 <TextButton>
-                  <span>수정</span>
+                  <span
+                    onClick={() => {
+                      handleModalClick();
+                      setEditProps(notice.noticeId);
+                    }}
+                  >
+                    수정
+                  </span>
                   <span>|</span>
                   <span
                     onClick={() => {
+                      delteNotice(notice.noticeId);
                       dispatch(deleteCrewNotice(notice.noticeId));
                     }}
                   >

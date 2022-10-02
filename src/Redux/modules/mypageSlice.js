@@ -3,6 +3,7 @@ import axios from "axios";
 
 const BASE_URL = "https://sparta-tim.shop";
 
+
 export const __getMyPage = createAsyncThunk(
   "getMyPage",
   async (memberId, thunkAPI) => {
