@@ -64,7 +64,7 @@ const deleteId = async() => {
                 <Container>
 
                 <Flex1>
-                    <ProfileImg src={myPage?.imgUrl !== "" ? myPage?.imgUrl : 사용자기본이미지}/>
+                    <ProfileImg src={myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지}/>
                         
                     <ProfileNickname>{myPage?.nickname}</ProfileNickname>
 
@@ -90,7 +90,7 @@ const deleteId = async() => {
 
                         {
                             myPage?.crewList.map((crew) => {
-                                return(<div key={crew.id} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
+                                return(<div key={`${crew.id}+${crew.name}`} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
                                             &nbsp; &bull; &nbsp; {crew.name}
                                        </div>)
                             })
@@ -104,7 +104,7 @@ const deleteId = async() => {
                         
                         {
                             myPage?.gymList.map((gym) => {
-                                return(<div key={gym.id} type="button" onClick={()=>{navigate(`/gyms/${gym.gymId}`)}}>
+                                return(<div key={`${gym.gymId}+${gym.name}`} type="button" onClick={()=>{navigate(`/gyms/${gym.gymId}`)}}>
                                             &nbsp; &bull; &nbsp; {gym.name}
                                        </div>)
                             })
@@ -188,6 +188,8 @@ width: 83rem;
 margin: 0 0 0 7rem;
 font-size: 2rem;
 font-weight: 500;
+word-break: break-all;
+/* overflo */
 `
 
 const Flex2 =styled.div`

@@ -56,7 +56,6 @@ useEffect(()=>{
 
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
-// console.log(lastEventId)
 
 let sse = undefined;
 useEffect(()=>{
@@ -80,16 +79,16 @@ useEffect(()=>{
     )
 
     sse.onerror = e => {
-      console.log(e)
-      sse.close();
+      // console.log(e)
+      // sse.close();
     }
   }
-  return () => {
-    if (userToken) {
-      sse.close();
-    }
-  }
-}, [])
+  // return () => {
+  //   if(userToken) {
+  //     sse.close();
+  //   }
+  // }
+}, [userToken])
 
 
 

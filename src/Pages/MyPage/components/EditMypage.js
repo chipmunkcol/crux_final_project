@@ -28,7 +28,8 @@ const EditMypage = ({ myPage, setEditMypage }) => {
     myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지
   );
   console.log(fileUrl);
-
+// 닉네임 2~10 글자 제한
+// 소개글 150 글자 제한
   const changeImage = async (e) => {
     const upload_file = await uploadBytes(
       ref(storage, `images/${e.target.files[0].name}`),
@@ -43,7 +44,12 @@ const EditMypage = ({ myPage, setEditMypage }) => {
       alert("자기소개를 입력해주세요");
     } else if (editNickname === "") {
       alert("닉네임을 입력해주세요");
-    } else {
+    } else if (editNickname.length <= 1 || editNickname.length >= 11 ) {
+      alert("닉네임은 2~10글자 사이로 입력해주세요:)");
+    } else if (editContent.length > 150) {
+      alert("소개글은 150글자까지 입력 가능합니다:)");
+    } 
+    else {
       const payload = {
         content: editContent,
         nickname: editNickname,
@@ -121,16 +127,9 @@ const EditMypage = ({ myPage, setEditMypage }) => {
             })}
           </LikeGymContent>
 
-          <div
-            style={{
-              color: "#666666",
-              margin: "0 0 1.5rem 7rem",
-              fontSize: "2rem",
-              fontWeight: "400",
-            }}
-          >
+          <Introduce>
             소개글
-          </div>
+          </Introduce>
 
           <ProfileContent
             value={editContent}
@@ -162,6 +161,13 @@ const Flex1 = styled.div`
   align-items: center;
   padding: 4rem 0 0 30rem;
 `;
+const Introduce = styled.div`
+color: #666666;
+margin: 0 0 1.5rem 7rem;
+font-size: 2rem;
+font-weight: 400;
+`
+
 const ProfileImg = styled.img`
   width: 25rem;
   height: 25rem;
@@ -210,6 +216,7 @@ const ProfileContent = styled.textarea`
   color: #cccccc;
   background-color: #333333;
   border: none;
+  word-break: break-all;
 `;
 
 const Flex2 = styled.div`

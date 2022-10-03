@@ -66,7 +66,7 @@ return(
             <div style={{width:'192rem', height:'81.5rem', margin:'auto', display:'flex', justifyContent:'center'}}>
                 <div style={{width:'60rem', height:'60rem', margin:'10rem 0 0 0'}}>
                     
-                    <img src={gym?.imgUrl !== undefined ? gym?.imgUrl : 클라이밍} 
+                    <img src={gym?.imgUrl !== null ? gym?.imgUrl : 클라이밍} 
                     style={{width:'100%', height:'100%'}}/>
                     <HeartIcon type="button" onClick={onclickLikeGym}>
                         { gym?.likeGym === false ? 
@@ -101,7 +101,7 @@ return(
                     
                     <S_title>방문객 리뷰 {gym?.reviews.length}건</S_title>
 
-                    <div style={{width:'55rem', height:'19rem', margin:'2rem 0 2.9rem 0'}}>
+                    <div style={{width:'55rem', height:'19rem', margin:'4.9rem 0 0 0'}}>
                         {
                             gym?.reviews.length === 0 ? 
                             

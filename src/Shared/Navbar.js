@@ -72,7 +72,7 @@ useEffect(()=>{
 
     sse.addEventListener('sse', e => {
         if(e.data.startsWith('{')) {
-          console.log(e)
+          // console.log(e)
           console.log(JSON.parse(e.data))
 
           dispatch(_addAlam(JSON.parse(e.data)))
@@ -82,16 +82,16 @@ useEffect(()=>{
     )
 
     sse.onerror = e => {
-      console.log(e)
-      sse.close();
+      // console.log(e)
+      // sse.close();
     }
   }
-  return () => {
-    if (userToken) {
-      sse.close();
-    }
-  }
-}, [])
+  // return () => {
+  //   if(userToken) {
+  //     sse.close();
+  //   }
+  // }
+}, [userToken])
 
 
 // 로그인 시 본인 사진 가져오기
