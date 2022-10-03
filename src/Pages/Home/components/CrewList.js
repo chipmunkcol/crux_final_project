@@ -7,23 +7,16 @@ import 인기크루 from "../../../Image/인기크루.png"
 import { useEffect } from "react";
 
 
-const CrewList = () => {
+const CrewList = ({crews}) => {
 
-const dispatch = useDispatch()
+
 const navigate = useNavigate()
-const {isLoading, error, getCrew} = useSelector((state)=>state.getCrew)
 
-const crews = getCrew?.data?.content
-console.log(crews)
-
-useEffect(()=>{
-    dispatch(__getCrew())
-},[])
 
 return (
     <>
         {
-            isLoading ? <Loading /> :
+            crews?.length===0 ? <Loading /> :
                 crews?.map((crew,i)=>{
                     return(
                             <div key={crew.id} style={{width:'274px', height:'400px', margin:'0 70px 0 0'}}>

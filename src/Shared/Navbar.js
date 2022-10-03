@@ -46,7 +46,7 @@ const Navbar = () => {
 //알람 모달 입니다~
   const [showAlam, setShowAlam] = useState(false)
   const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
-  console.log(NreadAlams.data, error2)
+  // console.log(NreadAlams.data, error2)
 
   const { alams } = useSelector((state) => state.alams)
   console.log(alams)
@@ -94,9 +94,9 @@ useEffect(()=>{
 
 // 로그인 시 본인 사진 가져오기
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
-console.log(isLoading, error, mypage)
+// console.log(isLoading, error, mypage)
 const profileImg = mypage?.data?.imgUrl
-console.log(profileImg)
+// console.log(profileImg)
 
 const [showMypage, setShowMypage] = useState(false)
 

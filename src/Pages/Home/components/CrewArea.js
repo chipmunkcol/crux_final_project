@@ -1,14 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CrewList from "./CrewList";
 import CrewListNew from "./CrewListNew";
 import styled from "styled-components";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { __getCrew } from "../../../Redux/modules/homeSlice";
 
 const CrewArea = () => {
 
+const BASE_URL = "https://sparta-tim.shop";
+const dispatch = useDispatch()
 const [showNewCrew, setShowNewCrew] = useState(false)    
 
 const [choiceCrew, setChoiceCrew] = useState(true)
 const [choiceNewCrew, setChoiceNewCrew] = useState(false)
+
+const {getCrew} = useSelector((state)=>state.getCrew)
+const crews = getCrew?.data?.content
+
+const [newCrews, setNewCrews] = useState([]) 
+// console.log(crews)
+
+const getNewCrew = async () => {
+    await axios.get(`${BASE_URL}/crews?page=0&size=4`)
+      .then((res) => {
+        setNewCrews((prev) => [...prev, ...res.data.data.content]);
+      })
+      .catch((err) => {
+        console.log(err);
+      }) 
+}
+
+useEffect(()=>{
+    dispatch(__getCrew())
+    getNewCrew();
+},[])
 
 return(
         <div style={{width:'100%',height:'560px', padding:'74px 0 0 0', backgroundColor:'#111', margin:'0 auto'}}>
@@ -27,7 +53,7 @@ return(
             </div>
             <div style={{width:'1210px', margin:'12px 360px 0 350px', display:'flex'}}>
             
-            { showNewCrew ? <CrewListNew /> : <CrewList /> }
+            { showNewCrew ? <CrewListNew crews={newCrews}/> : <CrewList crews={crews}/> }
 
             </div>
         </div>

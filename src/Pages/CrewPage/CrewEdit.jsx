@@ -15,8 +15,8 @@ const CrewEdit = () => {
   const dispatch = useDispatch();
   const { state } = useLocation();
   const { id, name, content, imgURL, keywords, mainGym, mainArea } = state; //받아온 값
-
-  const area = mainArea.split(" ");
+  console.log(mainArea)
+  const area = mainArea?.split(" ");
 
   const {
     control,

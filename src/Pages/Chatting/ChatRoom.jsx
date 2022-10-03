@@ -28,14 +28,6 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
   const client = Stomp.over(socket);
 
-  //   렌더되면 소켓 연결실행
-  useEffect(() => {
-    onConneted();
-    return () => {
-      onConneted();
-    };
-  }, []);
-
   //데이터 불러오기
   useEffect(() => {
     dispatch(loadMessage(roomId));
@@ -69,6 +61,16 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
       });
     } catch (error) {}
   }
+
+  //   렌더되면 소켓 연결실행
+  useEffect(() => {
+    onConneted();
+    return () => {
+      onConneted();
+    };
+  }, []);
+
+  
 
   const nickname = window?.localStorage?.getItem("nickname");
 
