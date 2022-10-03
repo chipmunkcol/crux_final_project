@@ -8,8 +8,9 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
+import axios from "axios";
 import {
-  createCrewNotice,
+  // createCrewNotice,
   addCrewNotice,
 } from "../../../Redux/modules/crewSlice";
 import { ReactComponent as ChatXbtn } from "../../../Image/chatx.svg";
@@ -19,6 +20,7 @@ function CrewNoticeModal({ onClose }) {
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
+  const userId = window?.localStorage?.getItem("userId");
 
   const onSubmit = (data) => {
     const payload = {
@@ -26,9 +28,33 @@ function CrewNoticeModal({ onClose }) {
       date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
       place: addressDetail,
       content: data.content,
+      authorId: Number(userId),
     };
-    dispatch(createCrewNotice(payload));
+    createCrewNotice(payload);
+    dispatch(addCrewNotice(payload));
   };
+
+  //크루 공지사항 생성
+  async function createCrewNotice(payload) {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/notices/${payload.id}`,
+        {
+          content: payload.content,
+          date: payload.date,
+          place: payload.place,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
 
   //일시 설정 저장
   const [startDate, setStartDate] = useState(new Date());

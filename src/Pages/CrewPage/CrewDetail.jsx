@@ -4,7 +4,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { getCrewDetail, deleteCrew, _crewLike } from "../../Redux/modules/crewSlice";
+import {
+  getCrewDetail,
+  deleteCrew,
+  _crewLike,
+} from "../../Redux/modules/crewSlice";
 import Navbar from "../../Shared/Navbar";
 import CrewIntro from "./components/CrewIntro";
 import CrewMember from "./components/CrewMember";
@@ -82,6 +86,28 @@ const CrewDetail = () => {
     }
   };
 
+  //크루 공지사항 생성
+  async function createCrewNotice(payload) {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/notices/${payload.id}`,
+        {
+          content: payload.content,
+          date: payload.date,
+          place: payload.place,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
+
   //크루 가입 신청
   async function joinCrews() {
     try {
@@ -123,9 +149,6 @@ const CrewDetail = () => {
     }
   }
 
-  //크루 좋아요 변경용
-  const [likeClick, setLikeClick] = useState(crew?.like);
-
   //크루 좋아요
   async function likeCrew() {
     try {
@@ -138,7 +161,7 @@ const CrewDetail = () => {
         .then((response) => {
           console.log(response);
           window.alert("좋아요 완료");
-          dispatch(_crewLike(!crew?.like))
+          dispatch(_crewLike(!crew?.like));
         });
       return response.data;
     } catch (error) {
@@ -158,7 +181,7 @@ const CrewDetail = () => {
         .then((response) => {
           console.log(response);
           window.alert("좋아요 취소");
-          dispatch(_crewLike(!crew?.like))
+          dispatch(_crewLike(!crew?.like));
         });
       return response.data;
     } catch (error) {
@@ -266,7 +289,7 @@ const CrewDetail = () => {
                     <p>{crew?.mainActivityArea}</p>
                   </Text>
                   <Text>
-                    <p>주 활동 짐</p>
+                    <p>주 활동 클라이밍장</p>
                     <p>{crew?.mainActivityGym}</p>
                   </Text>
                 </TextDetail>
@@ -325,7 +348,7 @@ const CrewDetail = () => {
              
         </TabContainer>
       </Warp>
-      
+
       <Footer />
     </div>
   );

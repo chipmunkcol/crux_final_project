@@ -21,7 +21,7 @@ function UploadPhotoModal({ onClose }) {
   const [files, setFileList] = useState([]); // 파일 리스트
   const [fileUrl, setFileUrl] = useState([]); // 업로드 완료된 사진 링크들
   const [isUploading, setUploading] = useState(false); // 업로드 상태
-  console.log(fileUrl)
+  console.log(fileUrl);
   const storage = getStorage();
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
@@ -32,32 +32,32 @@ function UploadPhotoModal({ onClose }) {
   };
 
   // 이미지 업로드 & dispatch
-    useEffect(()=>{
-      uploadFB(files)
-  },[files])
+  useEffect(() => {
+    uploadFB(files);
+  }, [files]);
 
   const uploadFB = useCallback(async (files) => {
     const urls = await Promise.all(
-        files?.map((file) => {
-            const storageRef = ref(storage, `images/${file.name}`);
-            const task = uploadBytes(storageRef, file);
-            return getDownloadURL(storageRef);
-        })
-    )
+      files?.map((file) => {
+        const storageRef = ref(storage, `images/${file.name}`);
+        const task = uploadBytes(storageRef, file);
+        return getDownloadURL(storageRef);
+      })
+    );
     setFileUrl(urls);
-},[])
+  }, []);
 
   const onsubmit = () => {
     uploadPhoto();
-};
+  };
 
-  const uploadPhoto = async() => {
+  const uploadPhoto = async () => {
     const payload = {
       id: params,
       imgUrl: fileUrl,
     };
     dispatch(addCrewPhoto(payload));
-  }
+  };
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
@@ -254,17 +254,17 @@ const PreviewBox = styled.div`
 const ButtonBox = styled.div`
   width: 400px;
   height: 60px;
-  margin-top:40px;
+  margin-top: 40px;
   button {
     width: 100%;
     height: 60px;
-    font-size:20px;
-    font-weight:500;
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: -0.05em;
-    color:#262626;
+    color: #262626;
     border: none;
-    background-color:#FFB800
-}
+    background-color: #ffb800;
+  }
 `;
 
 const Xbtn = styled.button`

@@ -9,6 +9,7 @@ import {
   getApplicationList,
   permitCrew,
   acceptCrew,
+  addCrew,
 } from "../../../Redux/modules/crewSlice";
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
@@ -22,6 +23,7 @@ function ApplicationListModal({ onClose }) {
 
   const applicationList = useSelector((state) => state.crews.crewApplication);
   const applicants = applicationList.data;
+  console.log(applicants);
 
   //크루 가입 승인
   async function permitCrew(memberId) {
@@ -72,6 +74,13 @@ function ApplicationListModal({ onClose }) {
                       <button
                         onClick={() => {
                           permitCrew(applicant.id);
+                          const payload = {
+                            id: applicant.id,
+                            nickname: applicant.nickname,
+                            imgUrl: applicant.imgUrl,
+                            content: applicant.content,
+                          };
+                          dispatch(addCrew(payload));
                           dispatch(acceptCrew(applicant.id));
                         }}
                       >

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getChatRoom } from "../../Redux/modules/chatSlice";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import ChatRoom from "./ChatRoom";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
+import useOutSideClick from "../../Shared/hooks/useOutSideClick";
 
-function ChatList() {
+function ChatList({ onClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,14 +40,18 @@ function ChatList() {
 
   //채팅방 목록 필터할 것,,
 
+  //모달 바깎 클릭시 close
+  const modalRef = useRef(null);
+  useOutSideClick(modalRef, onClose);
+
   return (
-    <div style={{ padding: "10px" }}>
-      <ChatWarp>
+    <Background>
+      <ChatWarp ref={modalRef}>
         {isVisible ? (
           <>
             <Title>
               <h3>크루리스트</h3>
-              <ChatXbtn />
+              <ChatXbtn onClick={onClose} style={{ cursor: "pointer" }} />
             </Title>
             <List>
               {chatRoomList?.map((room) => (
@@ -89,11 +94,24 @@ function ChatList() {
           />
         )}
       </ChatWarp>
-    </div>
+    </Background>
   );
 }
 
 export default ChatList;
+
+const Background = styled.div`
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  padding-top: 380px;
+  padding-left: 900px;
+  z-index: 99999;
+`;
 
 const ChatWarp = styled.div`
   width: 430px;
@@ -102,6 +120,7 @@ const ChatWarp = styled.div`
   border-radius: 15px;
   background-color: #262626;
   padding: 40px 25px 47px 25px;
+  z-index: 9999;
 `;
 
 const Title = styled.div`
