@@ -7,7 +7,7 @@ import { signup } from "../../Redux/modules/userSlice";
 import RegisterValidation from "../Register/registerValidation";
 import useOutSideClick from "../../Shared/hooks/useOutSideClick";
 
-function CreateCrew({ onClose }) {
+function CreateCrew({ onClose, setLoginVisible }) {
   const dispatch = useDispatch();
 
   //useForm 관련
@@ -21,13 +21,16 @@ function CreateCrew({ onClose }) {
 
   const onSubmit = (data) => {
     console.log(data);
-    // const payload = {
-    //   email: data.email,
-    //   nickname: data.nickname,
-    //   password: data.password,
-    //   content: data.content,
-    // };
-    // dispatch(signup(payload));
+    const payload = {
+      email: data.email,
+      nickname: data.nickname,
+      password: data.password,
+      content: data.content,
+    };
+    dispatch(signup(payload));
+    window.alert("회원가입 성공");
+    onClose();
+    setLoginVisible(true);
   };
 
   //모달 스크롤 방지
@@ -176,6 +179,7 @@ function CreateCrew({ onClose }) {
             <div>
               <input
                 placeholder="비밀번호(영문 대소문자, 숫자, 특수문자 포함)"
+                type="password"
                 {...register("password")}
               />
               <p>{errors.password?.message}</p>
@@ -183,6 +187,7 @@ function CreateCrew({ onClose }) {
             <div>
               <input
                 placeholder="비밀번호 확인"
+                type="password"
                 {...register("passwordConfirm")}
               />
               <p>{errors.passwordConfirm?.message}</p>
@@ -212,7 +217,9 @@ function CreateCrew({ onClose }) {
             />
           </InputBox>
           <SummitButton>
-            <button type="submit">완료</button>
+            <button type="submit">
+              완료
+            </button>
           </SummitButton>
         </Modal>
       )}

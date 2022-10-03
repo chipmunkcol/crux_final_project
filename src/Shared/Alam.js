@@ -7,13 +7,10 @@ import { __getAlam, _readAlam, _deleteAlam, _deleteAlams, _minusAlam } from "../
 import axios from "axios";
 
 
-const Alam = ({setShowAlam, NreadAlams}) => {
+const Alam = ({setShowAlam, alams, NreadAlams}) => {
 
 const BASE_URL = "https://sparta-tim.shop";
 // const BASE_URL = 'https://01192mg.shop'
-
-const {isLoading, error, alams} = useSelector((state) => state.alams)
-console.log(alams)
 
 const navigate = useNavigate()
 const dispatch = useDispatch()
@@ -79,10 +76,6 @@ const deleteAlams = async () => {
     }) 
 }
 
-useEffect(()=>{
-  dispatch(__getAlam())
-},[])
-
 
     return (
         <ModalPage onClick={closeModal}>
@@ -90,7 +83,6 @@ useEffect(()=>{
             <AlamBox onClick={(e)=>e.stopPropagation()}>
             
               {
-                isLoading ? <Loading /> :
                 alams?.data.length === 0 ? 
                     (<div style={{height:'46rem'}}>
                         <div style={{padding:'3rem 0 0 0', textAlign:'center', fontSize:'1.4rem'}}>아직 알람이 없습니다</div>

@@ -52,7 +52,7 @@ function CrewMember() {
           <IntroContent key={member.id}>
             <HostDetailBox>
               <img
-                src={member.imgUrl === null ? 사용자기본이미지 : member.imgUrl}
+                src={member.imgUrl === "" ? 사용자기본이미지 : member.imgUrl}
                 style={{ cursor: "pointer" }}
                 onClick={() => {
                   onClickImg(member.id);

@@ -25,9 +25,12 @@ const CrewDetail = () => {
     dispatch(getCrewDetail(params));
   }, []);
 
-  const crewDetail = useSelector((state) => state?.crews?.crewDetail);
+  const {isLoading, crewDetail} = useSelector((state) => state?.crews);
+  console.log(isLoading, crewDetail)
+
+  // const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  console.log(crew);
+  // console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -307,17 +310,22 @@ const CrewDetail = () => {
           </TabButton>
         </ThumbnailContainer>
         <TabContainer>
-          {introVisible && (
-            <CrewIntro
-              img={crew?.memberList[0]?.imgUrl}
-              content={crew?.content}
-              adminNickname={crew?.memberList[0]?.nickname}
-              adminContent={crew?.memberList[0]?.content}
-            />
-          )}
-          {memberVisible && <CrewMember members={[crew?.memberList]} />}
-          {noticeVisible && <CrewNotice notice={crew?.noticeList} />}
-          {photosVisible && <CrewPhotos />}
+
+          { isLoading ? <Loading /> : <>
+              {introVisible && (
+                <CrewIntro
+                  img={crew?.memberList[0]?.imgUrl}
+                  content={crew?.content}
+                  adminNickname={crew?.memberList[0]?.nickname}
+                  adminContent={crew?.memberList[0]?.content}
+                />
+              )}
+              {memberVisible && <CrewMember members={[crew?.memberList]} />}
+              {noticeVisible && <CrewNotice notice={crew?.noticeList} />}
+              {photosVisible && <CrewPhotos />}
+              </>
+          }
+
         </TabContainer>
       </Warp>
       

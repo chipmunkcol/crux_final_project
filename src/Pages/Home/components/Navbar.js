@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import 알람종 from "../../../Image/알람종.png"
+import 사용자이미지 from "../../../Image/사용자기본이미지.jpg"
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import ModalPortal from "../../../Pages/Login/MordalPortal";
@@ -8,7 +9,7 @@ import Legister from "../../..//Pages/Register/Register";
 import { useSelector, useDispatch } from "react-redux";
 import Alam from "../../../Shared/Alam";
 import { EventSourcePolyfill, NativeEventSource } from 'event-source-polyfill';
-import { _addAlam, __NreadAlam, _plusAlam } from "../../../Redux/modules/notification";
+import { _addAlam, __NreadAlam, _plusAlam, __getAlam } from "../../../Redux/modules/notification";
 import { __getMyPage } from "../../../Redux/modules/mypageSlice";
 import NavbarDropdown from "../../../Shared/NavbarDropdown";
 
@@ -41,9 +42,17 @@ const Navbar = () => {
 
 
 //알람 모달 입니다~
-  const [showAlam, setShowAlam] = useState(false)
-  const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
-  console.log(NreadAlams.data, error2)
+const [showAlam, setShowAlam] = useState(false)
+const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
+console.log(NreadAlams.data, error2)
+
+const { alams } = useSelector((state) => state.alams)
+console.log(alams)
+
+useEffect(()=>{
+  dispatch(__NreadAlam())
+  dispatch(__getAlam())
+},[dispatch])
 
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
@@ -78,11 +87,9 @@ useEffect(()=>{
   return () => {
     sse.close();
   }
-}, [userToken])
+}, [])
 
-useEffect(()=>{
-  dispatch(__NreadAlam())
-},[dispatch])
+
 
 // 로그인 시 본인 사진 가져오기
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
@@ -102,7 +109,7 @@ useEffect(()=>{
     <NavContainer>
       <ModalPortal>
         {loginVisible && <LoginModal onClose={handleLoginModal} />}
-        {registerVisible && <Legister onClose={handleRegisterModal} />}
+        {registerVisible && <Legister onClose={handleRegisterModal} setLoginVisible={setLoginVisible}/>}
       </ModalPortal>
       <NavContent>
 
@@ -130,10 +137,10 @@ useEffect(()=>{
                 onClick={()=>{setShowAlam(!showAlam)}}/>
               <NreadAlam>{NreadAlams.data.count}</NreadAlam>
               
-              { showAlam ? <Alam setShowAlam={setShowAlam} NreadAlams={NreadAlams}/> : null }
+              { showAlam ? <Alam setShowAlam={setShowAlam} alams={alams} NreadAlams={NreadAlams}/> : null }
               
               {/* 프로필 이미지 드롭다운 */}
-              <ProfileImg src={profileImg} 
+              <ProfileImg src={profileImg ? profileImg : 사용자이미지} 
                 onClick={()=>{setShowMypage(!showMypage)}}/>
               
               { showMypage ? <NavbarDropdown setShowMypage={setShowMypage} userId={userId} removeToken={removeToken}/> : null }
@@ -250,6 +257,7 @@ padding: 2px 0 0 6.5px;
 
 const ProfileImg = styled.img`
 width: 5rem;
+border-radius: 60%;
 position: absolute;
 margin: -6px 0 0 49.3rem;
 `

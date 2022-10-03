@@ -13,7 +13,7 @@ import axios from "axios";
 
 
 const Mypage = () => {
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
 const userId = window.localStorage.getItem("userId")
 
 const dispatch = useDispatch()

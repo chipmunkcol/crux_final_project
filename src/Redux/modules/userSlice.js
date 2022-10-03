@@ -24,14 +24,14 @@ export const signup = createAsyncThunk(
         {
           email: payload.email,
           nickname: payload.nickname,
-          passward: payload.password,
+          password: payload.password,
           content: payload.content,
           imgUrl:
             "https://firebasestorage.googleapis.com/v0/b/fir-ec6e2.appspot.com/o/images%2Fundefined?alt=media&token=ba20ef8c-11d5-44af-8838-8b6a1201f3ce",
         }
       );
-      window.alert("회원가입 성공");
-      window.location.replace("/");
+      // window.alert("회원가입 성공");
+      // window.location.replace("/");
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);

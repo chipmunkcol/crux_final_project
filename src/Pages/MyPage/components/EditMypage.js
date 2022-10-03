@@ -14,8 +14,8 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
 const EditMypage = ({ myPage, setEditMypage }) => {
-  // const BASE_URL = "http://sparta-tim.shop";
-  const BASE_URL = "http://54.180.31.108";
+  const BASE_URL = "https://sparta-tim.shop";
+  // const BASE_URL = "http://54.180.31.108";
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
