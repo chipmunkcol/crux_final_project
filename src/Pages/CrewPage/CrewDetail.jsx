@@ -311,7 +311,6 @@ const CrewDetail = () => {
         </ThumbnailContainer>
         <TabContainer>
 
-          { isLoading ? <Loading /> : <>
               {introVisible && (
                 <CrewIntro
                   img={crew?.memberList[0]?.imgUrl}
@@ -323,9 +322,7 @@ const CrewDetail = () => {
               {memberVisible && <CrewMember members={[crew?.memberList]} />}
               {noticeVisible && <CrewNotice notice={crew?.noticeList} />}
               {photosVisible && <CrewPhotos />}
-              </>
-          }
-
+             
         </TabContainer>
       </Warp>
       
