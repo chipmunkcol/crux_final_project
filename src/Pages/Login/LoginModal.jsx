@@ -57,7 +57,9 @@ function LoginModal({ onClose }) {
 
   return (
     <Background>
-      <Modal ref={modalRef} onSubmit={handleSubmit(onSubmit)}>
+      <Modal 
+        // ref={modalRef} 
+        onSubmit={handleSubmit(onSubmit)}>
         <Title>로그인</Title>
         <Xbtn onClick={onClose}></Xbtn>
         <InputBox emailBorder={emailBorder} passwordBorder={passwordBorder}>

@@ -21,8 +21,8 @@ const EditMypage = ({ myPage, setEditMypage }) => {
   const dispatch = useDispatch();
   const params = useParams().memberId;
 
-  const [editContent, setEditContent] = useState("");
-  const [editNickname, setEditNickname] = useState("");
+  const [editContent, setEditContent] = useState(myPage?.content);
+  const [editNickname, setEditNickname] = useState(myPage?.nickname);
 
   const [fileUrl, setFileUrl] = useState(
     myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지
@@ -92,7 +92,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
                                 </label>
 
 
-                    <ProfileNickname placeholder={myPage?.nickname} onChange={(e)=>{setEditNickname(e.target.value)}}/>
+                    <ProfileNickname value={editNickname} onChange={(e)=>{setEditNickname(e.target.value)}}/>
                     
                     <div style={{display:'flex'}}>
                         <ButtonBox>
@@ -133,7 +133,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
           </div>
 
           <ProfileContent
-            placeholder={myPage?.content}
+            value={editContent}
             onChange={(e) => {
               setEditContent(e.target.value);
             }}

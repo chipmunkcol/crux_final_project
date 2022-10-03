@@ -87,7 +87,9 @@ useEffect(()=>{
     }
   }
   return () => {
-    sse.close();
+    if (userToken) {
+      sse.close();
+    }
   }
 }, [])
 
