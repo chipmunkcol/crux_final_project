@@ -61,7 +61,7 @@ function UploadPhotoModal({ onClose }) {
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
-  console.log(imgPreview);
+  // console.log(imgPreview);
 
   // 이미지 상대경로 저장
   const handleAddImages = (e) => {

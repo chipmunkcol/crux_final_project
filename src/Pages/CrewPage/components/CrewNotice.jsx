@@ -16,7 +16,7 @@ function CrewNotice() {
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const noticeList = crewDetail?.data?.noticeList;
-  console.log(noticeList);
+  // console.log(noticeList);
 
   //데이터 변경 감지
 

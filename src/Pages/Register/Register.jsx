@@ -41,8 +41,8 @@ function CreateCrew({ onClose, setLoginVisible }) {
   }, []);
 
   //모달 바깎 클릭시 close
-  const modalRef = useRef(null);
-  useOutSideClick(modalRef, onClose);
+  // const modalRef = useRef(null);
+  // useOutSideClick(modalRef, onClose);
 
   //form 내용 변경용
   const [isFirstForm, setIsFirstForm] = useState(true);
@@ -161,7 +161,7 @@ function CreateCrew({ onClose, setLoginVisible }) {
         </Modal1>
       )}
       {isSecondForm && (
-        <Modal ref={modalRef}>
+        <Modal>
           <Xbtn onClick={onClose}></Xbtn>
           <Title>회원가입</Title>
           <InputBox>
@@ -207,7 +207,7 @@ function CreateCrew({ onClose, setLoginVisible }) {
         </Modal>
       )}
       {isThirdForm && (
-        <Modal ref={modalRef} onSubmit={handleSubmit(onSubmit)}>
+        <Modal onSubmit={handleSubmit(onSubmit)}>
           <Xbtn onClick={onClose}></Xbtn>
           <Title>회원가입</Title>
           <InputBox>

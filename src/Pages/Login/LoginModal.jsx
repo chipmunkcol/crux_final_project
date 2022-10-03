@@ -19,15 +19,9 @@ function LoginModal({ onClose }) {
     formState: { errors, isSubmitting },
   } = useForm({ defaultValues: { email: "", password: "" } });
 
-  //서버 에러 메시지 띄우는 용
-  const errorMessage = useSelector((state) => state?.login?.error?.message);
-
   //form submit
   const onSubmit = (data) => {
     dispatch(login(data));
-    if (errorMessage !== undefined) {
-      window.alert(errorMessage);
-    }
   };
 
   //오류 발생시 보더 색상 변경
@@ -50,7 +44,7 @@ function LoginModal({ onClose }) {
 
   //카카오 로그인
   const API = `6a2435f02f897dc1c87f7cca3eb2bfbb`;
-  const URI = `http://localhost:3000/kakaologin`;
+  const URI = `https://youmadeit.shop/kakaologin`;
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${API}&redirect_uri=${URI}&response_type=code`;
 
   const handleKaKaoLogin = () => {

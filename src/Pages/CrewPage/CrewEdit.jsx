@@ -15,7 +15,7 @@ const CrewEdit = () => {
   const dispatch = useDispatch();
   const { state } = useLocation();
   const { id, name, content, imgURL, keywords, mainGym, mainArea } = state; //받아온 값
-  console.log(mainArea)
+
   const area = mainArea?.split(" ");
 
   const {
@@ -26,7 +26,7 @@ const CrewEdit = () => {
   } = useForm({ defaultValues: { name: name, content: content } });
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const payload = {
       id: id,
       name: data.name,
@@ -85,7 +85,7 @@ const CrewEdit = () => {
 
     //upload_file.ref로 파일 url가져옴
     const file_url = await getDownloadURL(upload_file.ref);
-    console.log(file_url);
+    // console.log(file_url);
     setFileUrl(file_url);
   };
 

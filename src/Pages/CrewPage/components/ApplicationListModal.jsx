@@ -23,7 +23,7 @@ function ApplicationListModal({ onClose }) {
 
   const applicationList = useSelector((state) => state.crews.crewApplication);
   const applicants = applicationList.data;
-  console.log(applicants);
+  // console.log(applicants);
 
   //크루 가입 승인
   async function permitCrew(memberId) {

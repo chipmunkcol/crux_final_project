@@ -20,7 +20,7 @@ function CrewPhotos() {
 
   const crewPhotos = useSelector((state) => state?.crews?.crewPhotos?.data);
   const Photos = crewPhotos;
-  console.log(Photos)
+  // console.log(Photos)
 
   // const userData = useSelector((state) => state);
   // console.log(userData);
@@ -58,11 +58,20 @@ function CrewPhotos() {
       </ImgBox>
       {crewPhotos &&
         crewPhotos.map((photo) => (
-          <ImgBox key={photo.postId} props={photo.imgList[0]?.imgUrl}
-                  onClick={() => {handleImgMadalClick(photo.imgList, photo);}}>
+          <ImgBox
+            key={photo.postId}
+            props={photo.imgList[0]?.imgUrl}
+            onClick={() => {
+              handleImgMadalClick(photo.imgList, photo);
+            }}
+          >
             <OverLay>
-                <div style={{margin:'-23.5rem 0 0rem -14rem'}}>{photo.createdAt.substr(0,10)}</div>
-                <div style={{position:'absolute', fontSize:'3rem'}}>+{photo.imgList.length}</div>
+              <div style={{ margin: "-23.5rem 0 0rem -14rem" }}>
+                {photo.createdAt.substr(0, 10)}
+              </div>
+              <div style={{ position: "absolute", fontSize: "3rem" }}>
+                +{photo.imgList.length}
+              </div>
             </OverLay>
           </ImgBox>
         ))}
@@ -87,10 +96,10 @@ const Container = styled.div`
 const ImgBox = styled.div`
   width: 280px;
   height: 280px;
-  background: url(${props => props.props});
+  background: url(${(props) => props.props});
   background-position: center;
   background-size: cover;
-  background-color:rgba(0, 0, 0, 1);
+  background-color: rgba(0, 0, 0, 1);
   :hover {
     transform: scale(1.05);
     transition: 0.5s;
@@ -98,21 +107,21 @@ const ImgBox = styled.div`
 `;
 
 const OverLay = styled.div`
-    position: inherit;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    color: #ffffff;
-    width: 280px;
-    height: 280px;
-    opacity: 0; 
-    :hover {
-        background-color:rgba(0, 0, 0, 0.5);
-        opacity: 1;
+  position: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #ffffff;
+  width: 280px;
+  height: 280px;
+  opacity: 0;
+  :hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
   }
-`
+`;
 // const ImgText = styled.div`
 //   width: 300px;
 //   height: 300px;
