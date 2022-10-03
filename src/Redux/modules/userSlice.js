@@ -18,6 +18,7 @@ const initialState = {
 export const signup = createAsyncThunk(
   "/members/signup",
   async (payload, thunkAPI) => {
+    console.log(payload);
     try {
       const response = await axios.post(
         `${BASE_URLM}/members/signup`,
@@ -115,7 +116,7 @@ export const kakaoLogin = createAsyncThunk(
             "access_token",
             response.headers.authorization
           );
-          window.localStorage.setItem("userId", response.data.data.id);
+          window.localStorage.setItem("userId", response.data.id);
         });
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(response.data);

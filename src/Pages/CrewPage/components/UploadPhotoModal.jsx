@@ -17,6 +17,7 @@ function UploadPhotoModal({ onClose }) {
   //기본 세팅
   const params = useParams().crewId;
   const dispatch = useDispatch();
+  const photomodalRef = useRef();
 
   const [files, setFileList] = useState([]); // 파일 리스트
   const [fileUrl, setFileUrl] = useState([]); // 업로드 완료된 사진 링크들
@@ -57,6 +58,7 @@ function UploadPhotoModal({ onClose }) {
       imgUrl: fileUrl,
     };
     dispatch(addCrewPhoto(payload));
+    onClose(modalRef);
   };
 
   //이미지 미리보기
@@ -141,7 +143,9 @@ function UploadPhotoModal({ onClose }) {
           ))}
         </PreviewBox>
         <ButtonBox>
-          <button type="submit">사진 등록</button>
+          <button type="submit" ref={photomodalRef}>
+            사진 등록
+          </button>
         </ButtonBox>
       </Modal>
     </Background>
