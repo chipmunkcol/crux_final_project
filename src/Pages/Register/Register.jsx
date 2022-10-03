@@ -20,7 +20,7 @@ function CreateCrew({ onClose }) {
   } = useForm({ resolver: yupResolver(schema), mode: "onBlur" });
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     // const payload = {
     //   email: data.email,
     //   nickname: data.nickname,
@@ -38,8 +38,8 @@ function CreateCrew({ onClose }) {
   }, []);
 
   //모달 바깎 클릭시 close
-  const modalRef = useRef(null);
-  useOutSideClick(modalRef, onClose);
+  // const modalRef = useRef(null);
+  // useOutSideClick(modalRef, onClose);
 
   //form 내용 변경용
   const [isFirstForm, setIsFirstForm] = useState(true);
@@ -158,7 +158,7 @@ function CreateCrew({ onClose }) {
         </Modal1>
       )}
       {isSecondForm && (
-        <Modal ref={modalRef}>
+        <Modal>
           <Xbtn onClick={onClose}></Xbtn>
           <Title>회원가입</Title>
           <InputBox>
@@ -176,6 +176,7 @@ function CreateCrew({ onClose }) {
             <div>
               <input
                 placeholder="비밀번호(영문 대소문자, 숫자, 특수문자 포함)"
+                type="password"
                 {...register("password")}
               />
               <p>{errors.password?.message}</p>
@@ -183,6 +184,7 @@ function CreateCrew({ onClose }) {
             <div>
               <input
                 placeholder="비밀번호 확인"
+                type="password"
                 {...register("passwordConfirm")}
               />
               <p>{errors.passwordConfirm?.message}</p>
@@ -202,7 +204,7 @@ function CreateCrew({ onClose }) {
         </Modal>
       )}
       {isThirdForm && (
-        <Modal ref={modalRef} onSubmit={handleSubmit(onSubmit)}>
+        <Modal onSubmit={handleSubmit(onSubmit)}>
           <Xbtn onClick={onClose}></Xbtn>
           <Title>회원가입</Title>
           <InputBox>

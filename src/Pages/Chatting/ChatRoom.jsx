@@ -11,6 +11,7 @@ import { ReactComponent as ChatBackbtn } from "../../Image/chatback.svg";
 import { ReactComponent as ChatSendbtn } from "../../Image/chatsend.svg";
 import Me from "./components/Me";
 import Friends from "./components/Friends";
+import _ from "lodash";
 
 function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   const {
@@ -31,10 +32,19 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   //   렌더되면 소켓 연결실행
   useEffect(() => {
     onConneted();
-    return () => {
-      onConneted();
-    };
   }, []);
+
+  // useEffect(() => {
+  //   onConneted();
+
+  //   window.addEventListener("beforeunload", (e) => {
+  //     client.disconnect(() => client.unsubscribe("sub-0"), headers);
+  //   }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄
+
+  //   return () => {
+  //     client.disconnect(() => client.unsubscribe("sub-0"), headers);
+  //   };
+  // }, []);
 
   //데이터 불러오기
   useEffect(() => {
@@ -45,14 +55,14 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   console.log(chatList);
 
   //   엔터 누르면 데이터 전송
-  const handleEnterPress = (e) => {
-    if (message.trim() === "") {
-      e.preventDefault();
-    }
-    if (e.keyCode === 13 && e.shiftKey == false) {
-      sendMessage();
-    }
-  };
+  // const handleEnterPress = (e) => {
+  //   if (message.trim() === "") {
+  //     e.preventDefault();
+  //   }
+  //   if (e.keyCode === 13 && e.shiftKey == false) {
+  //     sendMessage();
+  //   }
+  // };
 
   //   연결&구독
   function onConneted() {
@@ -87,16 +97,37 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   };
 
   //
-  const messageEndRef = useRef();
 
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" }, 2000);
+      scrollRef.current.scrollIntoView({ behavior: "smooth" }, 2000);
     });
     return () => {
       clearTimeout(setTimeoutId);
     };
   }, [chatList?.message?.length]);
+
+  const boxRef = useRef(); // 채팅 박스 ref
+  const scrollRef = useRef(); // 채팅 박스 맨 아래를 가르키는 ref
+
+  const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
+
+  //스크롤 이벤트 함수--------------------------------------------------
+  const scrollEvent = _.debounce(() => {
+    const scrollTop = boxRef.current.scrollTop; // 스크롤 위치
+    const clientHeight = boxRef.current.clientHeight; // 요소의 높이
+    const scrollHeight = boxRef.current.scrollHeight; // 스크롤의 높이
+
+    // 스크롤이 맨 아래에 있는지 검사
+    const scrollState = scrollTop + clientHeight >= scrollHeight;
+    setScrollState(scrollState ? true : false);
+  }, 100);
+
+  //메세지 로딩 완료 및 신규 메세지 수신시 스크롤-------------------------
+  useEffect(() => {
+    scrollState && (boxRef.current.scrollTop = boxRef.current.scrollHeight);
+    // 신규 메세지 수신시 스크롤
+  }, [chatList]);
 
   return (
     <div>
@@ -106,7 +137,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
           <h3>{roomName}</h3>
           {/* <p>22-09-27 07:19 AM</p> */}
         </div>
-        <ChatXbtn style={{ cursor: "pointer" }} />
+        <ChatXbtn style={{ cursor: "pointer" }} onClick={onClose} />
       </Top>
       <ChatWarp>
         <CrewImgBox>
@@ -118,19 +149,24 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
             {/* <p>22-09-27 07:19 AM</p> */}
           </div>
         </CrewImgBox>
-        <ChatContainer>
+        <ChatContainer ref={boxRef}>
           {chatList &&
-            chatList.map((chat, index) => {
+            chatList.map((chat, i) => {
               if (chat.sender === nickname) {
                 return (
-                  <div key={index}>
-                    <Me content={chat.message} time={chat.createdAt} />
+                  <div key={i} style={{ marginTop: "auto" }}>
+                    <Me
+                      content={chat.message}
+                      time={chat.createdAt}
+                      ref={boxRef}
+                    />
                   </div>
                 );
               } else {
                 return (
-                  <div key={index}>
+                  <div key={i}>
                     <Friends
+                      ref={boxRef}
                       content={chat.message}
                       nickname={chat.sender}
                       imgUrl={chat.imgUrl}
@@ -140,7 +176,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
                 );
               }
             })}
-          <div ref={messageEndRef}></div>
+          <div ref={scrollRef}></div>
         </ChatContainer>
       </ChatWarp>
       <ChatInput>
@@ -148,7 +184,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
           placeholder="메시지를 입력해주세요."
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleEnterPress}
+          // onKeyDown={handleEnterPress}
         ></input>
         <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
       </ChatInput>

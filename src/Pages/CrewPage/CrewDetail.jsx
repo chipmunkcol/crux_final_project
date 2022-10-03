@@ -31,7 +31,7 @@ const CrewDetail = () => {
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  console.log(crew);
+  // console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -39,7 +39,7 @@ const CrewDetail = () => {
 
   //크루 가입자 확인
   const memberList = crew?.memberList;
-  console.log(memberList);
+  // console.log(memberList);
   const checkmember = memberList?.findIndex((x) => x?.id === Number(userId));
 
   //크루 삭제
@@ -53,7 +53,7 @@ const CrewDetail = () => {
             },
           })
           .then((response) => {
-            console.log(response);
+            // console.log(response);
           });
         window.alert("삭제 완료");
         window.location.replace("/crews");
@@ -82,28 +82,6 @@ const CrewDetail = () => {
       return;
     }
   };
-
-  //크루 공지사항 생성
-  async function createCrewNotice(payload) {
-    try {
-      const response = await axios.post(
-        `https://sparta-tim.shop/notices/${payload.id}`,
-        {
-          content: payload.content,
-          date: payload.date,
-          place: payload.place,
-        },
-        {
-          headers: {
-            Authorization: window.localStorage.getItem("access_token"),
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      return error.data;
-    }
-  }
 
   //크루 가입 신청
   async function joinCrews() {
@@ -135,7 +113,7 @@ const CrewDetail = () => {
             },
           })
           .then((response) => {
-            console.log(response);
+            // console.log(response);
           });
         window.alert("탈퇴 완료");
         window.location.reload();
@@ -156,7 +134,7 @@ const CrewDetail = () => {
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.alert("좋아요 완료");
           dispatch(_crewLike(!crew?.like));
         });
@@ -176,7 +154,7 @@ const CrewDetail = () => {
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.alert("좋아요 취소");
           dispatch(_crewLike(!crew?.like));
         });

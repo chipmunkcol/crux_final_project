@@ -17,9 +17,9 @@ const RegisterValidation = () => {
             async function verifyEmail(value) {
               try {
                 const response = await axios.get(
-                  `http://sparta-tim.shop/members/email-check?email=${value}`
+                  `https://sparta-tim.shop/members/email-check?email=${value}`
                 );
-                console.log(response.data);
+                // console.log(response.data);
                 return response.data.success;
               } catch (error) {
                 return false;
@@ -40,9 +40,9 @@ const RegisterValidation = () => {
             async function verifyNickname(value) {
               try {
                 const response = await axios.get(
-                  `http://sparta-tim.shop/members/nickname-check?nickname=${value}`
+                  `https://sparta-tim.shop/members/nickname-check?nickname=${value}`
                 );
-                console.log(response);
+                // console.log(response);
                 return response.data.success;
               } catch (error) {
                 return false;

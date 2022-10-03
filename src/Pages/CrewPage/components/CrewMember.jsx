@@ -34,7 +34,7 @@ function CrewMember() {
         }
       );
       dispatch(expelCrew(payload.memberId));
-      return console.log(response.data);
+      // return console.log(response.data);
     } catch (error) {
       return error.data;
     }

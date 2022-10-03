@@ -23,7 +23,7 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
       place: addressDetail,
       content: data.content,
     };
-    console.log(payload);
+    // console.log(payload);
     // dispatch(editCrewNotice(payload));
     dispatch(editNotice(payload));
   };

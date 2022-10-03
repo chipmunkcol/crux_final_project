@@ -333,8 +333,9 @@ export const crewSlice = createSlice({
       );
     },
     editNotice(state, action) {
-      console.log(state.crew.crewDetail);
-      const existingNotice = state.crew.crewDetail.data.noticeList.find(
+      console.log(action.payload);
+      console.log(state.crewDetail.data.noticeList);
+      const existingNotice = state.crewDetail.data.noticeList.find(
         (notice) => notice.noticeId === action.payload.id
       );
       if (existingNotice) {

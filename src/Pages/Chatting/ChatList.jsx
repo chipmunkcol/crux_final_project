@@ -41,12 +41,12 @@ function ChatList({ onClose }) {
   //채팅방 목록 필터할 것,,
 
   //모달 바깎 클릭시 close
-  const modalRef = useRef(null);
-  useOutSideClick(modalRef, onClose);
+  // const modalRef = useRef(null);
+  // useOutSideClick(modalRef, onClose);
 
   return (
     <Background>
-      <ChatWarp ref={modalRef}>
+      <ChatWarp>
         {isVisible ? (
           <>
             <Title>

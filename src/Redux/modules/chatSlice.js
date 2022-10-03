@@ -49,8 +49,7 @@ export const ChatSlice = createSlice({
   initialState,
   reducers: {
     addMessage: (state, { payload }) => {
-      console.log({ payload });
-      state.chat.data = [payload, ...state.chat.data];
+      state.chat.data.push(payload);
     },
   },
   extraReducers: {
