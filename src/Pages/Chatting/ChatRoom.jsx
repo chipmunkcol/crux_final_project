@@ -35,8 +35,6 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   }, []);
 
   // useEffect(() => {
-  //   onConneted();
-
   //   window.addEventListener("beforeunload", (e) => {
   //     client.disconnect(() => client.unsubscribe("sub-0"), headers);
   //   }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄

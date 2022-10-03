@@ -18,18 +18,16 @@ const initialState = {
 export const signup = createAsyncThunk(
   "/members/signup",
   async (payload, thunkAPI) => {
+    console.log(payload);
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/members/signup`,
-        {
-          email: payload.email,
-          nickname: payload.nickname,
-          passward: payload.password,
-          content: payload.content,
-          imgUrl:
-            "https://firebasestorage.googleapis.com/v0/b/fir-ec6e2.appspot.com/o/images%2Fundefined?alt=media&token=ba20ef8c-11d5-44af-8838-8b6a1201f3ce",
-        }
-      );
+      const response = await axios.post(`${BASE_URLM}/members/signup`, {
+        email: payload.email,
+        nickname: payload.nickname,
+        password: payload.password,
+        content: payload.content,
+        imgUrl:
+          "https://firebasestorage.googleapis.com/v0/b/fir-ec6e2.appspot.com/o/images%2Fundefined?alt=media&token=ba20ef8c-11d5-44af-8838-8b6a1201f3ce",
+      });
       window.alert("회원가입 성공");
       window.location.replace("/");
       return response.data;

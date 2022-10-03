@@ -16,6 +16,8 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
   const dispatch = useDispatch();
   const params = useParams().crewId;
 
+  const modalRef = useRef();
+
   const onSubmit = (data) => {
     const payload = {
       id: id,
@@ -23,9 +25,9 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
       place: addressDetail,
       content: data.content,
     };
-    // console.log(payload);
-    // dispatch(editCrewNotice(payload));
+    dispatch(editCrewNotice(payload));
     dispatch(editNotice(payload));
+    onClose(modalRef);
   };
 
   //일시 설정 저장
@@ -121,7 +123,9 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
           </Intro>
         </ImgBox>
         <ButtonBox>
-          <button type="submit">수정</button>
+          <button type="submit" ref={modalRef}>
+            수정
+          </button>
           <button onClick={onClose}>취소</button>
         </ButtonBox>
       </Modal>

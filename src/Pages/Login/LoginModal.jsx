@@ -44,7 +44,7 @@ function LoginModal({ onClose }) {
 
   //카카오 로그인
   const API = `6a2435f02f897dc1c87f7cca3eb2bfbb`;
-  const URI = `https://youmadeit.shop//kakaologin`;
+  const URI = `https://youmadeit.shop/kakaologin`;
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${API}&redirect_uri=${URI}&response_type=code`;
 
   const handleKaKaoLogin = () => {

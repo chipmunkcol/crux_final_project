@@ -20,14 +20,14 @@ function CreateCrew({ onClose }) {
   } = useForm({ resolver: yupResolver(schema), mode: "onBlur" });
 
   const onSubmit = (data) => {
-    // console.log(data);
-    // const payload = {
-    //   email: data.email,
-    //   nickname: data.nickname,
-    //   password: data.password,
-    //   content: data.content,
-    // };
-    // dispatch(signup(payload));
+    console.log(data);
+    const payload = {
+      email: data.email,
+      nickname: data.nickname,
+      password: data.password,
+      content: data.content,
+    };
+    dispatch(signup(payload));
   };
 
   //모달 스크롤 방지

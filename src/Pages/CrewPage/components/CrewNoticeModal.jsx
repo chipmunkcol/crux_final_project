@@ -21,6 +21,7 @@ function CrewNoticeModal({ onClose }) {
   const dispatch = useDispatch();
   const params = useParams().crewId;
   const userId = window?.localStorage?.getItem("userId");
+  const modalRef = useRef();
 
   const onSubmit = (data) => {
     const payload = {
@@ -32,6 +33,7 @@ function CrewNoticeModal({ onClose }) {
     };
     createCrewNotice(payload);
     dispatch(addCrewNotice(payload));
+    onClose(modalRef);
   };
 
   //크루 공지사항 생성
@@ -162,7 +164,9 @@ function CrewNoticeModal({ onClose }) {
           </Intro>
         </ImgBox>
         <ButtonBox>
-          <button type="submit">등록</button>
+          <button type="submit" ref={modalRef}>
+            등록
+          </button>
           <button onClick={onClose}>취소</button>
         </ButtonBox>
       </Modal>

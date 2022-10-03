@@ -34,6 +34,7 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
           onClick={() => {
             dispatch(deleteCrewPhotos(id));
             dispatch(deleteCrewPhoto(id));
+            onClose(modalRef);
           }}
         >
           삭제
