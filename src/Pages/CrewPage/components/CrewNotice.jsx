@@ -17,6 +17,8 @@ function CrewNotice() {
   const noticeList = crewDetail?.data?.noticeList;
   console.log(noticeList);
 
+  //데이터 변경 감지
+
   //userId가져오기
   const userId = window?.localStorage?.getItem("userId");
   // console.log(userId);
@@ -33,7 +35,6 @@ function CrewNotice() {
             },
           }
         );
-        window.alert("삭제 완료");
         return response.data;
       } catch (error) {
         return error.data;
@@ -57,22 +58,29 @@ function CrewNotice() {
   return (
     <div>
       {editModal && (
-        <CrewNoticeEditModal onClose={handleModalClick} 
-        // id={editProps} 
+        <CrewNoticeEditModal
+          onClose={handleModalClick}
+          id={editid}
+          place={editplace}
+          content={editcontent}
+          date={editdate}
         />
       )}
       {noticeList
         ?.slice(0)
         ?.reverse()
-        ?.map((notice) => (
-          <Container key={notice.noticeId}>
+        ?.map((notice, index) => (
+          <Container key={index}>
             <IntroContent>
               {Number(userId) === notice.authorId ? (
                 <TextButton>
                   <span
                     onClick={() => {
                       handleModalClick();
-                      // setEditProps(notice.noticeId);
+                      setEditid(notice.noticeId);
+                      setEditplace(notice.place);
+                      setEditcontent(notice.content);
+                      setEditdate(notice.date);
                     }}
                   >
                     수정
@@ -100,7 +108,7 @@ function CrewNotice() {
                 <img src={notice.authorProfileImg}></img>
                 <div>
                   <h1>{notice.authorNickname}</h1>
-                  <p>{notice.authorStatus === "ADMIN" ? "크루장" : "크루원"}</p>
+                  {/* <p>{notice.authorStatus === "ADMIN" ? "크루장" : "크루원"}</p> */}
                 </div>
               </UserContent>
             </IntroContent>

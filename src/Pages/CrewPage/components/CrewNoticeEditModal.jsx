@@ -8,29 +8,24 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
-import { createCrewNotice } from "../../../Redux/modules/crewSlice";
+import { editCrewNotice, editNotice } from "../../../Redux/modules/crewSlice";
 
-function CrewNoticeEditModal({ onClose, id }) {
+function CrewNoticeEditModal({ onClose, id, place, content, date }) {
   const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
 
-  console.log(id);
-
   const onSubmit = (data) => {
     const payload = {
-      // id: id,
-      time: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
+      id: id,
+      date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
       place: addressDetail,
       content: data.content,
     };
-    //axios로 보내고
-    dispatch(createCrewNotice(payload), []);
-
-    //dispatch로 설정하고
-
-    //모달 닫기
+    console.log(payload);
+    // dispatch(editCrewNotice(payload));
+    dispatch(editNotice(payload));
   };
 
   //일시 설정 저장
@@ -41,7 +36,7 @@ function CrewNoticeEditModal({ onClose, id }) {
   const userMenu = useRef();
 
   //주소 저장
-  const [addressDetail, setAddressDetail] = useState(""); // 상세주소
+  const [addressDetail, setAddressDetail] = useState(place); // 상세주소
 
   const onChangeOpenPost = () => {
     setIsOpenPost(!isOpenPost);
@@ -100,7 +95,7 @@ function CrewNoticeEditModal({ onClose, id }) {
               showPopperArrow={false}
               minDate={new Date()}
               onChange={(date) => setStartDate(date)}
-              // defaultValue={date}
+              defaultValue={date}
             />
           </Time>
           <Place>
@@ -110,14 +105,14 @@ function CrewNoticeEditModal({ onClose, id }) {
               readOnly={true}
               onClick={onChangeOpenPost}
               placeholder="장소를 선택해주세요."
-              // defaultValue={place}
+              value={addressDetail}
             />
           </Place>
           <Intro>
             <h3>상세소개</h3>
             <textarea
               {...register("content", { required: true })}
-              // defaultValue={content}
+              defaultValue={content}
               maxLength="100"
               spellCheck="false"
               placeholder="주최하는 모임에 대한 소개를 100자 이내로 작성해주세요.

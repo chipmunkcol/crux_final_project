@@ -4,7 +4,10 @@ import useOutSideClick from "../../../Shared/hooks/useOutSideClick";
 import { useParams } from "react-router-dom";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { deleteCrewPhoto } from "../../../Redux/modules/crewSlice";
+import {
+  deleteCrewPhoto,
+  deleteCrewPhotos,
+} from "../../../Redux/modules/crewSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -29,6 +32,7 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
         <DeleteBtn
           type="button"
           onClick={() => {
+            dispatch(deleteCrewPhotos(id));
             dispatch(deleteCrewPhoto(id));
           }}
         >

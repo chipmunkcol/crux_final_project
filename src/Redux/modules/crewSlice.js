@@ -1,12 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// const SERVERH = process.env.REACT_APP_SERVER_H;
-// const SERVERM = process.env.REACT_APP_SERVER_M;
-// const BASE_URLM = "https://01192mg.shop";
 const BASE_URLM = "https://sparta-tim.shop";
-// const BASE_URLM = "http://54.180.31.108";
-
 
 const initialState = {
   crewDetail: [],
@@ -98,14 +93,11 @@ export const getCrewDetail = createAsyncThunk(
   "getCrewDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(
-        `${BASE_URLM}/crews/${payload}`,
-        {
-          headers: {
-            Authorization: window.localStorage.getItem("access_token"),
-          },
-        }
-      );
+      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
+        },
+      });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -142,14 +134,11 @@ export const getApplicationList = createAsyncThunk(
   "get/getApplicationList",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(
-        `${BASE_URLM}/crews/${payload}/members`,
-        {
-          headers: {
-            Authorization: window.localStorage.getItem("access_token"),
-          },
-        }
-      );
+      const data = await axios.get(`${BASE_URLM}/crews/${payload}/members`, {
+        headers: {
+          Authorization: window.localStorage.getItem("access_token"),
+        },
+      });
       console.log(data.data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (err) {
@@ -191,7 +180,6 @@ export const createCrewNotice = createAsyncThunk(
   "post/createCrew",
   async (payload, thunkAPI) => {
     try {
-      console.log(payload);
       const response = await axios.post(
         `${BASE_URLM}/notices/${payload.id}`,
         {
@@ -217,52 +205,25 @@ export const editCrewNotice = createAsyncThunk(
   "put/editCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .put(
-          `${BASE_URLM}/notices/${payload.id}`,
-          {
-            name: payload.name,
-            content: payload.content,
-            imgUrl: payload.imgUrl,
+      const response = await axios.put(
+        `${BASE_URLM}/notices/${payload.id}`,
+        {
+          content: payload.content,
+          date: payload.date,
+          place: payload.place,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
           },
-          {
-            headers: {
-              Authorization: window.localStorage.getItem("access_token"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
-      window.alert("등록완료!");
-      window.location.reload();
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
     }
   }
 );
-
-//크루 공지사항 삭제-->확인
-// export const deleteCrewNotice = createAsyncThunk(
-//   "delete/CrewNotice",
-//   async (payload, thunkAPI) => {
-//     try {
-//       const response = await axios
-//         .delete(`${BASE_URLM}/notices/${payload}`, {
-//           headers: {
-//             Authorization: window.localStorage.getItem("access_token"),
-//           },
-//         })
-//         .then((response) => {
-//           console.log(response);
-//         });
-//       return thunkAPI.fulfillWithValue(response.data);
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.data);
-//     }
-//   }
-// );
 
 //크루 사진 CRUD
 /////////////////////////////////////////////////////////////////////
@@ -273,22 +234,18 @@ export const addCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     console.log(payload);
     try {
-      const response = await axios
-        .post(
-          `${BASE_URLM}/crews/${payload.id}/posts`,
-          {
-            imgList: payload.imgUrl,
+      const response = await axios.post(
+        `${BASE_URLM}/crews/${payload.id}/posts`,
+        {
+          imgList: payload.imgUrl,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
           },
-          {
-            headers: {
-              Authorization: window.localStorage.getItem("access_token"),
-            },
-          }
-        )
-        .then((response) => {
-          console.log(response);
-        });
-      // window.location.replace("/crews");
+        }
+      );
+      window.location.reload();
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -318,16 +275,14 @@ export const deleteCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     console.log(payload);
     try {
-      const response = await axios
-        .delete(`${BASE_URLM}/crews/posts/${payload}`, {
+      const response = await axios.delete(
+        `${BASE_URLM}/crews/posts/${payload}`,
+        {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
-        })
-        .then((response) => {
-          console.log(response);
-        });
-      window.alert("사진 삭제 완료");
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -336,7 +291,7 @@ export const deleteCrewPhoto = createAsyncThunk(
 );
 
 export const crewSlice = createSlice({
-  name: "crew",
+  name: "crews",
   initialState,
   reducers: {
     expelCrew(state, action) {
@@ -344,9 +299,15 @@ export const crewSlice = createSlice({
       state.crewDetail.data.memberList =
         state.crewDetail.data.memberList.filter((crew) => crew.id !== id);
     },
+    addCrew(state, action) {
+      console.log(action.payload);
+      state.crewDetail.data.memberList = [
+        ...state.crewDetail.data.memberList,
+        action.payload,
+      ];
+    },
     acceptCrew(state, action) {
       const id = action.payload;
-      console.log(id);
       state.crewApplication.data = state.crewApplication.data.filter(
         (crew) => crew.id !== id
       );
@@ -359,13 +320,32 @@ export const crewSlice = createSlice({
         );
     },
     addCrewNotice(state, action) {
+      console.log(action.payload);
       state.crewDetail.data.noticeList = [
         ...state.crewDetail.data.noticeList,
         action.payload,
       ];
     },
+    deleteCrewPhotos(state, action) {
+      const id = action.payload;
+      state.crewPhotos.data = state.crewPhotos.data.filter(
+        (photo) => photo.postId !== id
+      );
+    },
+    editNotice(state, action) {
+      console.log(state.crew.crewDetail);
+      const existingNotice = state.crew.crewDetail.data.noticeList.find(
+        (notice) => notice.noticeId === action.payload.id
+      );
+      if (existingNotice) {
+        existingNotice.place = action.payload.place;
+        existingNotice.content = action.payload.content;
+        existingNotice.date = action.payload.date;
+      }
+      window.alert("수정완료!");
+    },
     _crewLike(state, action) {
-      state.crewDetail.data.like = action.payload
+      state.crewDetail.data.like = action.payload;
     },
   },
   extraReducers: {
@@ -449,6 +429,15 @@ export const crewSlice = createSlice({
   },
 });
 
-export const { expelCrew, acceptCrew, deleteCrewNotice, addCrewNotice, _crewLike } =
-  crewSlice.actions;
+export const {
+  expelCrew,
+  acceptCrew,
+  deleteCrewNotice,
+  addCrewNotice,
+  _crewLike,
+  editNotice,
+  addCrewPhotos,
+  addCrew,
+  deleteCrewPhotos,
+} = crewSlice.actions;
 export default { crewSlice }.reducer;
