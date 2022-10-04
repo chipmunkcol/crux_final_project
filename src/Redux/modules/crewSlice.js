@@ -2,8 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URLM = "https://sparta-tim.shop";
-// const BASE_URLM = 'http://3.39.237.124'
-
 const initialState = {
   crewDetail: [],
   crewApplication: [],
@@ -350,11 +348,11 @@ export const crewSlice = createSlice({
       state.crewDetail.data.like = action.payload;
     },
     _joinCrew(state, action) {
-      console.log(action.payload)
+      console.log(action.payload);
       state.crewDetail.data.submit = action.payload;
     },
     _joinCancelCrew(state, action) {
-      console.log(action.payload)
+      console.log(action.payload);
       state.crewDetail.data.submit = action.payload;
     },
   },
