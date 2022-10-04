@@ -27,7 +27,7 @@ const navigate = useNavigate()
                                             <p style={{margin:'1rem 0 0 0'}}>{gym.phone}</p>
                                             <p style={{margin:'1rem 0 0 0'}}>
                                                 ✨ {Number(gym.avgScore).toFixed(2)}점
-                                                <img src={사용자이미지} style={{width:'1.1rem', height:'1.2rem', margin:'0 2px 0 10px'}}/> {gym.likeNum !== null ? gym.likeNum : 0}명
+                                                {/* <img src={사용자이미지} style={{width:'1.1rem', height:'1.2rem', margin:'0 2px 0 10px'}}/> {gym.likeNum !== null ? gym.likeNum : 0}명 */}
                                             </p>
                                             
                                         </GymContent>

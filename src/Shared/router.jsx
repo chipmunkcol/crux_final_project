@@ -24,7 +24,7 @@ const Router = () => {
       <Route path={"/gyms/:gymId"} element={<GymDetail />} />
       <Route path="/kakaoLogin" element={<KakaoLogin />} />
       <Route path="/createcrew" element={<CreateCrew />} />
-      <Route path="/crewedit/:id" element={<CrewEdit />} />
+      <Route path={"/crewedit/:id"} element={<CrewEdit />} />
       <Route path={"/members/:memberId"} element={<Mypage />} />
       <Route path="/chat" element={<ChatList />} />
       <Route path={"/chat/:roomId"} element={<ChatRoom />} />

@@ -6,29 +6,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 
-const CrewListNew = () => {
+const CrewListNew = ({crews}) => {
 
-const BASE_URL = "http://sparta-tim.shop";
 const navigate = useNavigate()
-
-
-const [crews, setCrews] = useState([]) 
-console.log(crews)
-
-const getNewCrew = async () => {
-    await axios.get(`${BASE_URL}/crews?page=0&size=4`)
-      .then((res) => {
-        setCrews((prev) => [...prev, ...res.data.data.content]);
-      })
-      .catch((err) => {
-        console.log(err);
-      }) 
-}
-
-useEffect(()=>{
-    getNewCrew();
-},[])
-
 
 return (
     <>

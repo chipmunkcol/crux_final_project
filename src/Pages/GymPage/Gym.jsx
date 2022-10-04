@@ -374,7 +374,7 @@ const Gym = () => {
                                 </GymName>
                                 
                                 <GymFind onClick={()=>{navigate(`/gyms/${val.id}`)}}>
-                                  <img src={오른쪽버튼} style={{width:'2.3rem', padding:'15px 0 0 13px'}}/>
+                                  <img src={오른쪽버튼} style={{width:'2.3rem', padding:'12px 0 0 0px'}}/>
                                 </GymFind>
                               </Wrap>
                             </CustomOverlayMap>

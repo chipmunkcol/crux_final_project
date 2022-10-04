@@ -7,7 +7,7 @@ import { signup } from "../../Redux/modules/userSlice";
 import RegisterValidation from "../Register/registerValidation";
 import useOutSideClick from "../../Shared/hooks/useOutSideClick";
 
-function CreateCrew({ onClose }) {
+function CreateCrew({ onClose, setLoginVisible }) {
   const dispatch = useDispatch();
 
   //useForm 관련
@@ -28,6 +28,9 @@ function CreateCrew({ onClose }) {
       content: data.content,
     };
     dispatch(signup(payload));
+    window.alert("회원가입 성공");
+    onClose();
+    setLoginVisible(true);
   };
 
   //모달 스크롤 방지
@@ -214,7 +217,9 @@ function CreateCrew({ onClose }) {
             />
           </InputBox>
           <SummitButton>
-            <button type="submit">완료</button>
+            <button type="submit">
+              완료
+            </button>
           </SummitButton>
         </Modal>
       )}

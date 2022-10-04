@@ -4,6 +4,7 @@ import { ReactComponent as Crown } from "../../../Image/crown.svg";
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
 function CrewIntro({ content, adminNickname, adminContent, img }) {
+  console.log(img)
   return (
     <Container>
       <Intro>
@@ -14,7 +15,7 @@ function CrewIntro({ content, adminNickname, adminContent, img }) {
       <HostIntro>
         <Title>크루장 소개</Title>
         <HostDetailBox>
-          <img src={img === null ? 사용자기본이미지 : img}></img>
+          <img src={img === "" ? 사용자기본이미지 : img}></img>
           <div
             style={{
               position: "absolute",
