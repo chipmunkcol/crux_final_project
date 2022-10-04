@@ -6,6 +6,7 @@ import axios from "axios";
 
 // const BASE_URL = SERVERM;
 const BASE_URLM = "https://sparta-tim.shop";
+// const BASE_URLM = 'http://3.39.237.124'
 
 const initialState = {
   user: [],
@@ -74,6 +75,7 @@ export const login = createAsyncThunk(
           );
           window.localStorage.setItem("userId", response.data.data.id);
           window.localStorage.setItem("nickname", response.data.data.nickname);
+          window.localStorage.setItem("profileImg", response.data.data.imgUrl);
           window.location.reload();
         });
       return thunkAPI.fulfillWithValue(response.data);
@@ -117,6 +119,8 @@ export const kakaoLogin = createAsyncThunk(
             response.headers.authorization
           );
           window.localStorage.setItem("userId", response.data.id);
+          window.localStorage.setItem("nickname", response.data.nickname);
+          window.localStorage.setItem("profileImg", response.data.imgUrl);
         });
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(response.data);
