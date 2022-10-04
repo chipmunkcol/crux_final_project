@@ -29,6 +29,20 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
   const client = Stomp.over(socket);
 
+  useEffect(() => {
+    onConneted();
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", (e) => {
+      client.disconnect(() => client.unsubscribe("sub-0"), headers);
+    }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄
+
+    return () => {
+      client.disconnect(() => client.unsubscribe("sub-0"), headers);
+    };
+  }, []);
+  
   //데이터 불러오기
   useEffect(() => {
     dispatch(loadMessage(roomId));
@@ -38,14 +52,14 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   console.log(chatList);
 
   //   엔터 누르면 데이터 전송
-  // const handleEnterPress = (e) => {
-  //   if (message.trim() === "") {
-  //     e.preventDefault();
-  //   }
-  //   if (e.keyCode === 13 && e.shiftKey == false) {
-  //     sendMessage();
-  //   }
-  // };
+  const handleEnterPress = (e) => {
+    if (message.trim() === "") {
+      e.preventDefault();
+    }
+    if (e.keyCode === 13 && e.shiftKey == false) {
+      sendMessage();
+    }
+  };
 
   //   연결&구독
   function onConneted() {
@@ -105,7 +119,8 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
 
   const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
 
-  //스크롤 이벤트 함수--------------------------------------------------
+  //스크롤 이벤트 함수
+
   const scrollEvent = _.debounce(() => {
     const scrollTop = boxRef.current.scrollTop; // 스크롤 위치
     const clientHeight = boxRef.current.clientHeight; // 요소의 높이
@@ -116,7 +131,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
     setScrollState(scrollState ? true : false);
   }, 100);
 
-  //메세지 로딩 완료 및 신규 메세지 수신시 스크롤-------------------------
+  //메세지 로딩 완료 및 신규 메세지 수신시 스크롤
   useEffect(() => {
     scrollState && (boxRef.current.scrollTop = boxRef.current.scrollHeight);
     // 신규 메세지 수신시 스크롤
@@ -149,9 +164,9 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
                 return (
                   <div key={i} style={{ marginTop: "auto" }}>
                     <Me
+                      ref={boxRef}
                       content={chat.message}
                       time={chat.createdAt}
-                      ref={boxRef}
                     />
                   </div>
                 );
@@ -173,20 +188,20 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
         </ChatContainer>
       </ChatWarp>
       <ChatInput>
-        <input
-          placeholder="메시지를 입력해주세요."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          // onKeyDown={handleEnterPress}
-        ></input>
-        <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
+        <form>
+          <input
+            placeholder="메시지를 입력해주세요."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={handleEnterPress}
+          ></input>
+          <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
+        </form>
       </ChatInput>
     </div>
   );
 }
 export default ChatRoom;
-
-const Warp = styled.div``;
 
 const ChatContainer = styled.div`
   width: 100%;
