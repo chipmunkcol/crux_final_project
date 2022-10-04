@@ -49,7 +49,9 @@ const Navbar = () => {
   // console.log(NreadAlams.data, error2)
 
   const { alams } = useSelector((state) => state.alams)
-  console.log(alams)
+  // console.log(alams)
+  const [realtimeAlam, setRealtimeAlam] = useState([])
+  // console.log(realtimeAlam)
 
   useEffect(()=>{
     dispatch(__NreadAlam())
@@ -58,7 +60,6 @@ const Navbar = () => {
 
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
-// console.log(lastEventId)
 
 let sse = undefined;
 useEffect(()=>{
@@ -72,26 +73,31 @@ useEffect(()=>{
 
     sse.addEventListener('sse', e => {
         if(e.data.startsWith('{')) {
-          // console.log(e)
-          console.log(JSON.parse(e.data))
+          console.log(e.data)
+          setRealtimeAlam((prev) => [JSON.parse(e.data)])
 
-          dispatch(_addAlam(JSON.parse(e.data)))
-          dispatch(_plusAlam(1))
           // setAlam(prev => [...prev, JSON.parse(e.data).content])
         }}
     )
 
     sse.onerror = e => {
       // console.log(e)
-      // sse.close();
+      sse.close();
     }
   }
-  // return () => {
-  //   if(userToken) {
-  //     sse.close();
-  //   }
-  // }
+  return () => {
+    if(userToken) {
+      sse.close();
+    }
+  }
 }, [userToken])
+
+useEffect(()=>{
+  if(realtimeAlam.length !== 0) {
+    dispatch(_addAlam(realtimeAlam[0]))
+    dispatch(_plusAlam(1))
+  }
+},[realtimeAlam])
 
 
 // 로그인 시 본인 사진 가져오기

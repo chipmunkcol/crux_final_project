@@ -44,10 +44,12 @@ const Navbar = () => {
 //알람 모달 입니다~
 const [showAlam, setShowAlam] = useState(false)
 const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
-console.log(NreadAlams.data, error2)
+// console.log(NreadAlams.data, error2)
 
 const { alams } = useSelector((state) => state.alams)
-console.log(alams)
+// console.log(alams)
+const [realtimeAlam, setRealtimeAlam] = useState([])
+console.log(realtimeAlam)
 
 useEffect(()=>{
   dispatch(__NreadAlam())
@@ -68,27 +70,33 @@ useEffect(()=>{
     }
 
     sse.addEventListener('sse', e => {
-        if(e.data.startsWith('{')) {
-          console.log(e)
-          console.log(JSON.parse(e.data))
+      if(e.data.startsWith('{')) {
+        console.log(e.data)
+        setRealtimeAlam((prev) => [JSON.parse(e.data)])
 
-          dispatch(_addAlam(JSON.parse(e.data)))
-          dispatch(_plusAlam(1))
-          // setAlam(prev => [...prev, JSON.parse(e.data).content])
-        }}
-    )
+        // setAlam(prev => [...prev, JSON.parse(e.data).content])
+      }}
+  )
 
-    sse.onerror = e => {
-      // console.log(e)
-      // sse.close();
-    }
+  sse.onerror = e => {
+    // console.log(e)
+    sse.close();
   }
-  // return () => {
-  //   if(userToken) {
-  //     sse.close();
-  //   }
-  // }
+}
+return () => {
+  if(userToken) {
+    sse.close();
+  }
+}
 }, [userToken])
+
+useEffect(()=>{
+  if(realtimeAlam.length !== 0) {
+    dispatch(_addAlam(realtimeAlam[0]))
+    dispatch(_plusAlam(1))
+  }
+},[realtimeAlam])
+
 
 
 

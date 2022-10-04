@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URLM = "https://sparta-tim.shop";
+// const BASE_URLM = 'http://3.39.237.124'
 
 const initialState = {
   crewDetail: [],

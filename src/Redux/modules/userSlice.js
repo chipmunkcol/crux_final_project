@@ -6,6 +6,7 @@ import axios from "axios";
 
 // const BASE_URL = SERVERM;
 const BASE_URLM = "https://sparta-tim.shop";
+// const BASE_URLM = 'http://3.39.237.124'
 
 const initialState = {
   user: [],
