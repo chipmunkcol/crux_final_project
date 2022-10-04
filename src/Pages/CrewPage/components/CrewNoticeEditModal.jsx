@@ -27,7 +27,7 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
     };
     dispatch(editCrewNotice(payload));
     dispatch(editNotice(payload));
-    // onClose(modalRef);
+    onClose(modalRef);
   };
 
   //일시 설정 저장

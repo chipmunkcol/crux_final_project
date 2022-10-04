@@ -7,7 +7,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { deleteCrewNotice } from "../../../Redux/modules/crewSlice";
 import CrewNoticeEditModal from "./CrewNoticeEditModal";
-import { date } from "yup";
 
 function CrewNotice() {
   const dispatch = useDispatch();
@@ -16,13 +15,10 @@ function CrewNotice() {
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const noticeList = crewDetail?.data?.noticeList;
-  // console.log(noticeList);
-
-  //데이터 변경 감지
+  console.log(noticeList);
 
   //userId가져오기
   const userId = window?.localStorage?.getItem("userId");
-  // console.log(userId);
 
   //삭제하기
   async function delteNotice(payload) {
