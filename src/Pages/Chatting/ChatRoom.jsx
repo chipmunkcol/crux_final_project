@@ -1,6 +1,5 @@
-import { React, useState, useEffect, useRef } from "react";
+import { React, useState, useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -42,7 +41,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
       client.disconnect(() => client.unsubscribe("sub-0"), headers);
     };
   }, []);
-  
+
   //데이터 불러오기
   useEffect(() => {
     dispatch(loadMessage(roomId));
@@ -77,16 +76,6 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
     } catch (error) {}
   }
 
-  //   렌더되면 소켓 연결실행
-  useEffect(() => {
-    onConneted();
-    return () => {
-      onConneted();
-    };
-  }, []);
-
-  
-
   const nickname = window?.localStorage?.getItem("nickname");
 
   //메시지 보내기
@@ -103,8 +92,10 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
     setMessage("");
   };
 
-  //
+  const boxRef = useRef(); // 채팅 박스 ref
+  const scrollRef = useRef(); // 채팅 박스 맨 아래를 가르키는 ref
 
+  //채팅 방 들어가면 자동 스크롤
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
       scrollRef.current.scrollIntoView({ behavior: "smooth" }, 2000);
@@ -114,28 +105,30 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
     };
   }, [chatList?.message?.length]);
 
-  const boxRef = useRef(); // 채팅 박스 ref
-  const scrollRef = useRef(); // 채팅 박스 맨 아래를 가르키는 ref
-
-  const [scrollState, setScrollState] = useState(true); // 자동 스크롤 여부
-
-  //스크롤 이벤트 함수
+  const [scrollState, setScrollState] = useState(true);
 
   const scrollEvent = _.debounce(() => {
+    console.log("scroll");
     const scrollTop = boxRef.current.scrollTop; // 스크롤 위치
     const clientHeight = boxRef.current.clientHeight; // 요소의 높이
     const scrollHeight = boxRef.current.scrollHeight; // 스크롤의 높이
 
-    // 스크롤이 맨 아래에 있는지 검사
-    const scrollState = scrollTop + clientHeight >= scrollHeight;
-    setScrollState(scrollState ? true : false);
+    // 스크롤이 맨 아래에 있을때
+    setScrollState(
+      scrollTop + clientHeight >= scrollHeight - 100 ? true : false
+    );
   }, 100);
+  const scroll = useCallback(scrollEvent, []);
 
-  //메세지 로딩 완료 및 신규 메세지 수신시 스크롤
   useEffect(() => {
-    scrollState && (boxRef.current.scrollTop = boxRef.current.scrollHeight);
-    // 신규 메세지 수신시 스크롤
+    if (scrollState) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth" });
+    }
   }, [chatList]);
+
+  useEffect(() => {
+    boxRef.current.addEventListener("scroll", scroll);
+  });
 
   return (
     <div>
@@ -163,18 +156,13 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
               if (chat.sender === nickname) {
                 return (
                   <div key={i} style={{ marginTop: "auto" }}>
-                    <Me
-                      ref={boxRef}
-                      content={chat.message}
-                      time={chat.createdAt}
-                    />
+                    <Me content={chat.message} time={chat.createdAt} />
                   </div>
                 );
               } else {
                 return (
                   <div key={i}>
                     <Friends
-                      ref={boxRef}
                       content={chat.message}
                       nickname={chat.sender}
                       imgUrl={chat.imgUrl}
@@ -188,15 +176,13 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
         </ChatContainer>
       </ChatWarp>
       <ChatInput>
-        <form>
-          <input
-            placeholder="메시지를 입력해주세요."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            onKeyDown={handleEnterPress}
-          ></input>
-          <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
-        </form>
+        <input
+          placeholder="메시지를 입력해주세요."
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleEnterPress}
+        ></input>
+        <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
       </ChatInput>
     </div>
   );

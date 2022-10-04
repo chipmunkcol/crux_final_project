@@ -26,12 +26,12 @@ const CreateCrew = () => {
       name: data.name,
       content: data.content,
       imgUrl: fileUrl,
-      mainActivityGym: addressDetail,
+      mainActivityGym: data.place,
       mainActivityArea: address.concat(" ", addressD),
       keywords: keyword,
     };
     if (
-      (addressDetail === null) |
+      (data.place === null) |
       undefined |
       ((address === null) | undefined) |
       ((addressD === null) | undefined) |
@@ -365,11 +365,8 @@ const CreateCrew = () => {
                 <p>주 활동 짐</p>
                 <input
                   type="text"
-                  readOnly={true}
-                  style={{ cursor: "pointer" }}
-                  onClick={onChangeOpenPost}
-                  placeholder="장소를 선택해주세요."
-                  defaultValue={addressDetail}
+                  {...register("place", { required: true })}
+                  placeholder="주 활동 짐을 입력해주세요."
                 />
               </TextBox>
               <TextBox>

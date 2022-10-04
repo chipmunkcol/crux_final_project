@@ -31,18 +31,16 @@ function ChatList({ onClose }) {
   const [chatRoomName, setChatRoomName] = useState("");
   //세부 채팅방 url 전달
   const [chatRoomImg, setChatRoomImg] = useState("");
+  //세부 채팅방 시간 전달
+  const [chatRoomTime, setChatRoomTime] = useState("");
 
-  const handleEnterRoom = (id, name, url) => {
+  const handleEnterRoom = (id, name, url, time) => {
     setchatRoomId(id);
     setChatRoomName(name);
     setChatRoomImg(url);
   };
 
   //채팅방 목록 필터할 것,,
-
-  //모달 바깎 클릭시 close
-  // const modalRef = useRef(null);
-  // useOutSideClick(modalRef, onClose);
 
   return (
     <Background>
@@ -70,7 +68,10 @@ function ChatList({ onClose }) {
                     <Text>
                       <div>
                         <h3>{room.crewName}</h3>
-                        <p>{room?.lastMessage?.createdAt}</p>
+                        <p>
+                          {room?.lastMessage?.createdAt.slice(0, 10)}{" "}
+                          {room?.lastMessage?.createdAt.slice(11, 16)}
+                        </p>
                       </div>
                       <div>
                         {room?.lastMessage?.message ? (
@@ -141,10 +142,9 @@ const Title = styled.div`
 const List = styled.div`
   width: 380px;
   height: 418px;
-  display: flex;
+  flex-flow: column wrap;
   flex-direction: colunm;
   overflow: auto;
-  flex-wrap: wrap;
   ::-webkit-scrollbar {
     display: none;
   }

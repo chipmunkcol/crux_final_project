@@ -22,7 +22,7 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
     const payload = {
       id: id,
       date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
-      place: addressDetail,
+      place: data.place,
       content: data.content,
     };
     dispatch(editCrewNotice(payload));
@@ -104,10 +104,9 @@ function CrewNoticeEditModal({ onClose, id, place, content, date }) {
             <h3>모임 장소</h3>
             <input
               type="text"
-              readOnly={true}
-              onClick={onChangeOpenPost}
-              placeholder="장소를 선택해주세요."
-              value={addressDetail}
+              placeholder="장소를 입력해주세요."
+              defaultValue={addressDetail}
+              {...register("place", { required: true })}
             />
           </Place>
           <Intro>

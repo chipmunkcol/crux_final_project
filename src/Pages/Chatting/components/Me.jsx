@@ -15,7 +15,7 @@ function Me({ content, time }) {
           fontSize: "8px",
         }}
       >
-        {/* {time} */}
+        {time.slice(11, 16)}
       </div>
       <MyMessage>
         <div>{content}</div>
