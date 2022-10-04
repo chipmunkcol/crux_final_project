@@ -99,14 +99,14 @@ const deleteAlams = async () => {
                           return (
                             <div key={alam.id}>
                               {!alam.status ? 
-                                (<AlamList onClick={()=>{ onclickReadAlam(alam.id); navigate(`/crews/${alam.content.crewId}`); console.log(alam.content.crewId)}}>
+                                (<AlamList onClick={()=>{ onclickReadAlam(alam.id); navigate(`/crews/${alam.content.crewId}`); window.location.reload()}}>
                                   <AlamContent >
                                     <span >{alam.content.content}</span> 
                                     <AlamDelete onClick={(e)=>{e.stopPropagation(); onclickDeleteAlam(alam.id)}}>삭제</AlamDelete> 
                                   </AlamContent>
                                 </AlamList>)
                               :
-                                (<AlamList onClick={()=>{ navigate(`/crews/${alam.content.crewId}`)}}>
+                                (<AlamList onClick={()=>{ navigate(`/crews/${alam.content.crewId}`); window.location.reload()}}>
                                   <ReadAlamContent >
                                     <span >{alam.content.content}</span>
                                     <AlamDelete onClick={(e)=>{e.stopPropagation(); onclickDeleteAlam(alam.id); }}>삭제</AlamDelete> 
@@ -169,6 +169,7 @@ margin: 1rem auto;
 background-color: #333333;
 border-radius: 1.5rem;
 padding: 1.8rem 2rem 2rem 2rem;
+cursor: pointer;
 `
 const AlamDelete = styled.span`
 float: right;

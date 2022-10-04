@@ -8,6 +8,8 @@ import {
   getCrewDetail,
   deleteCrew,
   _crewLike,
+  _joinCancelCrew,
+  _joinCrew,
 } from "../../Redux/modules/crewSlice";
 import Navbar from "../../Shared/Navbar";
 import CrewIntro from "./components/CrewIntro";
@@ -31,7 +33,7 @@ const CrewDetail = () => {
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  // console.log(crew);
+  console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -95,7 +97,26 @@ const CrewDetail = () => {
           },
         }
       );
+      dispatch(_joinCrew(true))
       window.alert("신청되었습니다.");
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
+  async function joinCancelCrews() {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/crews/${params}/members`,
+        null,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      dispatch(_joinCancelCrew(false))
+      window.alert("신청 취소되었습니다.");
       return response.data;
     } catch (error) {
       return error.data;
@@ -269,7 +290,19 @@ const CrewDetail = () => {
                   </Text>
                 </TextDetail>
               </TextBox>
-              {checkmember < 0 ? (
+              {checkmember < 0 && crew?.submit === true ? 
+              
+              ( <ButtonBox>
+                <button
+                  onClick={() => {
+                    joinCancelCrews();
+                  }}
+                >
+                  가입 취소
+                </button>
+              </ButtonBox>
+              ) : checkmember < 0 && crew?.submit === false ?
+              (
                 <ButtonBox>
                   <button
                     onClick={() => {

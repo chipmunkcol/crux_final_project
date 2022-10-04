@@ -101,18 +101,12 @@ useEffect(()=>{
 
 
 // 로그인 시 본인 사진 가져오기
-const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
-// console.log(isLoading, error, mypage)
-const profileImg = mypage?.data?.imgUrl
-console.log(profileImg)
-
 const [showMypage, setShowMypage] = useState(false)
 
-useEffect(()=>{
-  if (userToken) {
-    dispatch(__getMyPage(userId))
-  }
-},[userToken])
+const profileImg = window.localStorage.getItem("profileImg")
+console.log(profileImg)
+
+//프로필 이미지 로그인시 response로 받아온다.
 
   return (
     <NavContainer>
@@ -249,6 +243,7 @@ cursor: pointer;
 const AlamImg = styled.img`
 width: 3rem;
 position: absolute;
+top: 13.1rem;
 margin: -6px 0 0 42rem;
 cursor: pointer;
 `
@@ -268,6 +263,7 @@ const ProfileImg = styled.img`
 width: 5rem;
 border-radius: 60%;
 position: absolute;
+top: 11.1rem;
 margin: -6px 0 0 49.3rem;
 `
 

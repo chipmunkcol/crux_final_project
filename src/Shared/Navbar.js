@@ -101,18 +101,11 @@ useEffect(()=>{
 
 
 // 로그인 시 본인 사진 가져오기
-const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
-// console.log(isLoading, error, mypage)
-const profileImg = mypage?.data?.imgUrl
-// console.log(profileImg)
-
 const [showMypage, setShowMypage] = useState(false)
 
-useEffect(()=>{
-  if (userToken) {
-    dispatch(__getMyPage(userId))
-  }
-},[userToken])
+const profileImg = window.localStorage.getItem("profileImg")
+console.log(profileImg)
+
 
   return (
     <NavContainer>

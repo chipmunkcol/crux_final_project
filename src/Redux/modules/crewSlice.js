@@ -349,6 +349,14 @@ export const crewSlice = createSlice({
     _crewLike(state, action) {
       state.crewDetail.data.like = action.payload;
     },
+    _joinCrew(state, action) {
+      console.log(action.payload)
+      state.crewDetail.data.submit = action.payload;
+    },
+    _joinCancelCrew(state, action) {
+      console.log(action.payload)
+      state.crewDetail.data.submit = action.payload;
+    },
   },
   extraReducers: {
     [createCrew.pending]: (state) => {
@@ -441,5 +449,7 @@ export const {
   addCrewPhotos,
   addCrew,
   deleteCrewPhotos,
+  _joinCrew,
+  _joinCancelCrew,
 } = crewSlice.actions;
 export default { crewSlice }.reducer;
