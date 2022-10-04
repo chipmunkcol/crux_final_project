@@ -61,6 +61,7 @@ const Navbar = () => {
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
 
+const [listening, setListening] = useState(false);
 let sse = undefined;
 useEffect(()=>{
   if (userToken) {
@@ -76,21 +77,21 @@ useEffect(()=>{
           console.log(e.data)
           setRealtimeAlam((prev) => [JSON.parse(e.data)])
 
-          // setAlam(prev => [...prev, JSON.parse(e.data).content])
         }}
     )
 
     sse.onerror = e => {
-      // console.log(e)
-      sse.close();
-    }
+      console.log(e)
+      // sse.close();
+    };
+    setListening(true)
   }
   return () => {
     if(userToken) {
       sse.close();
     }
   }
-}, [userToken])
+}, [])
 
 useEffect(()=>{
   if(realtimeAlam.length !== 0) {
@@ -104,7 +105,7 @@ useEffect(()=>{
 const [showMypage, setShowMypage] = useState(false)
 
 const profileImg = window.localStorage.getItem("profileImg")
-console.log(profileImg)
+// console.log(profileImg)
 
 
   return (

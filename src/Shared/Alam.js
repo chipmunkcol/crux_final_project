@@ -182,6 +182,7 @@ position: absolute;
 width: 43rem;
 height: 6rem;
 background: linear-gradient(180deg, rgba(217, 217, 217, 0) -70.63%, rgba(20, 20, 20, 0) -70.62%, rgba(20, 20, 20, 0) 3.13%, rgba(20, 20, 20, 0) 13.79%, rgba(20, 20, 20, 0.443299) 52.01%, rgba(20, 20, 20, 0.463918) 53.79%, #141414 100%);
+cursor: pointer;
 `
 
 const AlamContent = styled.div`
