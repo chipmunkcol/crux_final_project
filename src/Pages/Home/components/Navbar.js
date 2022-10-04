@@ -44,12 +44,10 @@ const Navbar = () => {
 //알람 모달 입니다~
 const [showAlam, setShowAlam] = useState(false)
 const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
-// console.log(NreadAlams.data, error2)
+console.log(NreadAlams.data, error2)
 
 const { alams } = useSelector((state) => state.alams)
-// console.log(alams)
-const [realtimeAlam, setRealtimeAlam] = useState([])
-console.log(realtimeAlam)
+console.log(alams)
 
 useEffect(()=>{
   dispatch(__NreadAlam())
@@ -59,7 +57,6 @@ useEffect(()=>{
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
 
-const [listening, setListening] = useState(false);
 let sse = undefined;
 useEffect(()=>{
   if (userToken) {
@@ -72,42 +69,42 @@ useEffect(()=>{
 
     sse.addEventListener('sse', e => {
         if(e.data.startsWith('{')) {
-          console.log(e.data)
-          setRealtimeAlam((prev) => [JSON.parse(e.data)])
+          console.log(e)
+          console.log(JSON.parse(e.data))
 
+          dispatch(_addAlam(JSON.parse(e.data)))
+          dispatch(_plusAlam(1))
+          // setAlam(prev => [...prev, JSON.parse(e.data).content])
         }}
     )
 
     sse.onerror = e => {
-      console.log(e)
+      // console.log(e)
       // sse.close();
-    };
-    setListening(true)
-  }
-  return () => {
-    if(userToken) {
-      sse.close();
     }
   }
-}, [])
-
-useEffect(()=>{
-  if(realtimeAlam.length !== 0) {
-    dispatch(_addAlam(realtimeAlam[0]))
-    dispatch(_plusAlam(1))
-  }
-},[realtimeAlam])
-
+  // return () => {
+  //   if(userToken) {
+  //     sse.close();
+  //   }
+  // }
+}, [userToken])
 
 
 
 // 로그인 시 본인 사진 가져오기
-const [showMypage, setShowMypage] = useState(false)
-
-const profileImg = window.localStorage.getItem("profileImg")
+const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
+// console.log(isLoading, error, mypage)
+const profileImg = mypage?.data?.imgUrl
 console.log(profileImg)
 
-//프로필 이미지 로그인시 response로 받아온다.
+const [showMypage, setShowMypage] = useState(false)
+
+useEffect(()=>{
+  if (userToken) {
+    dispatch(__getMyPage(userId))
+  }
+},[userToken])
 
   return (
     <NavContainer>
@@ -244,7 +241,6 @@ cursor: pointer;
 const AlamImg = styled.img`
 width: 3rem;
 position: absolute;
-top: 13.1rem;
 margin: -6px 0 0 42rem;
 cursor: pointer;
 `
@@ -264,7 +260,6 @@ const ProfileImg = styled.img`
 width: 5rem;
 border-radius: 60%;
 position: absolute;
-top: 11.1rem;
 margin: -6px 0 0 49.3rem;
 `
 
