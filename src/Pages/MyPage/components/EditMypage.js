@@ -69,6 +69,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
         setEditMypage(false);
         navigate(`/members/${params}`);
         window.localStorage.setItem("nickname", editNickname);
+        window.localStorage.setItem("profileImg", fileUrl)
       })
       .catch((err) => {
         console.log(err);
