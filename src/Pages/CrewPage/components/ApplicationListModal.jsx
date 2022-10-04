@@ -58,13 +58,15 @@ function ApplicationListModal({ onClose }) {
                 <Container key={applicant.id}>
                   <IntroContent>
                     <HostDetailBox>
-                      <img
-                        src={
-                          applicant.imgUrl === null
-                            ? 사용자기본이미지
-                            : applicant.imgUrl
-                        }
-                      ></img>
+                      <div>
+                        <img
+                          src={
+                            applicant.imgUrl === null
+                              ? 사용자기본이미지
+                              : applicant.imgUrl
+                          }
+                        ></img>
+                      </div>
                       <HostDetail>
                         <p>{applicant.nickname}</p>
                         <div>
@@ -230,7 +232,7 @@ const HostDetailBox = styled.div`
   align-items: center;
   border-bottom: 1px solid #3f3f3f;
   img {
-    width: 70px;
+    width: 50px;
     height: 50px;
     border-radius: 70%;
     overflow: hidden;

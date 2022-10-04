@@ -228,7 +228,7 @@ const CrewDetail = () => {
                 <Heart
                   width="50px"
                   height="50px"
-                  fill="#000000"
+                  fill="#FFB800"
                   onClick={crew?.like === true ? dislikeCrew : likeCrew}
                   opacity={crew?.like === true ? "80%" : "30%"}
                 />
@@ -321,7 +321,6 @@ const CrewDetail = () => {
           {photosVisible && <CrewPhotos />}
         </TabContainer>
       </Warp>
-
       <Footer />
     </div>
   );
@@ -388,7 +387,7 @@ const ThumbnailContentBox = styled.div`
 const ImgBox = styled.div`
   width: 600px;
   height: 600px;
-  background-color: green;
+  background-color: #202020;
   img {
     width: 100%;
     height: 100%;

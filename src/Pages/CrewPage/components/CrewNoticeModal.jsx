@@ -21,15 +21,17 @@ function CrewNoticeModal({ onClose }) {
   const dispatch = useDispatch();
   const params = useParams().crewId;
   const userId = window?.localStorage?.getItem("userId");
+  const nickname = window?.localStorage?.getItem("nickname");
   const modalRef = useRef();
 
   const onSubmit = (data) => {
     const payload = {
       id: params,
       date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
-      place: addressDetail,
+      place: data.place,
       content: data.content,
       authorId: Number(userId),
+      authorNickname: nickname,
     };
     createCrewNotice(payload);
     dispatch(addCrewNotice(payload));
@@ -146,10 +148,8 @@ function CrewNoticeModal({ onClose }) {
             <h3>모임 장소</h3>
             <input
               type="text"
-              readOnly={true}
-              onClick={onChangeOpenPost}
-              placeholder="장소를 선택해주세요."
-              defaultValue={addressDetail}
+              placeholder="장소를 입력해주세요."
+              {...register("place", { required: true })}
             />
           </Place>
           <Intro>
@@ -269,7 +269,6 @@ const Place = styled.div`
     font-size: 14px;
     letter-spacing: -0.05em;
     color: #888888;
-    cursor: pointer;
     :focus {
       outline: none;
     }

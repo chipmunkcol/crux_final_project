@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import 사용자이미지 from "../../../Image/사용자기본이미지.jpg"
+import 사용자이미지 from "../../../Image/사용자기본이미지.jpg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
@@ -106,7 +106,13 @@ function CrewNotice() {
               <p>- 장소 : {notice.place}</p>
               <p>- 상세소개 : {notice.content}</p>
               <UserContent>
-                <img src={notice.authorProfileImg ? notice.authorProfileImg : 사용자이미지}></img>
+                <img
+                  src={
+                    notice.authorProfileImg
+                      ? notice.authorProfileImg
+                      : 사용자이미지
+                  }
+                ></img>
                 <div>
                   <h1>{notice.authorNickname}</h1>
                   {/* <p>{notice.authorStatus === "ADMIN" ? "크루장" : "크루원"}</p> */}
