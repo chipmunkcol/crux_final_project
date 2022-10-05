@@ -16,11 +16,27 @@ function CreateCrew({ onClose, setLoginVisible }) {
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm({ resolver: yupResolver(schema), mode: "onBlur" });
 
   const onSubmit = (data) => {
     // console.log(data);
+    const payload = {
+      email: data.email,
+      nickname: data.nickname,
+      password: data.password,
+      content: data.content,
+    };
+    dispatch(signup(payload));
+    window.alert("회원가입 성공");
+    onClose();
+    setLoginVisible(true);
+  };
+
+  const onEnterSubmit = () => {
+    const data = getValues();
+    console.log(data);
     const payload = {
       email: data.email,
       nickname: data.nickname,
@@ -212,14 +228,17 @@ function CreateCrew({ onClose, setLoginVisible }) {
           <Title>회원가입</Title>
           <InputBox>
             <textarea
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  onEnterSubmit();
+                }
+              }}
               placeholder="자기소개(150자 이내)"
               {...register("content")}
             />
           </InputBox>
           <SummitButton>
-            <button type="submit">
-              완료
-            </button>
+            <button type="submit">완료</button>
           </SummitButton>
         </Modal>
       )}

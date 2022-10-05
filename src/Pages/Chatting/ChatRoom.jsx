@@ -75,7 +75,6 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
 
   //메시지 보내기
   const onSubmit = (data) => {
-    // console.log(data);
     client.send(
       `/pub/chat/message`,
       headers,
