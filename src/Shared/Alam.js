@@ -49,30 +49,30 @@ const readAlam = async (notificationId) => {
   await axios.post(`${BASE_URL}/notifications/${notificationId}`, null,
           { headers: {Authorization: window.localStorage.getItem("access_token")}})
     .then((res) => {
-      console.log(res)
+      // console.log(res)
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     }) 
 }
 const deleteAlam = async (notificationId) => {
   await axios.delete(`${BASE_URL}/notifications/${notificationId}`,
           { headers: {Authorization: window.localStorage.getItem("access_token")}})
     .then((res) => {
-      console.log(res)
+      // console.log(res)
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     }) 
 }
 const deleteAlams = async () => {
   await axios.delete(`${BASE_URL}/notifications`,
           { headers: {Authorization: window.localStorage.getItem("access_token")}})
     .then((res) => {
-      console.log(res)
+      // console.log(res)
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
     }) 
 }
 

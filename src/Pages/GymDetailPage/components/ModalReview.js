@@ -41,30 +41,36 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     const [files, setFileList] = useState([]); // 파일 리스트
     const storage = getStorage();
     // const storageRef = ref(storage);
-    const handleImageChange = (e) => {
-        if (files.length < 3) {
-            for (const image of e.target.files) {
-            setFileList((prevState) => [...prevState, image]);
-            }
+
+
+    const [imgProductList, setImgProductList] = useState([]);
+    console.log(imgProductList)
+
+    const uploadFB = async (event) => {
+        
+        const imageLists = event.target.files;
+        const uploaded_file = await uploadBytes(
+          ref(storage, `images/${event.target.files[0].name}`),
+          event.target.files[0]
+        );
+    
+        const url = await getDownloadURL(uploaded_file.ref);
+        setImgProductList(url);
+    
+        let imageUrlLists = [...imgProductList];
+        for (let i = 0; i < imageLists.length; i++) {
+          const imgUrl = url;
+          imageUrlLists.push({ imgUrl });
         }
-    };
-      console.log(files)
-      console.log(fileUrl)
-
-    useEffect(()=>{
-        uploadFB(files)
-    },[files])
-
-    const uploadFB = useCallback(async (files) => {
-        const urls = await Promise.all(
-            files?.map((file) => {
-                const storageRef = ref(storage, `images/${file.name}`);
-                const task = uploadBytes(storageRef, file);
-                return getDownloadURL(storageRef);
-            })
-        )
-        setFileUrl(urls);
-    },[])
+        if (imageUrlLists.length > 3) {
+          imageUrlLists = imageUrlLists.slice(0, 3);
+        }
+        setImgProductList(imageUrlLists);
+      };
+    
+      const handleDeleteImage = (id) => {
+        setImgProductList(imgProductList.filter((_, index) => index !== id));
+      };
     
 
     const onsubmit = () => {
@@ -77,9 +83,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
             const payload = {
                 score: rating,
                 content: content,
-                reviewPhotoList: fileUrl.length === 1 ? [{ imgUrl: fileUrl[0] }] : 
-                                 fileUrl.length === 2 ? [{ imgUrl: fileUrl[0] }, { imgUrl: fileUrl[1] }] :
-                                 fileUrl.length === 3 ? [{ imgUrl: fileUrl[0] }, { imgUrl: fileUrl[1] }, { imgUrl: fileUrl[2] }]
+                reviewPhotoList: imgProductList.length !== 0 ? imgProductList 
                                  : [{ imgUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtOY6e%2FbtrMC0zJgaN%2FE8MiRTJ9nXjXvMPO5q1gQK%2Fimg.jpg" }],
             };
             await axios.post(`${BASE_URL}/reviews/${gym.id}`, payload, {
@@ -103,7 +107,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
 
     //이미지 미리보기
     const [imgPreview, setImgPreview] = useState([])
-    console.log(imgPreview)
+    // console.log(imgPreview)
 
     //이미지 상대경로 저장
     const handleAddImages = (e) => {
@@ -149,12 +153,12 @@ function ModalReview({ setModal, gym, reload, setReload }) {
                         accept='image/*'
                         type="file" multiple
                         style={{ display: 'none' }}
-                        onChange={(e)=>{ handleImageChange(e); handleAddImages(e)}} />
+                        onChange={(e)=>{ uploadFB(e); handleAddImages(e)}} />
                     <div style={{display:'flex', position:'absolute', margin:'-3rem 0 0 6rem'}}>
                         <UploadImg> <img src={이미지업로드} style={{ width:"20rem", height:'100%'}} type="button"/> </UploadImg>
                         
                         {imgPreview?.map((image, i) => (
-                                <ImgPreview key={i}>
+                                <ImgPreview key={i} onClick={handleDeleteImage}>
                                     <img src={image} style={{width:"100%", height:'100%'}}/>
                                 </ImgPreview>
                             ))

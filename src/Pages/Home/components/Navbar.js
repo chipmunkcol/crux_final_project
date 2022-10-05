@@ -50,7 +50,7 @@ const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams
 const { alams } = useSelector((state) => state.alams)
 // console.log(alams)
 const [realtimeAlam, setRealtimeAlam] = useState([])
-console.log(realtimeAlam)
+// console.log(realtimeAlam)
 
 useEffect(()=>{
   dispatch(__NreadAlam())
@@ -68,19 +68,19 @@ useEffect(()=>{
     {headers: {Authorization: userToken}  })
     
     sse.onopen = e => {
-      console.log("연결완료")
+      // console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
         if(e.data.startsWith('{')) {
-          console.log(e.data)
+          // console.log(e.data)
           setRealtimeAlam((prev) => [JSON.parse(e.data)])
 
         }}
     )
 
     sse.onerror = e => {
-      console.log(e)
+      // console.log(e)
       // sse.close();
     };
     setListening(true)
@@ -106,7 +106,7 @@ useEffect(()=>{
 const [showMypage, setShowMypage] = useState(false)
 
 const profileImg = window.localStorage.getItem("profileImg")
-console.log(profileImg)
+// console.log(profileImg)
 
 //프로필 이미지 로그인시 response로 받아온다.
 

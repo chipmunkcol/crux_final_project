@@ -20,7 +20,7 @@ function CreateCrew({ onClose, setLoginVisible }) {
   } = useForm({ resolver: yupResolver(schema), mode: "onBlur" });
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const payload = {
       email: data.email,
       nickname: data.nickname,

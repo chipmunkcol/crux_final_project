@@ -279,7 +279,7 @@ const Gym = () => {
       }
     
       useEffect(()=>{
-        console.log(gyms)
+        // console.log(gyms)
       },[searchGym])
 
 // 마커 마우스 호버 이벤트

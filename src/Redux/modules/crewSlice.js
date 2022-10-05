@@ -57,7 +57,7 @@ export const editCrew = createAsyncThunk(
           }
         )
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.location.replace(`/crews/${payload.id}`);
       return thunkAPI.fulfillWithValue(response.data);
@@ -79,7 +79,7 @@ export const deleteCrew = createAsyncThunk(
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.location.replace("/crews");
       return thunkAPI.fulfillWithValue(response.data);
@@ -140,7 +140,7 @@ export const getApplicationList = createAsyncThunk(
           Authorization: window.localStorage.getItem("access_token"),
         },
       });
-      console.log(data.data);
+      // console.log(data.data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -164,7 +164,7 @@ export const permitCrew = createAsyncThunk(
           }
         )
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -233,7 +233,7 @@ export const editCrewNotice = createAsyncThunk(
 export const addCrewPhoto = createAsyncThunk(
   "add/CrewPhoto",
   async (payload, thunkAPI) => {
-    console.log(payload);
+    // console.log(payload);
     try {
       const response = await axios.post(
         `${BASE_URLM}/crews/${payload.id}/posts`,
@@ -262,7 +262,7 @@ export const getCrewPhoto = createAsyncThunk(
       const response = await axios.get(
         `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
       );
-      console.log(response.data);
+      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -274,7 +274,7 @@ export const getCrewPhoto = createAsyncThunk(
 export const deleteCrewPhoto = createAsyncThunk(
   "delete/CrewPhoto",
   async (payload, thunkAPI) => {
-    console.log(payload);
+    // console.log(payload);
     try {
       const response = await axios.delete(
         `${BASE_URLM}/crews/posts/${payload}`,
@@ -301,7 +301,7 @@ export const crewSlice = createSlice({
         state.crewDetail.data.memberList.filter((crew) => crew.id !== id);
     },
     addCrew(state, action) {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.crewDetail.data.memberList = [
         ...state.crewDetail.data.memberList,
         action.payload,
@@ -321,7 +321,7 @@ export const crewSlice = createSlice({
         );
     },
     addCrewNotice(state, action) {
-      console.log(action.payload);
+      // console.log(action.payload);
       state.crewDetail.data.noticeList = [
         ...state.crewDetail.data.noticeList,
         action.payload,
@@ -334,8 +334,8 @@ export const crewSlice = createSlice({
       );
     },
     editNotice(state, action) {
-      console.log(action.payload);
-      console.log(state.crewDetail.data.noticeList);
+      // console.log(action.payload);
+      // console.log(state.crewDetail.data.noticeList);
       const existingNotice = state.crewDetail.data.noticeList.find(
         (notice) => notice.noticeId === action.payload.id
       );
@@ -350,11 +350,11 @@ export const crewSlice = createSlice({
       state.crewDetail.data.like = action.payload;
     },
     _joinCrew(state, action) {
-      console.log(action.payload)
+      // console.log(action.payload)
       state.crewDetail.data.submit = action.payload;
     },
     _joinCancelCrew(state, action) {
-      console.log(action.payload)
+      // console.log(action.payload)
       state.crewDetail.data.submit = action.payload;
     },
   },

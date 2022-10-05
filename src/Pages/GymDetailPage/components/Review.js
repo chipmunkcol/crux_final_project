@@ -27,7 +27,7 @@ const openModal = (review) => {
 }
 
 const userId = Number(window.localStorage.getItem('userId'))
-console.log(userId)
+// console.log(userId)
 const dispatch = useDispatch()
 
 const onclickDelReview = (reviewId) => {
@@ -115,8 +115,8 @@ if(gym === undefined) {
                                 {
                                     review?.memberId !== userId ? null : 
                                         <div style={{margin:'1rem 0 0 58rem'}}>
-                                            <span onClick={()=>{setEditModal(true); setReviewId(review.id); console.log(review.memberId)}} type="button">수정</span> &nbsp;|&nbsp; 
-                                            <span onClick={()=>{onclickDelReview(review.id); console.log(review.id)}} type="button">삭제</span>
+                                            <span onClick={()=>{setEditModal(true); setReviewId(review.id)}} type="button">수정</span> &nbsp;|&nbsp; 
+                                            <span onClick={()=>{onclickDelReview(review.id)}} type="button">삭제</span>
                                         </div>
                                 }
 

@@ -26,40 +26,50 @@ function UploadPhotoModal({ onClose }) {
   const storage = getStorage();
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
-  const handleImageChange = (e) => {
-    for (const image of e.target.files) {
-      setFileList((prevState) => [...prevState, image]);
-    }
-  };
+  const [imgProductList, setImgProductList] = useState([]);
+  console.log(imgProductList)
 
-  // 이미지 업로드 & dispatch
-  useEffect(() => {
-    uploadFB(files);
-  }, [files]);
-
-  const uploadFB = useCallback(async (files) => {
-    const urls = await Promise.all(
-      files?.map((file) => {
-        const storageRef = ref(storage, `images/${file.name}`);
-        const task = uploadBytes(storageRef, file);
-        return getDownloadURL(storageRef);
-      })
+  const uploadFB = async (event) => {
+    const imageLists = event.target.files;
+    const uploaded_file = await uploadBytes(
+      ref(storage, `images/${event.target.files[0].name}`),
+      event.target.files[0]
     );
-    setFileUrl(urls);
-  }, []);
+
+    const url = await getDownloadURL(uploaded_file.ref);
+    setImgProductList(url);
+
+    let imageUrlLists = [...imgProductList];
+    for (let i = 0; i < imageLists.length; i++) {
+      const imgUrl = url;
+      imageUrlLists.push(imgUrl);
+      console.log(imageUrlLists)
+    }
+    if (imageUrlLists.length > 5) {
+      imageUrlLists = imageUrlLists.slice(0, 5);
+    }
+    setImgProductList(imageUrlLists);
+  };
 
   const onsubmit = () => {
     uploadPhoto();
   };
 
   const uploadPhoto = async () => {
-    const payload = {
-      id: params,
-      imgUrl: fileUrl,
-    };
-    dispatch(addCrewPhoto(payload));
-    onClose(modalRef);
+    if (imgProductList.length === 0) {
+      alert("사진을 첨부해주세요:)")
+    } else {
+      const payload = {
+        id: params,
+        imgUrl: imgProductList,
+      };
+      dispatch(addCrewPhoto(payload));
+      onClose(modalRef);
+    }
   };
+
+
+
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
@@ -85,7 +95,7 @@ function UploadPhotoModal({ onClose }) {
   //이미지 삭제
   const handleDeleteImage = (id) => {
     setImgPreview(imgPreview.filter((_, index) => index !== id));
-    setFileList(files.filter((_, index) => index !== id));
+    setImgProductList(imgProductList.filter((_, index) => index !== id));
   };
 
   //버튼 클릭하면 file호출
@@ -132,7 +142,7 @@ function UploadPhotoModal({ onClose }) {
               ref={imgRef}
               onChange={(e) => {
                 handleAddImages(e);
-                handleImageChange(e);
+                uploadFB(e)
               }}
             />
           </div>

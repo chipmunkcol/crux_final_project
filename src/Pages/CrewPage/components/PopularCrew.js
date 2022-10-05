@@ -16,11 +16,11 @@ const PopularCrew = ({searchData}) => {
     const navigate = useNavigate();
   
     const [list, setList] = useState([]);
-    console.log(list)
+    // console.log(list)
   
     // 무한스크롤 적용하기
       const [page, setPage] = useState(0); //현재 페이지
-      console.log(page)
+      // console.log(page)
       const obsRef = useRef(null); 	//observer Element
   
       const [load, setLoad] = useState(false); //로딩 스피너

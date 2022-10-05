@@ -9,12 +9,12 @@ const BASE_URL = "https://sparta-tim.shop";
 const navigate = useNavigate()
 
 const [galarys, setGalarys] = useState([]) 
-console.log(galarys)
+// console.log(galarys)
 
 const getGalarys = async () => {
     await axios.get(`${BASE_URL}/crews/posts?page=0&size=6`)
         .then((res) => {
-            console.log(res.data.data)
+            // console.log(res.data.data)
             setGalarys((prev) => [...prev, ...res.data.data]);
         })
         .catch((err) => {

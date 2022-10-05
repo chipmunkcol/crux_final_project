@@ -34,7 +34,7 @@ const CrewDetail = () => {
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  console.log(crew);
+  // console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;

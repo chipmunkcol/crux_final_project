@@ -6,7 +6,7 @@ import 사용자이미지 from "../../../Image/작은사용자이미지.png"
 
 
 const GymList = ({gyms, onclickGymList}) => {
-console.log(gyms)
+// console.log(gyms)
 const navigate = useNavigate()
 
 

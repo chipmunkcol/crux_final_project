@@ -8,8 +8,8 @@ import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
 
 const ReviewImgSlider = ({setReviewImgModal, reviewData, reviewId}) => {
    
-console.log(reviewData)
-console.log(reviewId)
+// console.log(reviewData)
+// console.log(reviewId)
 
 const closeModal = () => {
     setReviewImgModal(false);

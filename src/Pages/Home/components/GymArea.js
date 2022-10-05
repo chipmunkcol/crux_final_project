@@ -12,7 +12,7 @@ const GymArea = () => {
     const navigate = useNavigate()
     const {isLoading, error, getGym} = useSelector((state)=>state.getGym)
     const gym = getGym?.data
-    console.log(gym)
+    // console.log(gym)
 
     useEffect(()=>{
         dispatch(__getGym())

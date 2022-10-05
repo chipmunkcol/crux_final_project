@@ -27,7 +27,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
   const [fileUrl, setFileUrl] = useState(
     myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지
   );
-  console.log(fileUrl);
+  // console.log(fileUrl);
 // 닉네임 2~10 글자 제한
 // 소개글 150 글자 제한
   const changeImage = async (e) => {

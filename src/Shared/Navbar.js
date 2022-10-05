@@ -70,19 +70,19 @@ useEffect(()=>{
     {headers: {Authorization: userToken}  })
     
     sse.onopen = e => {
-      console.log("연결완료")
+      // console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
         if(e.data.startsWith('{')) {
-          console.log(e.data)
+          // console.log(e.data)
           setRealtimeAlam((prev) => [JSON.parse(e.data)])
 
         }}
     )
 
     sse.onerror = e => {
-      console.log(e)
+      // console.log(e)
       // sse.close();
     };
     setListening(true)

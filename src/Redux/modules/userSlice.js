@@ -19,7 +19,7 @@ const initialState = {
 export const signup = createAsyncThunk(
   "/members/signup",
   async (payload, thunkAPI) => {
-    console.log(payload);
+    // console.log(payload);
     try {
       const response = await axios.post(
         `${BASE_URLM}/members/signup`,
@@ -68,7 +68,7 @@ export const login = createAsyncThunk(
       const response = await axios
         .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.localStorage.setItem(
             "access_token",
             response.headers.access_token
@@ -113,7 +113,7 @@ export const kakaoLogin = createAsyncThunk(
       const response = await axios
         .get(`${BASE_URLM}/oauth/kakao/callback?code=${payload}`)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.localStorage.setItem(
             "access_token",
             response.headers.authorization
@@ -162,10 +162,10 @@ export const likeCrew = createAsyncThunk(
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("좋아요 완료");
-      console.log(response.data);
+      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -185,10 +185,10 @@ export const unLikeCrew = createAsyncThunk(
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("좋아요 취소 완료");
-      console.log(response.data);
+      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -228,7 +228,7 @@ export const withdrawCrew = createAsyncThunk(
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("탈퇴 완료");
       return thunkAPI.fulfillWithValue(response.data);

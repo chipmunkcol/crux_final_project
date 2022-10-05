@@ -12,7 +12,7 @@ export const __getAlam = createAsyncThunk(
         try {
             const data = await axios.get(`${BASE_URL}/notifications`,
             { headers: {Authorization: window.localStorage.getItem("access_token")}})
-            console.log(data.data)
+            // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
             return thunkAPI.rejectWithValue(error)

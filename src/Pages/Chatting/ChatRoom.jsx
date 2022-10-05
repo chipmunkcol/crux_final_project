@@ -60,7 +60,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   const nickname = window?.localStorage?.getItem("nickname");
   //메시지 보내기
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     client.send(
       `/pub/chat/message`,
       headers,
@@ -85,7 +85,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   }, [chatList?.message?.length]);
   const [scrollState, setScrollState] = useState(true);
   const scrollEvent = _.debounce(() => {
-    console.log("scroll");
+    // console.log("scroll");
     const scrollTop = boxRef.current.scrollTop; // 스크롤 위치
     const clientHeight = boxRef.current.clientHeight; // 요소의 높이
     const scrollHeight = boxRef.current.scrollHeight; // 스크롤의 높이

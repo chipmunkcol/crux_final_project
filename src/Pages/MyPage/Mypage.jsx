@@ -21,7 +21,7 @@ const navigate = useNavigate()
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
 const myPage = mypage.data
-console.log(myPage)
+// console.log(myPage)
 
 const params = useParams().memberId
 // console.log(params)
@@ -39,7 +39,7 @@ const deleteId = async() => {
         await axios.delete(`${BASE_URL}/members/withdraw`, 
         {headers: {Authorization: window.localStorage.getItem("access_token")}})
         .then((res) => {
-            console.log(res)
+            // console.log(res)
             alert(res.data.data)
             localStorage.removeItem("access_token")
             localStorage.removeItem("userId")

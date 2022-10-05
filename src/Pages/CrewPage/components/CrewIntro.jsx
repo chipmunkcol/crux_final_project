@@ -4,7 +4,7 @@ import { ReactComponent as Crown } from "../../../Image/crown.svg";
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
 function CrewIntro({ content, adminNickname, adminContent, img }) {
-  console.log(img)
+  // console.log(img)
   return (
     <Container>
       <Intro>
