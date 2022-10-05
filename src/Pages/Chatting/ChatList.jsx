@@ -6,6 +6,8 @@ import styled from "styled-components";
 import ChatRoom from "./ChatRoom";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 import useOutSideClick from "../../Shared/hooks/useOutSideClick";
+import Draggable from "react-draggable"; 
+
 function ChatList({ onClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,7 +35,15 @@ function ChatList({ onClose }) {
     setChatRoomImg(url);
   };
   //채팅방 목록 필터할 것,,
+
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // box의 포지션 값
+  // 업데이트 되는 값을 set 해줌
+  const trackPos = (data) => {
+    setPosition({ x: data.x, y: data.y }); 
+  }
+
   return (
+  <Draggable onDrag={(e, data) => trackPos(data)}>
     <ChatWarp>
       {isVisible ? (
         <>
@@ -85,6 +95,7 @@ function ChatList({ onClose }) {
         />
       )}
     </ChatWarp>
+  </Draggable>
   );
 }
 export default ChatList;
