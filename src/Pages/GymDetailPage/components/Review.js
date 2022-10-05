@@ -53,7 +53,7 @@ if(gym === undefined) {
 
     return(
         <div style={{width:'192rem', backgroundColor:'#141414'}}>
-            <div style={{width:'120rem', margin:'0 auto', padding:'3rem 0 0 0', color:'#999999'}}>
+            <Wrap style={{width:'120rem', margin:'0 auto', padding:'3rem 0 0 0', color:'#999999'}}>
                 
                 {
                     gym.reviews?.map((review,i) => {
@@ -66,7 +66,7 @@ if(gym === undefined) {
                                     
                                 </div>
 
-                                <div style={{width:'44rem', height:'100%', padding:'1rem', fontSize:'1.4rem'}}>
+                                <div style={{width:'84rem', height:'100%', padding:'1rem', fontSize:'1.4rem'}}>
                                     <div style={{margin:'0 0 0 0', color:'#ffffff', fontSize:'2rem'}}>{review.nickname}
                                         <span style={{opacity:'0.5', margin:'0 0 0 2rem', fontSize:'1.4rem'}}>{review.createdAt?.substr(0,10)}</span>
                                     </div>
@@ -82,9 +82,9 @@ if(gym === undefined) {
                                         }
                                     </div>
 
-                                    <div style={{margin:'1rem 0 0.5rem 0', color:'#999999'}}>
+                                    <ReviewContent >
                                         {review.content}
-                                    </div>
+                                    </ReviewContent>
                 {/* ?? 반복문 웨안돼! */}
                 
                                         {   review?.reviewPhotoList?.length === 0 ? null :
@@ -114,7 +114,7 @@ if(gym === undefined) {
                                 
                                 {
                                     review?.memberId !== userId ? null : 
-                                        <div style={{margin:'1rem 0 0 58rem'}}>
+                                        <div style={{margin:'1rem 0 0 17rem'}}>
                                             <span onClick={()=>{setEditModal(true); setReviewId(review.id)}} type="button">수정</span> &nbsp;|&nbsp; 
                                             <span onClick={()=>{onclickDelReview(review.id)}} type="button">삭제</span>
                                         </div>
@@ -129,7 +129,7 @@ if(gym === undefined) {
                     })
                 }
                 
-            </div>
+            </Wrap>
             
                     {reviewImgModal ? <ReviewImgSlider setReviewImgModal={setReviewImgModal} reviewData={reviewData} reviewId={reviewId}/> : null}
 
@@ -139,6 +139,15 @@ if(gym === undefined) {
 
 const ReviewImg = styled.img`
 cursor: zoom-in;
+`
+const ReviewContent = styled.div`
+width: 94rem;
+margin: 1rem 0 0.5rem 0;
+color: #999999;
+`
+
+const Wrap = styled.div`
+word-break: break-all;
 `
 
 const Star0 = () => {

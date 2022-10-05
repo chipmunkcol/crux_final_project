@@ -152,7 +152,7 @@ const DeleteBtn = styled.p`
   left: 20px;
   font-weight: 400;
   letter-spacing: -0.05em;
-  font-size: 12px;
+  font-size: 2rem;
   color: #ffffff;
 `;
 

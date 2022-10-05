@@ -34,7 +34,7 @@ const CrewDetail = () => {
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  // console.log(crew);
+  console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -352,7 +352,7 @@ const CrewDetail = () => {
           )}
           {memberVisible && <CrewMember members={[crew?.memberList]} />}
           {noticeVisible && <CrewNotice notice={crew?.noticeList} />}
-          {photosVisible && <CrewPhotos />}
+          {photosVisible && <CrewPhotos crew={crew}/>}
         </TabContainer>
       </Warp>
       <Footer />

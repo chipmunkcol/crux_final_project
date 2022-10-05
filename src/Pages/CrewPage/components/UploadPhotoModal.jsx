@@ -12,6 +12,7 @@ import "slick-carousel/slick/slick-theme.css";
 // import 슬라이더오른쪽버튼 from "../../Image/btn_left.png";
 import { addCrewPhoto } from "../../../Redux/modules/crewSlice";
 import { useCallback } from "react";
+import Loading from '../components/UploadLoading' 
 
 function UploadPhotoModal({ onClose }) {
   //기본 세팅
@@ -19,17 +20,15 @@ function UploadPhotoModal({ onClose }) {
   const dispatch = useDispatch();
   const photomodalRef = useRef();
 
-  const [files, setFileList] = useState([]); // 파일 리스트
-  const [fileUrl, setFileUrl] = useState([]); // 업로드 완료된 사진 링크들
-  const [isUploading, setUploading] = useState(false); // 업로드 상태
-  console.log(fileUrl);
   const storage = getStorage();
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
   const [imgProductList, setImgProductList] = useState([]);
   console.log(imgProductList)
 
+  const [loading, setLoading] = useState(false)
   const uploadFB = async (event) => {
+    setLoading(true)
     const imageLists = event.target.files;
     const uploaded_file = await uploadBytes(
       ref(storage, `images/${event.target.files[0].name}`),
@@ -49,6 +48,7 @@ function UploadPhotoModal({ onClose }) {
       imageUrlLists = imageUrlLists.slice(0, 5);
     }
     setImgProductList(imageUrlLists);
+    setLoading(false)
   };
 
   const onsubmit = () => {
@@ -120,7 +120,7 @@ function UploadPhotoModal({ onClose }) {
     <Background>
       <Modal ref={modalRef} onSubmit={onsubmit}>
         <Title>
-          <h1>사진 ({imgPreview.length}/5)</h1>
+          <h1>사진 ({imgProductList.length}/5)</h1>
         </Title>
         <Xbtn onClick={onClose}></Xbtn>
         <ImgBox>
@@ -146,7 +146,8 @@ function UploadPhotoModal({ onClose }) {
               }}
             />
           </div>
-          {imgPreview?.map((image, id) => (
+          {loading ? <Loading /> :
+            imgProductList?.map((image, id) => (
             <div key={id} onClick={() => handleDeleteImage(id)}>
               <img src={image} />
             </div>

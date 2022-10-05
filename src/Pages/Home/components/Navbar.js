@@ -81,7 +81,7 @@ useEffect(()=>{
 
     sse.onerror = e => {
       // console.log(e)
-      // sse.close();
+      sse.close();
     };
     setListening(true)
   }

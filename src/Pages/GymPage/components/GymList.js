@@ -23,7 +23,7 @@ const navigate = useNavigate()
                                         <img src={gym.imgUrl !== null ? gym.imgUrl : 디폴트짐} alt='' style={{width:'15rem', height:'15rem'}}/>
                                         <GymContent style={{width:'35rem', padding:'0.5rem 1rem 1rem 2rem', height:'13rem'}}>
                                             <GymTitle onClick={()=>{ navigate(`/gyms/${gym.id}`) }} type="button">{gym.name}</GymTitle>
-                                            <p style={{margin:'2rem 0 0 0'}}>{gym.location}</p>
+                                            <p style={{margin:'0 0 0 0'}}>{gym.location}</p>
                                             <p style={{margin:'1rem 0 0 0'}}>{gym.phone}</p>
                                             <p style={{margin:'1rem 0 0 0'}}>
                                                 ✨ {Number(gym.avgScore).toFixed(2)}점
@@ -53,13 +53,14 @@ cursor: pointer;
 const GymContent = styled.div`
 color: #999999;
 :hover {
-    color: #ffb800;
+    color: #ffffff;
 }
 `
 const GymTitle = styled.div`
 font-size: 2rem;
+height: 5rem;
 :hover {
-    color: #ffffff;
+    color: #ffb800;
 }
 `
 

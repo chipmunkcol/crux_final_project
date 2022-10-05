@@ -8,7 +8,9 @@ import 이미지업로드 from "../../../Image/프리뷰box.png"
 import 리뷰기본이미지 from '../../../Image/리뷰기본이미지.jpg'
 import { useRef } from "react";
 import { useCallback } from "react";
+import { ReactComponent as ImgUploadIcon } from "../../../Image/imgUploadBox.svg";
 import axios from "axios";
+import Loading from "../components/ReviewLoading"
 
 
 function ModalReview({ setModal, gym, reload, setReload }) {
@@ -37,8 +39,6 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     // 이미지 업로드 <firebase> 라이브러리! 
 
     const [content, setContent] = useState('');
-    const [fileUrl, setFileUrl] = useState([]);
-    const [files, setFileList] = useState([]); // 파일 리스트
     const storage = getStorage();
     // const storageRef = ref(storage);
 
@@ -46,32 +46,38 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     const [imgProductList, setImgProductList] = useState([]);
     console.log(imgProductList)
 
-    const uploadFB = async (event) => {
-        
-        const imageLists = event.target.files;
-        const uploaded_file = await uploadBytes(
-          ref(storage, `images/${event.target.files[0].name}`),
-          event.target.files[0]
-        );
-    
-        const url = await getDownloadURL(uploaded_file.ref);
-        setImgProductList(url);
-    
-        let imageUrlLists = [...imgProductList];
-        for (let i = 0; i < imageLists.length; i++) {
-          const imgUrl = url;
-          imageUrlLists.push({ imgUrl });
-        }
-        if (imageUrlLists.length > 3) {
-          imageUrlLists = imageUrlLists.slice(0, 3);
-        }
-        setImgProductList(imageUrlLists);
-      };
-    
-      const handleDeleteImage = (id) => {
+  const [loading, setLoading] = useState(false)
+  
+  const uploadFB = async (event) => {
+    setLoading(true)
+    const imageLists = event.target.files;
+    const uploaded_file = await uploadBytes(
+      ref(storage, `images/${event.target.files[0]?.name}`),
+      event.target.files[0]
+    );
+
+    const url = await getDownloadURL(uploaded_file.ref);
+    setImgProductList(url);
+
+    let imageUrlLists = [...imgProductList];
+    for (let i = 0; i < imageLists.length; i++) {
+      const imgUrl = url;
+      imageUrlLists.push({ imgUrl });
+      console.log(imageUrlLists)
+    }
+    if (imageUrlLists.length > 3) {
+      imageUrlLists = imageUrlLists.slice(0, 3);
+    }
+    setImgProductList(imageUrlLists);
+    setLoading(false)
+  };
+
+  
+    //이미지 삭제
+    const handleDeleteImage = (id) => {
         setImgProductList(imgProductList.filter((_, index) => index !== id));
-      };
-    
+    };
+
 
     const onsubmit = () => {
         createReview();
@@ -105,29 +111,12 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     }
 
 
-    //이미지 미리보기
-    const [imgPreview, setImgPreview] = useState([])
-    // console.log(imgPreview)
+//버튼 클릭하면 file호출
+    const imgRef = useRef();
 
-    //이미지 상대경로 저장
-    const handleAddImages = (e) => {
-        const imageLists = e.target.files;
-        let imageUrlLists = [...imgPreview];
-
-        for (let i=0; i < imageLists.length; i++) {
-            const currentImageUrl = URL.createObjectURL(imageLists[i]);
-            imageUrlLists.push(currentImageUrl);
-        }
-        if (imageUrlLists.length > 3) {
-            alert('사진은 3장까지만 등록 가능합니다')
-            imageUrlLists = imageUrlLists.slice(0, 3)
-        }
-        setImgPreview(imageUrlLists)
-    }
-    
-
-
-
+    const onClickImg = () => {
+        imgRef.current.click();
+        };
 
     return (
         <ModalPage>
@@ -147,25 +136,27 @@ function ModalReview({ setModal, gym, reload, setReload }) {
                         onChange={(e) => { setContent(e.target.value); } } />
                 </div>
 
-                <label>
+                {/* <label> */}
+                
                     <input
-                        encType="multipart/form-data"
                         accept='image/*'
                         type="file" multiple
                         style={{ display: 'none' }}
-                        onChange={(e)=>{ uploadFB(e); handleAddImages(e)}} />
-                    <div style={{display:'flex', position:'absolute', margin:'-3rem 0 0 6rem'}}>
-                        <UploadImg> <img src={이미지업로드} style={{ width:"20rem", height:'100%'}} type="button"/> </UploadImg>
+                        ref={imgRef}
+                        onChange={(e)=>{ uploadFB(e) }} />
+                    <div style={{display:'flex', position:'absolute', margin:'-1rem 0 0 6rem'}}>
+                        <ImgUploadIcon type="button" onClick={onClickImg} />
                         
-                        {imgPreview?.map((image, i) => (
-                                <ImgPreview key={i} onClick={handleDeleteImage}>
-                                    <img src={image} style={{width:"100%", height:'100%'}}/>
+                        {loading ? <Loading /> :
+                          imgProductList?.map((image, id) => (
+                                <ImgPreview key={id} onClick={()=>{handleDeleteImage(id)}}>
+                                    <img src={image.imgUrl} style={{width:"100%", height:'100%'}}/>
                                 </ImgPreview>
                             ))
                         }
                     
                     </div>
-                </label>
+                {/* </label> */}
                 <div style={{ display: 'flex', margin: '-1rem 0 0 50rem' }}>
                     <S_btn style={{ margin: '0rem 1rem 0 0' }} onClick={closeModal}>취소</S_btn>
                     <S_btn onClick={onsubmit}>리뷰 올리기</S_btn>

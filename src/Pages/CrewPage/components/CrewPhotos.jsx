@@ -10,9 +10,10 @@ import PhotoDetailModal from "./PhotoDetailModal";
 import { getCrewPhoto } from "../../../Redux/modules/crewSlice";
 import { ReactComponent as ImgUpload } from "../../../Image/imgUpload.svg";
 
-function CrewPhotos() {
+function CrewPhotos({crew}) {
   const params = useParams().crewId;
   const dispatch = useDispatch();
+  const userId = Number(window.localStorage.getItem("userId"))
 
   useEffect(() => {
     dispatch(getCrewPhoto(params));
@@ -29,7 +30,13 @@ function CrewPhotos() {
   const [uploadModalVisible, setUploadModaVisible] = useState(false);
 
   const handleMadalClick = () => {
-    setUploadModaVisible(!uploadModalVisible);
+    const a = crew?.memberList.findIndex((val)=>val.id === userId)
+    console.log(a)
+    if (a !== -1) {
+      setUploadModaVisible(!uploadModalVisible);
+    } else {
+      alert(`${crew?.name}멤버만 사진 등록이 가능합니다`)
+    }
   };
 
   //이미지 리스트 모달 띄우기-->모달에 postId전달.

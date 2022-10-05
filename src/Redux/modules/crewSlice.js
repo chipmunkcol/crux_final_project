@@ -246,6 +246,7 @@ export const addCrewPhoto = createAsyncThunk(
           },
         }
       );
+      // alert('등록 완료!')
       window.location.reload();
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
