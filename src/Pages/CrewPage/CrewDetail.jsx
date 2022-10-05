@@ -29,12 +29,11 @@ const CrewDetail = () => {
 
   useEffect(() => {
     dispatch(getCrewDetail(params));
-    window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
   }, []);
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  // console.log(crew);
+  console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -98,7 +97,7 @@ const CrewDetail = () => {
           },
         }
       );
-      dispatch(_joinCrew(true))
+      dispatch(_joinCrew(true));
       window.alert("신청되었습니다.");
       return response.data;
     } catch (error) {
@@ -116,7 +115,7 @@ const CrewDetail = () => {
           },
         }
       );
-      dispatch(_joinCancelCrew(false))
+      dispatch(_joinCancelCrew(false));
       window.alert("신청 취소되었습니다.");
       return response.data;
     } catch (error) {
@@ -287,23 +286,21 @@ const CrewDetail = () => {
                   </Text>
                   <Text>
                     <p>주 활동 클라이밍장</p>
-                    <p>{crew?.mainActivityGym}</p>
+                    <p> {crew?.mainActivityGym}</p>
                   </Text>
                 </TextDetail>
               </TextBox>
-              {checkmember < 0 && crew?.submit === true ? 
-              
-              ( <ButtonBox>
-                <button
-                  onClick={() => {
-                    joinCancelCrews();
-                  }}
-                >
-                  가입 취소
-                </button>
-              </ButtonBox>
-              ) : checkmember < 0 && crew?.submit === false ?
-              (
+              {checkmember < 0 && crew?.submit === true ? (
+                <ButtonBox>
+                  <button
+                    onClick={() => {
+                      joinCancelCrews();
+                    }}
+                  >
+                    가입 취소
+                  </button>
+                </ButtonBox>
+              ) : checkmember < 0 && crew?.submit === false ? (
                 <ButtonBox>
                   <button
                     onClick={() => {
@@ -445,6 +442,7 @@ const ContentBox = styled.div`
 const TextBox = styled.div`
   width: 550px;
   height: 372px;
+  word-break: break-all;
   h1 {
     color: #ffffff;
     font-family: "Spoqa Han Sans Neo";

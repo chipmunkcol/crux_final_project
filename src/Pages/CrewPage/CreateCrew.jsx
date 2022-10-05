@@ -329,7 +329,8 @@ const CreateCrew = () => {
               <TextBox>
                 <p>크루 이름</p>
                 <input
-                  placeholder="크루 이름을 입력해주세요."
+                  maxLength="20"
+                  placeholder="크루 이름을 입력해주세요. (20자 이내)"
                   {...register("name", { required: true })}
                 />
               </TextBox>
@@ -365,8 +366,9 @@ const CreateCrew = () => {
                 <p>주 활동 짐</p>
                 <input
                   type="text"
+                  maxLength="20"
                   {...register("place", { required: true })}
-                  placeholder="주 활동 짐을 입력해주세요."
+                  placeholder="주 활동 짐을 입력해주세요. (20자 이내)"
                 />
               </TextBox>
               <TextBox>
@@ -389,6 +391,7 @@ const CreateCrew = () => {
               <TextDetail>
                 <p>크루 소개</p>
                 <textarea
+                  maxLength="100"
                   placeholder="크루에 대한 간단한 소개를 입력해주세요. 
                   예) 직장인으로 구성된 크루입니다. 매주 토요일마다 정기모임이 있어요."
                   {...register("content", { required: true })}
