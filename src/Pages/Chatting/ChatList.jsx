@@ -6,25 +6,19 @@ import styled from "styled-components";
 import ChatRoom from "./ChatRoom";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 import useOutSideClick from "../../Shared/hooks/useOutSideClick";
-
 function ChatList({ onClose }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   //채팅방 목록 불러오기
   useEffect(() => {
     dispatch(getChatRoom());
   }, []);
-
   const chatRoomList = useSelector((state) => state?.chat?.chatRoom?.data);
-
   //채팅방 들어가기
   const [isVisible, setIsVisible] = useState(true);
-
   const handleChange = () => {
     setIsVisible(!isVisible);
   };
-
   //세부 채팅방  id 전달
   const [chatRoomId, setchatRoomId] = useState("");
   //세부 채팅방 이름 전달
@@ -33,87 +27,67 @@ function ChatList({ onClose }) {
   const [chatRoomImg, setChatRoomImg] = useState("");
   //세부 채팅방 시간 전달
   const [chatRoomTime, setChatRoomTime] = useState("");
-
   const handleEnterRoom = (id, name, url, time) => {
     setchatRoomId(id);
     setChatRoomName(name);
     setChatRoomImg(url);
   };
-
   //채팅방 목록 필터할 것,,
-
   return (
-    <Background>
-      <ChatWarp>
-        {isVisible ? (
-          <>
-            <Title>
-              <h3>크루리스트</h3>
-              <ChatXbtn onClick={onClose} style={{ cursor: "pointer" }} />
-            </Title>
-            <List>
-              {chatRoomList?.map((room) => (
-                <Room
-                  key={room.roomId}
-                  style={{ cursor: "pointer" }}
-                  onClick={() => {
-                    handleChange();
-                    handleEnterRoom(room.roomId, room.crewName, room.imgUrl);
-                  }}
-                >
-                  <Content>
+    <ChatWarp>
+      {isVisible ? (
+        <>
+          <Title>
+            <h3>크루리스트</h3>
+            <ChatXbtn onClick={onClose} style={{ cursor: "pointer" }} />
+          </Title>
+          <List>
+            {chatRoomList?.map((room) => (
+              <Room
+                key={room.roomId}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  handleChange();
+                  handleEnterRoom(room.roomId, room.crewName, room.imgUrl);
+                }}
+              >
+                <Content>
+                  <div>
+                    <img src={room.imgUrl} />
+                  </div>
+                  <Text>
                     <div>
-                      <img src={room.imgUrl} />
+                      <h3>{room.crewName}</h3>
+                      <p>
+                        {room?.lastMessage?.createdAt.slice(0, 10)}{" "}
+                        {room?.lastMessage?.createdAt.slice(11, 16)}
+                      </p>
                     </div>
-                    <Text>
-                      <div>
-                        <h3>{room.crewName}</h3>
-                        <p>
-                          {room?.lastMessage?.createdAt.slice(0, 10)}{" "}
-                          {room?.lastMessage?.createdAt.slice(11, 16)}
-                        </p>
-                      </div>
-                      <div>
-                        {room?.lastMessage?.message ? (
-                          <p>{room?.lastMessage?.message}</p>
-                        ) : (
-                          <p>아직 메시지가 없습니다</p>
-                        )}
-                      </div>
-                    </Text>
-                  </Content>
-                </Room>
-              ))}
-            </List>
-          </>
-        ) : (
-          <ChatRoom
-            onClose={handleChange}
-            roomId={chatRoomId}
-            roomName={chatRoomName}
-            roomImg={chatRoomImg}
-          />
-        )}
-      </ChatWarp>
-    </Background>
+                    <div>
+                      {room?.lastMessage?.message ? (
+                        <p>{room?.lastMessage?.message}</p>
+                      ) : (
+                        <p>아직 메시지가 없습니다</p>
+                      )}
+                    </div>
+                  </Text>
+                </Content>
+              </Room>
+            ))}
+          </List>
+        </>
+      ) : (
+        <ChatRoom
+          onClose={handleChange}
+          roomId={chatRoomId}
+          roomName={chatRoomName}
+          roomImg={chatRoomImg}
+        />
+      )}
+    </ChatWarp>
   );
 }
-
 export default ChatList;
-
-const Background = styled.div`
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  padding-top: 380px;
-  padding-left: 900px;
-  z-index: 99999;
-`;
-
 const ChatWarp = styled.div`
   width: 430px;
   height: 550px;
@@ -121,9 +95,11 @@ const ChatWarp = styled.div`
   border-radius: 15px;
   background-color: #262626;
   padding: 40px 25px 47px 25px;
-  z-index: 9999;
+  z-index: 99999;
+  position: fixed;
+  top: 25%;
+  right: 3%;
 `;
-
 const Title = styled.div`
   width: 100%;
   height: 25px;
@@ -135,10 +111,9 @@ const Title = styled.div`
     font-weight: 400;
     font-size: 20px;
     letter-spacing: -0.05em;
-    color: #ffffff;
+    color: #FFFFFF;
   }
 `;
-
 const List = styled.div`
   width: 380px;
   height: 418px;
@@ -149,7 +124,6 @@ const List = styled.div`
     display: none;
   }
 `;
-
 const Room = styled.div`
   width: 380px;
   height: 97px;
@@ -159,7 +133,6 @@ const Room = styled.div`
   margin-bottom: 10px;
   display: flex;
 `;
-
 const Content = styled.div`
   width: 305px;
   height: 63px;
@@ -170,14 +143,13 @@ const Content = styled.div`
         width: 55px;
         height: 55px;
         border-radius: 199.63px;
-        background: #e8e8e8;
+        background: #E8E8E8;
         margin-top: 6px;
         margin-right: 20px;
       }
     }
   }
 `;
-
 const Text = styled.div`
   hegith: 60px;
   width: 230px;
@@ -199,7 +171,7 @@ const Text = styled.div`
         font-weight: 400;
         font-size: 15px;
         letter-spacing: -0.05em;
-        color: #ffffff;
+        color: #FFFFFF;
       }
       p {
         font-weight: 300;

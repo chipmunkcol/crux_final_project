@@ -11,14 +11,13 @@ import { ReactComponent as ChatSendbtn } from "../../Image/chatsend.svg";
 import Me from "./components/Me";
 import Friends from "./components/Friends";
 import _ from "lodash";
-
 function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    reset,
+    formState: { isSubmitSuccessful },
   } = useForm();
-
   //기본설정---헤더, 토큰, 주소설정
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
@@ -27,39 +26,22 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   };
   const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
   const client = Stomp.over(socket);
-
   useEffect(() => {
     onConneted();
   }, []);
-
   useEffect(() => {
     window.addEventListener("beforeunload", (e) => {
       client.disconnect(() => client.unsubscribe("sub-0"), headers);
     }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄
-
     return () => {
       client.disconnect(() => client.unsubscribe("sub-0"), headers);
     };
   }, []);
-
   //데이터 불러오기
   useEffect(() => {
     dispatch(loadMessage(roomId));
   }, [dispatch]);
-
   const chatList = useSelector((state) => state?.chat?.chat?.data);
-  console.log(chatList);
-
-  //   엔터 누르면 데이터 전송
-  const handleEnterPress = (e) => {
-    if (message.trim() === "") {
-      e.preventDefault();
-    }
-    if (e.keyCode === 13 && e.shiftKey == false) {
-      sendMessage();
-    }
-  };
-
   //   연결&구독
   function onConneted() {
     try {
@@ -75,26 +57,23 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
       });
     } catch (error) {}
   }
-
   const nickname = window?.localStorage?.getItem("nickname");
-
   //메시지 보내기
-  const sendMessage = () => {
+  const onSubmit = (data) => {
+    console.log(data);
     client.send(
       `/pub/chat/message`,
       headers,
       JSON.stringify({
         roomId: roomId,
-        message: message,
+        message: data.message,
         writer: nickname,
       })
     );
     setMessage("");
   };
-
   const boxRef = useRef(); // 채팅 박스 ref
   const scrollRef = useRef(); // 채팅 박스 맨 아래를 가르키는 ref
-
   //채팅 방 들어가면 자동 스크롤
   useEffect(() => {
     const setTimeoutId = setTimeout(() => {
@@ -104,32 +83,31 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
       clearTimeout(setTimeoutId);
     };
   }, [chatList?.message?.length]);
-
   const [scrollState, setScrollState] = useState(true);
-
   const scrollEvent = _.debounce(() => {
     console.log("scroll");
     const scrollTop = boxRef.current.scrollTop; // 스크롤 위치
     const clientHeight = boxRef.current.clientHeight; // 요소의 높이
     const scrollHeight = boxRef.current.scrollHeight; // 스크롤의 높이
-
     // 스크롤이 맨 아래에 있을때
     setScrollState(
       scrollTop + clientHeight >= scrollHeight - 100 ? true : false
     );
   }, 100);
   const scroll = useCallback(scrollEvent, []);
-
   useEffect(() => {
     if (scrollState) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatList]);
-
   useEffect(() => {
     boxRef.current.addEventListener("scroll", scroll);
   });
-
+  useEffect(() => {
+    reset({
+      message: "",
+    });
+  }, [isSubmitSuccessful]);
   return (
     <div>
       <Top>
@@ -176,29 +154,26 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
         </ChatContainer>
       </ChatWarp>
       <ChatInput>
-        <input
-          placeholder="메시지를 입력해주세요."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          onKeyDown={handleEnterPress}
-        ></input>
-        <ChatSendbtn style={{ cursor: "pointer" }} onClick={sendMessage} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <input
+            placeholder="메시지를 입력해주세요."
+            {...register("message", { required: true })}
+          ></input>
+          <ChatSendbtn style={{ cursor: "pointer" }} type="submit" />
+        </form>
       </ChatInput>
     </div>
   );
 }
 export default ChatRoom;
-
 const ChatContainer = styled.div`
   width: 100%;
 `;
-
 const MyMessageBox = styled.div`
   width: 100%;
   background-color: pink;
   padding: 0px 7px 0px 0px;
 `;
-
 const CrewMessageBox = styled.div`
   display: flex;
   width: 100%;
@@ -207,7 +182,7 @@ const CrewMessageBox = styled.div`
     &:nth-child(1) {
       width: 25px;
       height: 25px;
-      background: #e8e8e8;
+      background: #E8E8E8;
       border-radius: 199.63px;
       margin-right: 10px;
       img {
@@ -228,7 +203,6 @@ const CrewMessageBox = styled.div`
     }
   }
 `;
-
 const CrewMessage = styled.div`
   padding: 0px 0px 0px 7px;
   background-color: red;
@@ -263,12 +237,11 @@ const CrewMessage = styled.div`
       font-weight: 400;
       font-size: 12px;
       letter-spacing: -0.05em;
-      color: #cccccc;
+      color: #CCCCCC;
       margin-left: 0px;
     }
   }
 `;
-
 const MyMessage = styled.div`
   div {
     text-align: right;
@@ -276,7 +249,7 @@ const MyMessage = styled.div`
     &:nth-child(1) {
       width: auto;
       position: relative;
-      background: #00aabb;
+      background: #00AABB;
       border-radius: 5px 0px 5px 5px;
       padding: 10px;
       ::after {
@@ -287,7 +260,7 @@ const MyMessage = styled.div`
         width: 0;
         height: 0;
         border: 7px solid transparent;
-        border-left-color: #00aabb;
+        border-left-color: #00AABB;
         border-right: 0;
         border-top: 0;
         margin-right: -7px;
@@ -295,7 +268,6 @@ const MyMessage = styled.div`
     }
   }
 `;
-
 const ChatInput = styled.div`
   width: 100%;
   height: 52px;
@@ -314,16 +286,15 @@ const ChatInput = styled.div`
     :focus {
       outline: none;
     }
-    color: #cccccc;
+    color: #CCCCCC;
     font-weight: 400;
     font-size: 14px;
     letter-spacing: -0.05em;
     ::-webkit-input-placeholder {
-      color: #3e3e3e;
+      color: #3E3E3E;
     }
   }
 `;
-
 const Top = styled.div`
   width: 100%;
   display: flex;
@@ -337,7 +308,7 @@ const Top = styled.div`
       font-weight: 400;
       font-size: 20px;
       letter-spacing: -0.05em;
-      color: #ffffff;
+      color: #FFFFFF;
     }
     p {
       font-weight: 300;
@@ -349,7 +320,6 @@ const Top = styled.div`
     }
   }
 `;
-
 const CrewImgBox = styled.div`
   width: 100%;
   display: flex;
@@ -362,7 +332,7 @@ const CrewImgBox = styled.div`
     &:nth-child(1) {
       width: 100px;
       height: 100px;
-      background: #e8e8e8;
+      background: #E8E8E8;
       border-radius: 199.63px;
       img {
         width: 100%;
@@ -378,7 +348,7 @@ const CrewImgBox = styled.div`
         font-weight: 400;
         font-size: 15px;
         letter-spacing: -0.05em;
-        color: #ffffff;
+        color: #FFFFFF;
       }
       p {
         font-weight: 300;
@@ -389,7 +359,6 @@ const CrewImgBox = styled.div`
     }
   }
 `;
-
 const ChatWarp = styled.div`
   height: 364px;
   max-height: 364px;
