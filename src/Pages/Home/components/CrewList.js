@@ -47,6 +47,7 @@ margin: 0 7rem 0 0;
     transform: scale(1.05);
     transition: 0.5s;
   }
+cursor: pointer;
 `
 const CrewName = styled.div`
 margin: 0px auto 14px auto;

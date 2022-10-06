@@ -44,7 +44,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
 
 
     const [imgProductList, setImgProductList] = useState([]);
-    console.log(imgProductList)
+    // console.log(imgProductList)
 
   const [loading, setLoading] = useState(false)
   
@@ -63,10 +63,11 @@ function ModalReview({ setModal, gym, reload, setReload }) {
     for (let i = 0; i < imageLists.length; i++) {
       const imgUrl = url;
       imageUrlLists.push({ imgUrl });
-      console.log(imageUrlLists)
+    //   console.log(imageUrlLists)
     }
-    if (imageUrlLists.length > 3) {
-      imageUrlLists = imageUrlLists.slice(0, 3);
+    if (imageUrlLists.length > 5) {
+      alert('리뷰 사진은 5장까지만 업로드 가능합니다')
+      imageUrlLists = imageUrlLists.slice(0, 5);
     }
     setImgProductList(imageUrlLists);
     setLoading(false)
@@ -105,7 +106,7 @@ function ModalReview({ setModal, gym, reload, setReload }) {
                     
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 });
         }
     }

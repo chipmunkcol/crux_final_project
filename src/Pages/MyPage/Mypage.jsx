@@ -21,7 +21,7 @@ const navigate = useNavigate()
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
 const myPage = mypage.data
-console.log(myPage)
+// console.log(myPage)
 
 const params = useParams().memberId
 // console.log(params)
@@ -47,7 +47,7 @@ const deleteId = async() => {
             navigate('/')
         })
         .catch((err) => {
-            console.log(err)
+            // console.log(err)
         })
     }  
 }

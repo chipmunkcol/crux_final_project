@@ -326,7 +326,7 @@ const Gym = () => {
               </div>
 
             </div>
-            <div style={{width:'192rem', height:'6rem', backgroundColor:'#000000'}}></div>
+            <div style={{width:'192rem', height:'0.5rem', backgroundColor:'#000000'}}></div>
 
             {/* 내 주변 클라이밍 짐 Area입니다 */}
             <div style={{display:'flex', justifyContent:'center', width:'192rem'}}>

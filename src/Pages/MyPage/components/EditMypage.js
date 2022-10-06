@@ -72,7 +72,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
         window.localStorage.setItem("profileImg", fileUrl)
       })
       .catch((err) => {
-        console.log(err);
+        // console.log(err);
     }) 
 }
 

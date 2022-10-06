@@ -52,37 +52,38 @@ function ChatList({ onClose }) {
             <ChatXbtn onClick={onClose} style={{ cursor: "pointer" }} />
           </Title>
           <List>
-            {chatRoomList?.map((room) => (
-              <Room
-                key={room.roomId}
-                style={{ cursor: "pointer" }}
-                onClick={() => {
-                  handleChange();
-                  handleEnterRoom(room.roomId, room.crewName, room.imgUrl);
-                }}
-              >
-                <Content>
-                  <div>
-                    <img src={room.imgUrl} />
-                  </div>
-                  <Text>
+            {chatRoomList?.length === 0 ? <div style={{color:'#ffffff', textAlign:'center', fontSize:'1.4rem', padding:'4rem'}}>가입한 크루원들과 채팅을 할 수 있어요!</div> :
+              chatRoomList?.map((room) => (
+                <Room
+                  key={room.roomId}
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    handleChange();
+                    handleEnterRoom(room.roomId, room.crewName, room.imgUrl);
+                  }}
+                >
+                  <Content>
                     <div>
-                      <h3>{room.crewName}</h3>
-                      <p>
-                        {room?.lastMessage?.createdAt.slice(0, 10)}{" "}
-                        {room?.lastMessage?.createdAt.slice(11, 16)}
-                      </p>
+                      <img src={room.imgUrl} />
                     </div>
-                    <div>
-                      {room?.lastMessage?.message ? (
-                        <p>{room?.lastMessage?.message}</p>
-                      ) : (
-                        <p>아직 메시지가 없습니다</p>
-                      )}
-                    </div>
-                  </Text>
-                </Content>
-              </Room>
+                    <Text>
+                      <div>
+                        <h3>{room.crewName}</h3>
+                        <p>
+                          {room?.lastMessage?.createdAt.slice(0, 10)}{" "}
+                          {room?.lastMessage?.createdAt.slice(11, 16)}
+                        </p>
+                      </div>
+                      <div>
+                        {room?.lastMessage?.message ? (
+                          <p>{room?.lastMessage?.message}</p>
+                        ) : (
+                          <p>아직 메시지가 없습니다</p>
+                        )}
+                      </div>
+                    </Text>
+                  </Content>
+                </Room>
             ))}
           </List>
         </>
@@ -108,8 +109,8 @@ const ChatWarp = styled.div`
   padding: 40px 25px 47px 25px;
   z-index: 99999;
   position: fixed;
-  top: 25%;
-  right: 3%;
+  top: 20%;
+  right: 9%;
 `;
 const Title = styled.div`
   width: 100%;

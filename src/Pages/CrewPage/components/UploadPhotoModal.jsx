@@ -24,7 +24,7 @@ function UploadPhotoModal({ onClose }) {
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
   const [imgProductList, setImgProductList] = useState([]);
-  console.log(imgProductList)
+  // console.log(imgProductList)
 
   const [loading, setLoading] = useState(false)
   const uploadFB = async (event) => {
@@ -42,7 +42,7 @@ function UploadPhotoModal({ onClose }) {
     for (let i = 0; i < imageLists.length; i++) {
       const imgUrl = url;
       imageUrlLists.push(imgUrl);
-      console.log(imageUrlLists)
+      // console.log(imageUrlLists)
     }
     if (imageUrlLists.length > 5) {
       imageUrlLists = imageUrlLists.slice(0, 5);

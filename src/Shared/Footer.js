@@ -1,12 +1,16 @@
+import { useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import 푸터영역 from "../Image/Footer@3x.png"
 
 const Footer = () => {
+
+const navigate = useNavigate()
+
     return(
         <Container>
             <Anker>
-                <Git></Git>
-                <Hanghae99></Hanghae99>
+                <Git onClick={()=>{window.open('https://github.com/chipmunkcol/crux_final_project')}}></Git>
+                <Hanghae99 onClick={()=>{window.open('https://hanghae99.spartacodingclub.kr/v2/exhibitions')}}></Hanghae99>
             </Anker>
 
         </Container>
@@ -24,19 +28,21 @@ margin: 0 auto;
 
 const Anker = styled.div`
 display: flex;
-width: 20rem;
+width: 25rem;
 height: 8rem;
-/* background-color: yellow; */
-float: right;
-
+margin: 25px 0px 0 131.8rem;
+position: absolute;
+cursor: pointer;
 `
 
 const Git = styled.div`
-width: 50%;
-/* background-color: red; */
+width: 58%;
+background-color: transparent;
+opacity: 0.8;
 `
 const Hanghae99 = styled.div`
 width: 50%;
-/* background-color: blue; */
+opacity: 0.8;
+background-color: transparent;
 `
 export default Footer;

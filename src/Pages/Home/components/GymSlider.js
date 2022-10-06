@@ -61,6 +61,7 @@ const Wrap = styled.div`
 :hover {
     color: #ffb800;
 }
+cursor: pointer;
 `
 
 const GymName = styled.div`

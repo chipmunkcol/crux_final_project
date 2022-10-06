@@ -58,7 +58,7 @@ const PopularCrew = ({searchData}) => {
             preventRef.current = true;
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
           }) 
           setLoad(false);
       }, [page])
@@ -79,6 +79,11 @@ return (
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+                    <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
@@ -101,6 +106,11 @@ return (
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+                    <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
@@ -145,13 +155,25 @@ height: 49rem;
 margin: 2rem 1rem 0 0.4rem;
 padding: 0;
 overflow: hidden;
+:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+cursor: pointer;
+`
+const HashWrap =styled.div`
+display: flex;
+position: absolute;
+margin: 0 0 0 0;
+color: #ffffff;
+font-size: 1.2rem;
+margin: 8rem 0 0 12rem;
+color: #999999;
 `
 
+const HashTag = styled.div`
 
-const Topbar = styled.div`
-  width: 122rem;
-  margin: 0 auto;
-  height: 0.1rem;
-`;
+`
+
 
 export default PopularCrew;

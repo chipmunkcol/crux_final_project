@@ -12,6 +12,7 @@ import Me from "./components/Me";
 import Friends from "./components/Friends";
 import _ from "lodash";
 
+
 const headers = {
   Authorization: window.localStorage.getItem("access_token"),
 };
@@ -36,6 +37,7 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   };
   const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
   const client = Stomp.over(socket);
+  client.debug=null;
 
   useEffect(() => {
     onConneted();

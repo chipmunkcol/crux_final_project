@@ -46,7 +46,7 @@ const likeGym = async() => {
         }, 0);
     })
     .catch((err) => {
-        console.log(err)
+        // console.log(err)
     })
 }
 

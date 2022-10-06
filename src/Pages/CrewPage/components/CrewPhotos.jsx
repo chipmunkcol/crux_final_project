@@ -31,7 +31,7 @@ function CrewPhotos({crew}) {
 
   const handleMadalClick = () => {
     const a = crew?.memberList.findIndex((val)=>val.id === userId)
-    console.log(a)
+    // console.log(a)
     if (a !== -1) {
       setUploadModaVisible(!uploadModalVisible);
     } else {
@@ -60,7 +60,7 @@ function CrewPhotos({crew}) {
           postId={postId}
         />
       )}
-      <ImgBox onClick={handleMadalClick}>
+      <ImgBox onClick={handleMadalClick} type="button">
         <ImgUpload />
       </ImgBox>
       {crewPhotos &&
@@ -71,6 +71,7 @@ function CrewPhotos({crew}) {
             onClick={() => {
               handleImgMadalClick(photo.imgList, photo);
             }}
+            style={{cursor:'zoom-in'}}
           >
             <OverLay>
               <div style={{ margin: "-23.5rem 0 0rem -14rem" }}>

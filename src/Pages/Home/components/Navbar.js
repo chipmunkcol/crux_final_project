@@ -267,6 +267,7 @@ border-radius: 60%;
 position: absolute;
 top: 11.1rem;
 margin: -6px 0 0 49.3rem;
+cursor: pointer;
 `
 
 export default Navbar;

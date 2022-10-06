@@ -18,7 +18,7 @@ const getGalarys = async () => {
             setGalarys((prev) => [...prev, ...res.data.data]);
         })
         .catch((err) => {
-        console.log(err);
+        // console.log(err);
         }) 
 }
 
@@ -36,7 +36,7 @@ useEffect(()=>{
                 galarys.length === 0 ? <Loading /> :
                     galarys?.slice(0,6).map((galary)=>{
                         return(
-                            <img key={`${galary.postId}+${galary.crewId}`} 
+                            <GalaryImg key={`${galary.postId}+${galary.crewId}`} 
                                 src={galary.imgList[0]?.imgUrl} 
                                 style={{width:'400px', height:'400px',position:'relative', margin:'0 1px 1px 0'}}
                                 onClick={()=>{navigate(`/crews/${galary.crewId}`)}}/>
@@ -52,6 +52,14 @@ useEffect(()=>{
         </div>
     )
 }
+
+const GalaryImg = styled.img`
+/* :hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+  } */
+cursor: pointer;
+`
 
 const Title = styled.div`
 width: 1206px;
