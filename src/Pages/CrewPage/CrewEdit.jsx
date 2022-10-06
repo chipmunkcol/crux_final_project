@@ -335,7 +335,8 @@ const CrewEdit = () => {
               <TextBox>
                 <p>크루 이름</p>
                 <input
-                  placeholder="크루 이름을 입력해주세요."
+                  maxLength="20"
+                  placeholder="크루 이름을 입력해주세요. (20자 이내)"
                   {...register("name", { required: true })}
                 />
               </TextBox>
@@ -372,8 +373,9 @@ const CrewEdit = () => {
                 <p>주 활동 짐</p>
                 <input
                   type="text"
+                  maxLength="20"
                   {...register("place", { required: true })}
-                  placeholder="장소를 선택해주세요."
+                  placeholder="주 활동 짐을 입력해주세요. (20자 이내)"
                   defaultValue={mainGym}
                 />
               </TextBox>

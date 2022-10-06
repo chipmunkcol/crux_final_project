@@ -57,9 +57,7 @@ function LoginModal({ onClose }) {
 
   return (
     <Background>
-      <Modal 
-        // ref={modalRef} 
-        onSubmit={handleSubmit(onSubmit)}>
+      <Modal onSubmit={handleSubmit(onSubmit)}>
         <Title>로그인</Title>
         <Xbtn onClick={onClose}></Xbtn>
         <InputBox emailBorder={emailBorder} passwordBorder={passwordBorder}>
@@ -76,7 +74,7 @@ function LoginModal({ onClose }) {
               })}
             />
             {emailValue?.length > 0 ? (
-              <div type="button">
+              <div>
                 <ClearXbtn
                   onClick={() => {
                     setValue("email", "");
@@ -113,9 +111,7 @@ function LoginModal({ onClose }) {
           </div>
         </InputBox>
         <Buttonbox>
-          <button type="submit" disabled={isSubmitting}>
-            로그인
-          </button>
+          <button type="submit">로그인</button>
           <button type="button" onClick={handleKaKaoLogin}>
             카카오톡 로그인
           </button>
@@ -273,7 +269,7 @@ const Buttonbox = styled.div`
   }
 `;
 
-const Xbtn = styled.button`
+const Xbtn = styled.div`
   width: 25px;
   height: 25px;
   background: none;
