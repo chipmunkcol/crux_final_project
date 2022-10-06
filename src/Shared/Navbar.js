@@ -62,7 +62,6 @@ const Navbar = () => {
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
 
-const [listening, setListening] = useState(false);
 let sse = undefined;
 useEffect(()=>{
   if (userToken) {
@@ -70,7 +69,7 @@ useEffect(()=>{
     {headers: {Authorization: userToken}  })
     
     sse.onopen = e => {
-      // console.log("연결완료")
+      console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
@@ -82,16 +81,15 @@ useEffect(()=>{
     )
 
     sse.onerror = e => {
-      sse.close();
+      // console.log(e)
     };
-    setListening(true)
   }
   return () => {
     if(userToken) {
       sse.close();
     }
   }
-}, [])
+}, [userToken])
 
 useEffect(()=>{
   if(realtimeAlam.length !== 0) {

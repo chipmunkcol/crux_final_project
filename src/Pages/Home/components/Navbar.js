@@ -60,7 +60,6 @@ useEffect(()=>{
 //SSE 연결하기
 const EventSource = EventSourcePolyfill || NativeEventSource;  //eventsource 쓰려면 import 해야됨!
 
-const [listening, setListening] = useState(false);
 let sse = undefined;
 useEffect(()=>{
   if (userToken) {
@@ -81,16 +80,14 @@ useEffect(()=>{
 
     sse.onerror = e => {
       // console.log(e)
-      sse.close();
     };
-    setListening(true)
   }
   return () => {
     if(userToken) {
       sse.close();
     }
   }
-}, [])
+}, [userToken])
 
 useEffect(()=>{
   if(realtimeAlam.length !== 0) {
