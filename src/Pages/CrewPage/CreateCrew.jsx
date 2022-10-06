@@ -36,7 +36,7 @@ const CreateCrew = () => {
       ((address === null) | undefined) |
       ((addressD === null) | undefined) |
       (keyword.length < 3) |
-      ((fileUrl === null) | undefined)
+      ((fileUrl === "") | undefined )
     ) {
       return;
     } else {

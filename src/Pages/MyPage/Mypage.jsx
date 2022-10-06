@@ -212,7 +212,7 @@ word-break: break-all;
 `
 
 const Flex2 =styled.div`
-width: 35rem;
+width: 42rem;
 height: 100%;
 `
 
@@ -224,7 +224,7 @@ margin: 1rem 85.7rem 1.5rem 7rem ;
 
 const JoinCrewContent = styled.div`
 color: #FFFFFF;
-width: 83rem;
+width: 39.5rem;
 height: 9rem;
 margin: 1.5rem 75.7rem 0rem 7rem;
 overflow: auto;

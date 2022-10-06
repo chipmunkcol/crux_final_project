@@ -69,7 +69,7 @@ useEffect(()=>{
     {headers: {Authorization: userToken}  })
     
     sse.onopen = e => {
-      console.log("연결완료")
+      // console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
