@@ -42,7 +42,7 @@ const EditMypage = ({ myPage, setEditMypage }) => {
   const EditDone = () => {
     if (editContent === "") {
       alert("자기소개를 입력해주세요");
-    } else if (editNickname === "") {
+    } else if (editNickname.trim() === "") {
       alert("닉네임을 입력해주세요");
     } else if (editNickname.length <= 1 || editNickname.length >= 11 ) {
       alert("닉네임은 2~10글자 사이로 입력해주세요:)");
@@ -139,6 +139,23 @@ const EditMypage = ({ myPage, setEditMypage }) => {
             }}
           />
         </Flex2>
+
+        <Flex3>
+                    <JoinCrewTitle>좋아요 한 크루</JoinCrewTitle>
+                    
+                    <JoinCrewContent>
+
+                        {
+                            myPage?.likeCrewList.map((crew) => {
+                                return(<div key={crew.id} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
+                                            &nbsp; &bull; &nbsp; {crew.name}
+                                       </div>)
+                            })
+                        }
+                
+                    </JoinCrewContent>
+
+                </Flex3>
       </Container>
     </>
   );
@@ -164,7 +181,7 @@ const Flex1 = styled.div`
 `;
 const Introduce = styled.div`
 color: #666666;
-margin: 0 0 1.5rem 7rem;
+margin: 3rem 0 1.5rem 7rem;
 font-size: 2rem;
 font-weight: 400;
 `
@@ -214,6 +231,7 @@ const ProfileContent = styled.textarea`
   margin: 0 0 0 7rem;
   font-size: 2rem;
   font-weight: 500;
+  padding: 1rem;
   color: #cccccc;
   background-color: #333333;
   border: none;
@@ -221,7 +239,7 @@ const ProfileContent = styled.textarea`
 `;
 
 const Flex2 = styled.div`
-  width: 103.6rem;
+  width: 35rem;
   height: 100%;
 `;
 const JoinCrewTitle = styled.div`
@@ -245,17 +263,21 @@ overflow: auto;
 const LikeGymTitle = styled.div`
   color: #666666;
   width: 20rem;
-  margin: 5rem 85.7rem 1.5rem 7rem;
+  margin: 3rem 85.7rem 1.5rem 7rem;
 `;
 const LikeGymContent = styled.div`
 color: #FFFFFF;
 width: 83rem;
-height: 13rem;
+height: 12rem;
 margin: 1.5rem 75.7rem 0 7rem;
 overflow: auto;
 ::-webkit-scrollbar {
     display: none;
 }
+`
+const Flex3 =styled.div`
+width: 35rem;
+height: 100%;
 `
 
 export default EditMypage;

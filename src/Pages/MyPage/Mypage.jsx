@@ -21,7 +21,7 @@ const navigate = useNavigate()
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
 const myPage = mypage.data
-// console.log(myPage)
+console.log(myPage)
 
 const params = useParams().memberId
 // console.log(params)
@@ -59,7 +59,7 @@ const deleteId = async() => {
             <Navbar />
 
             {isLoading === true ? <Loading /> : 
-                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage}/> :
+                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage}/> : (
 
                 <Container>
 
@@ -112,7 +112,7 @@ const deleteId = async() => {
 
                     </LikeGymContent>
                         
-                    <div style={{color:'#666666', margin:'0 0 1.5rem 7rem', fontSize:'2rem', fontWeight:'400'}}>
+                    <div style={{color:'#666666', margin:'3rem 0 1.5rem 7rem', fontSize:'2rem', fontWeight:'400'}}>
                         소개글
                     </div>
                     
@@ -120,7 +120,25 @@ const deleteId = async() => {
 
                 </Flex2>
 
-            </Container>
+                <Flex3>
+                    <JoinCrewTitle>좋아요 한 크루</JoinCrewTitle>
+                    
+                    <JoinCrewContent>
+
+                        {
+                            myPage?.likeCrewList.map((crew) => {
+                                return(<div key={crew.id} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
+                                            &nbsp; &bull; &nbsp; {crew.name}
+                                       </div>)
+                            })
+                        }
+                
+                    </JoinCrewContent>
+
+                </Flex3>
+
+            </Container>)
+
             }
             
             <Footer />
@@ -193,7 +211,7 @@ word-break: break-all;
 `
 
 const Flex2 =styled.div`
-width: 117rem;
+width: 35rem;
 height: 100%;
 `
 
@@ -216,17 +234,22 @@ overflow: auto;
 const LikeGymTitle = styled.div`
 color: #666666;
 width: 20rem;
-margin: 5rem 85.7rem 1.5rem 7rem ;
+margin: 3rem 85.7rem 1.5rem 7rem ;
 `
 const LikeGymContent = styled.div`
 color: #FFFFFF;
 width: 83rem;
-height: 13rem;
+height: 12rem;
 margin: 1.5rem 75.7rem 0 7rem;
 overflow: auto;
 ::-webkit-scrollbar {
     display: none;
 }
+`
+
+const Flex3 =styled.div`
+width: 35rem;
+height: 100%;
 `
 
 
