@@ -31,11 +31,8 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   //기본설정---헤더, 토큰, 주소설정
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
-  const headers = {
-    Authorization: window.localStorage.getItem("access_token"),
-  };
-  const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
-  const client = Stomp.over(socket);
+
+  client.debug = () => {};
 
   useEffect(() => {
     onConneted();
@@ -58,19 +55,16 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
 
   //   연결&구독
   function onConneted() {
-    try {
-      client.connect(headers, () => {
-        client.subscribe(
-          `/sub/chat/room/${roomId}`,
-          (data) => {
-            const newMessage = JSON.parse(data.body);
-            dispatch(addMessage(newMessage));
-          },
-          headers
-        );
-      });
-    } catch (error) {}
+    client.subscribe(
+      `/sub/chat/room/${roomId}`,
+      (data) => {
+        const newMessage = JSON.parse(data.body);
+        dispatch(addMessage(newMessage));
+      },
+      headers
+    );
   }
+
   const nickname = window?.localStorage?.getItem("nickname");
 
   //메시지 보내기

@@ -20,7 +20,6 @@ function CrewPhotos() {
 
   const crewPhotos = useSelector((state) => state?.crews?.crewPhotos?.data);
   const Photos = crewPhotos;
-  // console.log(Photos)
 
   // const userData = useSelector((state) => state);
   // console.log(userData);
