@@ -8,8 +8,8 @@ import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
 
 const ReviewImgSlider = ({setReviewImgModal, reviewData, reviewId}) => {
    
-console.log(reviewData)
-console.log(reviewId)
+// console.log(reviewData)
+// console.log(reviewId)
 
 const closeModal = () => {
     setReviewImgModal(false);
@@ -46,7 +46,9 @@ const settings = {
                     reviewData?.reviewPhotoList.map((review, i) => {
                         return(
                             <div key={i} >
-                                <img src={review?.imgUrl} style={{ width:'63rem', height:'63rem' }}/>
+
+                                <PhotoImg img={review.imgUrl}/> 
+                            
                             </div>
                         )
                     })
@@ -71,16 +73,26 @@ background-color: rgba(0, 0, 0, 0.4);
 color:black
 `
 const Container = styled.div`
-width: 600px;
-height: 400px;
+width: 63rem;
+height: 63rem;
 z-index: 999;
 position: absolute;
-top: 30%;
+top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
-background-color: white;
+background-color: #ffffff;
 border: 1px solid black;
-border-radius: 8px;
+/* border-radius: 8px; */
+`
+
+const PhotoImg = styled.div`
+width: 63rem;
+height: 63rem;
+display: block;
+background: url(${(props) => props.img});
+background-position: center;
+background-size: cover;
+background-repeat: no-repeat;
 `
 
 const StyledSlider = styled(Slider)`

@@ -9,34 +9,36 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PopularCrew from "./components/PopularCrew.js";
 import NewCrew from "./components/NewCrew.js";
-import 탑버튼 from "../../Image/TopBtn.png"
+import Footer from "../../Shared/Footer.js";
+
 
 const Crew = () => {
-  const BASE_URL = "http://sparta-tim.shop";
-
+  const BASE_URL = "https://sparta-tim.shop";
+  // const BASE_URL = "http://54.180.31.108";
 
   const [choicePopularCrew, setChoicePopularCrew] = useState(true);
-  
-  const [choiceCrew, setChoiceCrew] = useState(true)
-  const [choiceNewCrew, setChoiceNewCrew] = useState(false)
+
+  const [choiceCrew, setChoiceCrew] = useState(true);
+  const [choiceNewCrew, setChoiceNewCrew] = useState(false);
 
   const navigate = useNavigate();
 
   // 크루검색 API 입니다
   const [search, setSearch] = useState("");
-  const [searchData, setSearchData] = useState([])
+  const [searchData, setSearchData] = useState([]);
 
   const onKeyPress = (e) => {
-    if(e.key == 'Enter') {
+    if (e.key == "Enter") {
       onclickSearchCrew();
     }
-  }
+  };
   const onclickSearchCrew = () => {
-    searchCrew()
+    searchCrew();
   };
 
   const searchCrew = useCallback(async () => {
-    await axios.get(`${BASE_URL}/crews/search?query=${search}`)
+    await axios
+      .get(`${BASE_URL}/crews/search?query=${search}`)
       .then((res) => {
         setSearchData(res.data.data);
         setSearch("");
@@ -57,7 +59,7 @@ const Crew = () => {
           크루 모임
         </h1>
 
-    {/* 검색 박스 */}
+        {/* 검색 박스 */}
         <div style={{ width: "120rem", margin: "0 auto", height: "8rem" }}>
           <S_search
             placeholder="검색어를 입력해 주세요"
@@ -66,13 +68,15 @@ const Crew = () => {
             value={search}
           />
           <FontAwesomeIcon
-            icon={faMagnifyingGlass} size="3x" color="#666666"
+            icon={faMagnifyingGlass}
+            size="3x"
+            color="#666666"
             onClick={onclickSearchCrew}
             style={{ position: "absolute", margin: "35px 2rem 0 -50px" }}
             type="button"
           />
         </div>
-        <div style={{ width: "120rem", margin: "7.5rem auto 0 auto", display:'flex', fontSize:'2rem'}}>
+        <div style={{ width: "120rem", margin: "6.2rem auto 0 auto", display:'flex', fontSize:'2rem'}}>
             <CoiceCrew status={choiceCrew} type="button" 
                 onClick={()=>{setChoicePopularCrew(true); setSearchData([]); setChoiceCrew(true); setChoiceNewCrew(false)}}>
                   인기 크루
@@ -87,20 +91,19 @@ const Crew = () => {
           {choicePopularCrew === true ? 
             (<PopularCrew searchData={searchData}/>) : 
               (<NewCrew searchData={searchData}/>)}
-      <TopBtn onClick={()=>{window.scrollTo({ top: 0, left:0, behavior:"smooth" })}} >
-        <img src={탑버튼} style={{width:'6rem'}}/>
-      </TopBtn>
+      
+      <Footer/>
     </CrewContainer>
   );
 };
 const CrewContainer = styled.div`
-width: 100%;
-height: 100%;
-`
+  width: 100%;
+  height: 100%;
+`;
 
 const HeaderWrap = styled.div`
   width: 192rem;
-  height: 35rem;
+  height: 33.9rem;
   background-color: #262626;
   color: #ffffff;
 `;
@@ -120,15 +123,9 @@ const S_search = styled.input`
 const CoiceCrew = styled.div`
 font-size: 2rem;
 padding: 0 0 1rem 0;
-border-bottom: ${(props) => (props.status ? `1px solid #ffffff` : null)};
+border-bottom: ${(props) => (props.status ? `2px solid #ffffff` : null)};
 color: ${(props) => (props.status ? `#ffffff` : `#999999`)};
 font-weight: ${(props) => (props.status ? `700` : `400`)};
-`
-const TopBtn = styled.div`
-position: fixed;
-right: 19%;
-bottom: 10%;
-cursor: pointer;
 `
 
 export default Crew;

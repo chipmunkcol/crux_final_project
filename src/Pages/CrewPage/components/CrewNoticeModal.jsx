@@ -8,25 +8,57 @@ import { ko } from "date-fns/esm/locale";
 import "react-datepicker/dist/react-datepicker.css";
 import * as dateFns from "date-fns";
 import DaumPostcode from "react-daum-postcode";
-import { createCrewNotice } from "../../../Redux/modules/crewSlice";
+import axios from "axios";
+import {
+  // createCrewNotice,
+  addCrewNotice,
+} from "../../../Redux/modules/crewSlice";
+import { ReactComponent as ChatXbtn } from "../../../Image/chatx.svg";
 
 function CrewNoticeModal({ onClose }) {
   const { register, handleSubmit } = useForm();
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
+  const userId = window?.localStorage?.getItem("userId");
+  const nickname = window?.localStorage?.getItem("nickname");
+  const modalRef = useRef();
 
   const onSubmit = (data) => {
     const payload = {
       id: params,
-      time: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
-      place: addressDetail,
+      date: dateFns.format(startDate, "PPP EEE aa h:mm", { locale: ko }),
+      place: data.place,
       content: data.content,
+      authorId: Number(userId),
+      authorNickname: nickname,
     };
-    console.log(payload);
-    // dispatch(createCrew(payload));
-    dispatch(createCrewNotice(payload), [dispatch]);
+    createCrewNotice(payload);
+    dispatch(addCrewNotice(payload));
+    onClose(modalRef);
   };
+
+  //크루 공지사항 생성
+  async function createCrewNotice(payload) {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/notices/${payload.id}`,
+        {
+          content: payload.content,
+          date: payload.date,
+          place: payload.place,
+        },
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
 
   //일시 설정 저장
   const [startDate, setStartDate] = useState(new Date());
@@ -66,17 +98,32 @@ function CrewNoticeModal({ onClose }) {
     height: "400px",
     zIndex: 100,
     position: "absolute",
-    top: "300px",
+    top: "250px",
+    right: "-800px",
   };
 
   return (
     <Background>
       {isOpenPost && (
-        <DaumPostcode
-          style={postCodeStyle}
-          onComplete={onCompletePost}
-          autoClose={false}
-        />
+        <div style={{ position: "relative" }}>
+          <DaumPostcode
+            style={postCodeStyle}
+            onComplete={onCompletePost}
+            autoClose={false}
+          />
+          <ChatXbtn
+            style={{
+              position: "absolute",
+              top: "230px",
+              right: "-797px",
+              zIndex: 150,
+              cursor: "pointer",
+            }}
+            onClick={() => {
+              setIsOpenPost(false);
+            }}
+          />
+        </div>
       )}
       <Modal onSubmit={handleSubmit(onSubmit)}>
         <Xbtn onClick={onClose} />
@@ -101,10 +148,8 @@ function CrewNoticeModal({ onClose }) {
             <h3>모임 장소</h3>
             <input
               type="text"
-              readOnly={true}
-              onClick={onChangeOpenPost}
-              placeholder="장소를 선택해주세요."
-              defaultValue={addressDetail}
+              placeholder="장소를 입력해주세요."
+              {...register("place", { required: true })}
             />
           </Place>
           <Intro>
@@ -119,7 +164,9 @@ function CrewNoticeModal({ onClose }) {
           </Intro>
         </ImgBox>
         <ButtonBox>
-          <button type="submit">등록</button>
+          <button type="submit" ref={modalRef}>
+            등록
+          </button>
           <button onClick={onClose}>취소</button>
         </ButtonBox>
       </Modal>
@@ -222,7 +269,6 @@ const Place = styled.div`
     font-size: 14px;
     letter-spacing: -0.05em;
     color: #888888;
-    cursor: pointer;
     :focus {
       outline: none;
     }

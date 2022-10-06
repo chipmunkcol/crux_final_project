@@ -12,7 +12,7 @@ const GymArea = () => {
     const navigate = useNavigate()
     const {isLoading, error, getGym} = useSelector((state)=>state.getGym)
     const gym = getGym?.data
-    console.log(gym)
+    // console.log(gym)
 
     useEffect(()=>{
         dispatch(__getGym())
@@ -24,8 +24,7 @@ if (isLoading) {
 } 
 
     return(
-        <div style={{width:'1920px', height:'1030px',margin:'0 auto', color:'#fff'}}>
-            <div>
+        <div style={{width:'192rem', height:'1030px',margin:'0 auto', backgroundColor:'#141414' ,color:'#fff'}}>
                 <div style={{width:'1290px', height:'700px', opacity:'0.1', backgroundColor:'#fff'}}></div>
                 <div style={{width:'380px', color:'#fff', margin:'-570px 0 0 313px'}}>
                     <div style={{fontSize:'48px', fontWeight:'700', margin:'0 0 30px 0'}}>이번 달<br/> 인기 클라이밍짐</div>
@@ -38,7 +37,6 @@ if (isLoading) {
                     <GymSlider gyms={gym}/>
                    
                 </div>
-            </div>
 
         </div>
     )

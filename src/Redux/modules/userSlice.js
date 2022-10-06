@@ -5,6 +5,8 @@ import axios from "axios";
 // const SERVERM = process.env.REACT_APP_SERVER_M;
 
 // const BASE_URL = SERVERM;
+const BASE_URLM = "https://sparta-tim.shop";
+// const BASE_URLM = 'http://3.39.237.124'
 
 const initialState = {
   user: [],
@@ -17,20 +19,21 @@ const initialState = {
 export const signup = createAsyncThunk(
   "/members/signup",
   async (payload, thunkAPI) => {
+    // console.log(payload);
     try {
       const response = await axios.post(
-        `http://sparta-tim.shop/members/signup`,
+        `${BASE_URLM}/members/signup`,
         {
           email: payload.email,
           nickname: payload.nickname,
-          passward: payload.password,
+          password: payload.password,
           content: payload.content,
           imgUrl:
             "https://firebasestorage.googleapis.com/v0/b/fir-ec6e2.appspot.com/o/images%2Fundefined?alt=media&token=ba20ef8c-11d5-44af-8838-8b6a1201f3ce",
         }
       );
-      window.alert("회원가입 성공");
-      window.location.replace("/");
+      // window.alert("회원가입 성공");
+      // window.location.replace("/");
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -63,15 +66,16 @@ export const login = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post(`http://sparta-tim.shop/members/login`, payload)
+        .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.localStorage.setItem(
             "access_token",
             response.headers.access_token
           );
           window.localStorage.setItem("userId", response.data.data.id);
           window.localStorage.setItem("nickname", response.data.data.nickname);
+          window.localStorage.setItem("profileImg", response.data.data.imgUrl);
           window.location.reload();
         });
       return thunkAPI.fulfillWithValue(response.data);
@@ -107,14 +111,16 @@ export const kakaoLogin = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .get(`http://3.39.237.124/oauth/kakao/callback?code=${payload}`)
+        .get(`${BASE_URLM}/oauth/kakao/callback?code=${payload}`)
         .then((response) => {
-          console.log(response);
+          // console.log(response);
           window.localStorage.setItem(
             "access_token",
             response.headers.authorization
           );
-          window.localStorage.setItem("userId", response.data.data.id);
+          window.localStorage.setItem("userId", response.data.id);
+          window.localStorage.setItem("nickname", response.data.nickname);
+          window.localStorage.setItem("profileImg", response.data.imgUrl);
         });
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(response.data);
@@ -150,16 +156,16 @@ export const likeCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .post(`http://sparta-tim.shop/crews/${payload}/like`, null, {
+        .post(`${BASE_URLM}/crews/${payload}/like`, null, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("좋아요 완료");
-      console.log(response.data);
+      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -173,16 +179,16 @@ export const unLikeCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/${payload}/like`, null, {
+        .delete(`${BASE_URLM}/crews/${payload}/like`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("좋아요 취소 완료");
-      console.log(response.data);
+      // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -216,13 +222,13 @@ export const withdrawCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await axios
-        .delete(`http://sparta-tim.shop/crews/${payload.id}/members`, {
+        .delete(`${BASE_URLM}/crews/${payload.id}/members`, {
           headers: {
             Authorization: window.localStorage.getItem("access_token"),
           },
         })
         .then((response) => {
-          console.log(response);
+          // console.log(response);
         });
       window.alert("탈퇴 완료");
       return thunkAPI.fulfillWithValue(response.data);

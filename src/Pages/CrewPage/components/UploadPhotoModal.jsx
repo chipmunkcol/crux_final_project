@@ -1,6 +1,5 @@
 import styled from "styled-components";
-import { storage } from "../../../Shared/firebase";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -12,50 +11,66 @@ import "slick-carousel/slick/slick-theme.css";
 // import 슬라이더왼쪽버튼 from "../../Image/btn_left.png";
 // import 슬라이더오른쪽버튼 from "../../Image/btn_left.png";
 import { addCrewPhoto } from "../../../Redux/modules/crewSlice";
+import { useCallback } from "react";
+import Loading from '../components/UploadLoading' 
 
 function UploadPhotoModal({ onClose }) {
   //기본 세팅
   const params = useParams().crewId;
   const dispatch = useDispatch();
+  const photomodalRef = useRef();
 
-  const [files, setFileList] = useState([]); // 파일 리스트
-  const [isUploading, setUploading] = useState(false); // 업로드 상태
-  const [photoURL, setPhotosURL] = useState([]); // 업로드 완료된 사진 링크들
+  const storage = getStorage();
 
   // 파일 선택시 파일리스트 상태 변경해주는 함수
-  const handleImageChange = (e) => {
-    for (const image of e.target.files) {
-      setFileList((prevState) => [...prevState, image]);
+  const [imgProductList, setImgProductList] = useState([]);
+  // console.log(imgProductList)
+
+  const [loading, setLoading] = useState(false)
+  const uploadFB = async (event) => {
+    setLoading(true)
+    const imageLists = event.target.files;
+    const uploaded_file = await uploadBytes(
+      ref(storage, `images/${event.target.files[0].name}`),
+      event.target.files[0]
+    );
+
+    const url = await getDownloadURL(uploaded_file.ref);
+    setImgProductList(url);
+
+    let imageUrlLists = [...imgProductList];
+    for (let i = 0; i < imageLists.length; i++) {
+      const imgUrl = url;
+      imageUrlLists.push(imgUrl);
+      // console.log(imageUrlLists)
     }
+    if (imageUrlLists.length > 5) {
+      imageUrlLists = imageUrlLists.slice(0, 5);
+    }
+    setImgProductList(imageUrlLists);
+    setLoading(false)
   };
 
-  // 이미지 업로드 & dispatch
-  const handleImageUpload = async (e, fileList) => {
-    e.preventDefault();
-    try {
-      setUploading(true);
-      const urls = await Promise.all(
-        fileList?.map((file) => {
-          const storageRef = ref(storage, `images/${file.name}`);
-          const task = uploadBytes(storageRef, file);
-          return getDownloadURL(storageRef);
-        })
-      );
-      setPhotosURL(urls);
-      console.log(photoURL);
+  const onsubmit = () => {
+    uploadPhoto();
+  };
+
+  const uploadPhoto = async () => {
+    if (imgProductList.length === 0) {
+      alert("사진을 첨부해주세요:)");
+    } else {
       const payload = {
         id: params,
-        imgUrl: photoURL,
+        imgUrl: imgProductList,
       };
       dispatch(addCrewPhoto(payload));
-    } catch (err) {
-      console.error(err);
+      onClose(modalRef);
     }
   };
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
-  console.log(imgPreview);
+  // console.log(imgPreview);
 
   // 이미지 상대경로 저장
   const handleAddImages = (e) => {
@@ -77,7 +92,7 @@ function UploadPhotoModal({ onClose }) {
   //이미지 삭제
   const handleDeleteImage = (id) => {
     setImgPreview(imgPreview.filter((_, index) => index !== id));
-    setFileList(files.filter((_, index) => index !== id));
+    setImgProductList(imgProductList.filter((_, index) => index !== id));
   };
 
   //버튼 클릭하면 file호출
@@ -88,21 +103,21 @@ function UploadPhotoModal({ onClose }) {
   };
 
   //모달 스크롤 방지
-  useEffect(() => {
-    const $body = document.querySelector("body");
-    $body.style.overflow = "hidden";
-    return () => ($body.style.overflow = "auto");
-  }, []);
+  // useEffect(() => {
+  //   const $body = document.querySelector("body");
+  //   $body.style.overflow = "hidden";
+  //   return () => ($body.style.overflow = "auto");
+  // }, []);
 
   //모달 바깎 클릭시 close
   const modalRef = useRef(null);
-  useOutSideClick(modalRef, onClose);
+  // useOutSideClick(modalRef, onClose);
 
   return (
     <Background>
-      <Modal ref={modalRef} onSubmit={(e) => handleImageUpload(e, files)}>
+      <Modal ref={modalRef} onSubmit={onsubmit}>
         <Title>
-          <h1>사진 ({imgPreview.length}/5)</h1>
+          <h1>사진 ({imgProductList.length}/5)</h1>
         </Title>
         <Xbtn onClick={onClose}></Xbtn>
         <ImgBox>
@@ -124,18 +139,21 @@ function UploadPhotoModal({ onClose }) {
               ref={imgRef}
               onChange={(e) => {
                 handleAddImages(e);
-                handleImageChange(e);
+                uploadFB(e);
               }}
             />
           </div>
-          {imgPreview?.map((image, id) => (
+          {loading ? <Loading /> :
+            imgProductList?.map((image, id) => (
             <div key={id} onClick={() => handleDeleteImage(id)}>
               <img src={image} />
             </div>
           ))}
         </PreviewBox>
         <ButtonBox>
-          <button type="submit">사진 등록</button>
+          <button type="submit" ref={photomodalRef}>
+            사진 등록
+          </button>
         </ButtonBox>
       </Modal>
     </Background>
@@ -248,17 +266,17 @@ const PreviewBox = styled.div`
 const ButtonBox = styled.div`
   width: 400px;
   height: 60px;
-  margin-top:40px;
+  margin-top: 40px;
   button {
     width: 100%;
     height: 60px;
-    font-size:20px;
-    font-weight:500;
+    font-size: 20px;
+    font-weight: 500;
     letter-spacing: -0.05em;
-    color:#262626
-    border:none;
-    background-color:#FFB800
-}
+    color: #262626;
+    border: none;
+    background-color: #ffb800;
+  }
 `;
 
 const Xbtn = styled.button`

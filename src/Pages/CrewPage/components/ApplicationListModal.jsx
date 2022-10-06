@@ -4,33 +4,45 @@ import { useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 import {
   getApplicationList,
   permitCrew,
+  acceptCrew,
+  addCrew,
 } from "../../../Redux/modules/crewSlice";
+import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
 function ApplicationListModal({ onClose }) {
   const params = useParams().crewId;
 
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getApplicationList(params));
   }, [dispatch]);
 
   const applicationList = useSelector((state) => state.crews.crewApplication);
   const applicants = applicationList.data;
+  // console.log(applicants);
 
-  //크루 등록 승인
-
-  const handlePermit = (data) => {
-    const payload = {
-      memberId: data,
-      crewId: params,
-    };
-    console.log(payload);
-    dispatch(permitCrew(payload));
-  };
+  //크루 가입 승인
+  async function permitCrew(memberId) {
+    try {
+      const response = await axios.post(
+        `https://sparta-tim.shop/crews/${params}/members/${memberId}?permit=true`,
+        null,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      window.alert("크루 가입 승인 완료.");
+      return response.data;
+    } catch (error) {
+      return error.data;
+    }
+  }
 
   return (
     <Background>
@@ -46,7 +58,15 @@ function ApplicationListModal({ onClose }) {
                 <Container key={applicant.id}>
                   <IntroContent>
                     <HostDetailBox>
-                      <img src={applicant.imgUrl}></img>
+                      <div>
+                        <img
+                          src={
+                            applicant.imgUrl === null
+                              ? 사용자기본이미지
+                              : applicant.imgUrl
+                          }
+                        ></img>
+                      </div>
                       <HostDetail>
                         <p>{applicant.nickname}</p>
                         <div>
@@ -55,7 +75,15 @@ function ApplicationListModal({ onClose }) {
                       </HostDetail>
                       <button
                         onClick={() => {
-                          handlePermit(applicant.id);
+                          permitCrew(applicant.id);
+                          const payload = {
+                            id: applicant.id,
+                            nickname: applicant.nickname,
+                            imgUrl: applicant.imgUrl,
+                            content: applicant.content,
+                          };
+                          dispatch(addCrew(payload));
+                          dispatch(acceptCrew(applicant.id));
                         }}
                       >
                         승인
@@ -204,7 +232,7 @@ const HostDetailBox = styled.div`
   align-items: center;
   border-bottom: 1px solid #3f3f3f;
   img {
-    width: 70px;
+    width: 50px;
     height: 50px;
     border-radius: 70%;
     overflow: hidden;

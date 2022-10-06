@@ -13,28 +13,25 @@ import ChatList from "../Pages/Chatting/ChatList";
 import ChatRoom from "../Pages/Chatting/ChatRoom";
 import TermsOfUse from "../Pages/Register/TermsOfUse";
 import Userprivacy from "../Pages/Register/Userprivacy";
-import { useEffect } from "react";
 
 const Router = () => {
-  
   return (
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/crews" element={<Crew />} />
-          <Route path={"/crews/:crewId"} element={<CrewDetail />} />
-          <Route path="/gyms" element={<Gym />} />
-          <Route path={"/gyms/:gymId"} element={<GymDetail />} />
-          <Route path="/kakaoLogin" element={<KakaoLogin />} />
-          <Route path="/createcrew" element={<CreateCrew />} />
-          <Route path="/crewedit/:id" element={<CrewEdit />} />
-          <Route path={"/members/:memberId"} element={<Mypage />} />
-          <Route path="/chat" element={<ChatList />} />
-          <Route path={"/chat/:roomId"} element={<ChatRoom />} />
-          <Route path="/terms/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/terms/user-privacy" element={<Userprivacy />} />
-        </Routes>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/crews" element={<Crew />} />
+      <Route path={"/crews/:crewId"} element={<CrewDetail />} />
+      <Route path="/gyms" element={<Gym />} />
+      <Route path={"/gyms/:gymId"} element={<GymDetail />} />
+      <Route path="/kakaoLogin" element={<KakaoLogin />} />
+      <Route path="/createcrew" element={<CreateCrew />} />
+      <Route path={"/crewedit/:id"} element={<CrewEdit />} />
+      <Route path={"/members/:memberId"} element={<Mypage />} />
+      <Route path="/chat" element={<ChatList />} />
+      <Route path={"/chat/:roomId"} element={<ChatRoom />} />
+      <Route path="/terms/terms-of-use" element={<TermsOfUse />} />
+      <Route path="/terms/user-privacy" element={<Userprivacy />} />
+    </Routes>
   );
 };
 
 export default Router;
-

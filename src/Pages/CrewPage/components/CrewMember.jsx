@@ -1,23 +1,48 @@
 import React from "react";
 import styled from "styled-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { expelCrew } from "../../../Redux/modules/crewSlice";
-import { useEffect } from "react";
+import axios from "axios";
+import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
 function CrewMember() {
+  const BASE_URL = "https://sparta-tim.shop";
+  //데이터 가져오기
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const members = crewDetail.data.memberList;
+
+  //선언
   const params = useParams().crewId;
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleExpel = (data) => {
-    const payload = {
-      memberId: data,
-      crewId: params,
-    };
-    console.log(payload);
-    dispatch(expelCrew(payload));
+  //호스트 id
+  const hostId = useSelector((state) => state?.crews?.crewDetail?.data?.hostId);
+  //유저 id
+  const userId = window?.localStorage?.getItem("userId");
+
+  //탈퇴시키기
+  async function handleExpel(payload) {
+    try {
+      const response = await axios.delete(
+        `${BASE_URL}/crews/${payload.crewId}/members/${payload.memberId}`,
+        {
+          headers: {
+            Authorization: window.localStorage.getItem("access_token"),
+          },
+        }
+      );
+      dispatch(expelCrew(payload.memberId));
+      // return console.log(response.data);
+    } catch (error) {
+      return error.data;
+    }
+  }
+
+  //유저 마이페이지로 이동시키기
+  const onClickImg = (id) => {
+    navigate(`/members/${id}`);
   };
 
   return (
@@ -26,20 +51,48 @@ function CrewMember() {
         members.map((member) => (
           <IntroContent key={member.id}>
             <HostDetailBox>
-              <img src={member.imgUrl}></img>
+              <img
+                src={member.imgUrl === "" ? 사용자기본이미지 : member.imgUrl}
+                style={{ cursor: "pointer" }}
+                onClick={() => {
+                  onClickImg(member.id);
+                }}
+              ></img>
               <HostDetail>
-                <p>{member.nickname}</p>
+                <p
+                  style={{ cursor: "pointer" }}
+                  onClick={() => {
+                    onClickImg(member.id);
+                  }}
+                >
+                  {member.nickname}
+                </p>
                 <div>
-                  <p>{member.content}</p>
+                  <p
+                    style={{ cursor: "pointer" }}
+                    onClick={() => {
+                      onClickImg(member.id);
+                    }}
+                  >
+                    {member.content}
+                  </p>
                 </div>
               </HostDetail>
-              <button
-                onClick={() => {
-                  handleExpel(member.id);
-                }}
-              >
-                추방
-              </button>
+              {member.id === hostId ? null : Number(userId) === hostId ? (
+                <button
+                  onClick={() => {
+                    if (window.confirm("추방하시겠습니까?")) {
+                      const payload = {
+                        memberId: member.id,
+                        crewId: params,
+                      };
+                      handleExpel(payload);
+                    }
+                  }}
+                >
+                  추방
+                </button>
+              ) : null}
             </HostDetailBox>
           </IntroContent>
         ))}
@@ -67,6 +120,10 @@ const Intro = styled.div`
 
 const IntroContent = styled.div`
   width: 1200px;
+  height: 220px;
+  border-bottom: 1px solid #202020;
+  display: flex;
+  align-items: center;
   p {
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;

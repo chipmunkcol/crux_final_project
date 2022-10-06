@@ -4,10 +4,15 @@ import useOutSideClick from "../../../Shared/hooks/useOutSideClick";
 import { useParams } from "react-router-dom";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { deleteCrewPhoto } from "../../../Redux/modules/crewSlice";
+import {
+  deleteCrewPhoto,
+  deleteCrewPhotos,
+} from "../../../Redux/modules/crewSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
+import 슬라이더왼쪽버튼 from "../../../Image/btn_left.png"
 
 function PhotoDetailModal({ onClose, photoId, postId }) {
   const params = useParams().crewId;
@@ -22,6 +27,26 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
   const modalRef = useRef(null);
   useOutSideClick(modalRef, onClose);
 
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    centerMode: false,
+    nextArrow: (
+      <Snext>
+          <img src={슬라이더오른쪽버튼} style={{width:'5rem', height:'5rem'}}/>
+      </Snext>
+  ),
+  prevArrow: (
+      <Sprev>
+          <img src={슬라이더왼쪽버튼} style={{width:'5rem', height:'5rem'}}/>
+      </Sprev>
+  ),
+  };
+
   return (
     <Background>
       <Modal ref={modalRef}>
@@ -29,7 +54,9 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
         <DeleteBtn
           type="button"
           onClick={() => {
+            dispatch(deleteCrewPhotos(id));
             dispatch(deleteCrewPhoto(id));
+            onClose(modalRef);
           }}
         >
           삭제
@@ -51,21 +78,38 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
 
 export default PhotoDetailModal;
 
-const settings = {
-  dots: false,
-  infinite: false,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  arrows: true,
-  centerMode: false,
-};
-
 const StyledSlider = styled(Slider)`
   .slick-slide div {
     outline: none;
   }
+  .slick-prev::before,
+  .slick-next::before{
+      opacity: 0;
+      display: none;
+  }
 `;
+const Snext = styled.div`
+width: 30px;
+height: 30px;
+position: absolute;
+/* right: 16px; */
+z-index: 99;
+margin: 30rem -53rem 0 0;
+/* text-align: right; */
+line-height: 30px;
+`;
+
+const Sprev = styled.div`
+width: 30px;
+height: 30px;
+position: absolute;
+/* left: 16px; */
+z-index: 99;
+margin: 30rem 0 0 6rem;
+/* text-align: left; */
+line-height: 30px;
+`;
+
 
 const Background = styled.div`
   width: 100%;
@@ -108,7 +152,7 @@ const DeleteBtn = styled.p`
   left: 20px;
   font-weight: 400;
   letter-spacing: -0.05em;
-  font-size: 12px;
+  font-size: 2rem;
   color: #ffffff;
 `;
 

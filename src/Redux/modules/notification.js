@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from 'axios';
 import { bool } from "yup";
 
-const BASE_URL = 'http://sparta-tim.shop'
+const BASE_URL = 'https://sparta-tim.shop'
 // const BASE_URL = 'https://01192mg.shop'
 
 
@@ -12,7 +12,7 @@ export const __getAlam = createAsyncThunk(
         try {
             const data = await axios.get(`${BASE_URL}/notifications`,
             { headers: {Authorization: window.localStorage.getItem("access_token")}})
-            console.log(data.data)
+            // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -148,7 +148,6 @@ export const { _minusAlam, _plusAlam } = NreadAlamSlice.actions
 //         }
 //     }
 // )
-
 
 
 

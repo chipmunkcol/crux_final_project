@@ -1,13 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-const BASE_URL = "http://sparta-tim.shop";
+const BASE_URL = "https://sparta-tim.shop";
+// const BASE_URL = "http://54.180.31.108";
 
 export const __getMyPage = createAsyncThunk(
   "getMyPage",
   async (memberId, thunkAPI) => {
     try {
-      console.log(memberId);
+      // console.log(memberId);
       const data = await axios.get(`${BASE_URL}/members/${memberId}`, {
         headers: { Authorization: window.localStorage.getItem("access_token") },
       });

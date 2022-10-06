@@ -9,19 +9,18 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const PopularCrew = ({searchData}) => {
-
-    const BASE_URL = "http://sparta-tim.shop";
-    // const BASE_URL = 'https://01192mg.shop'
+    // const BASE_URL = "http://54.180.31.108";
+    const BASE_URL = "https://sparta-tim.shop";
+    // const BASE_URL = 'http://3.39.237.124'
   
     const navigate = useNavigate();
   
     const [list, setList] = useState([]);
-    console.log(list)
-    
+    // console.log(list)
   
     // 무한스크롤 적용하기
       const [page, setPage] = useState(0); //현재 페이지
-      console.log(page)
+      // console.log(page)
       const obsRef = useRef(null); 	//observer Element
   
       const [load, setLoad] = useState(false); //로딩 스피너
@@ -34,10 +33,8 @@ const PopularCrew = ({searchData}) => {
         return () => { observer.disconnect(); }
       }, [])
   
-  
       useEffect(()=> {
-            getCrew();
-          
+          getCrew();
       }, [page])
   
     
@@ -45,7 +42,9 @@ const PopularCrew = ({searchData}) => {
         const target = entries[0];
         if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
-          setPage(prev => prev+1 ); //페이지 값 증가
+          setTimeout(() => {
+            setPage(prev => prev+1 ); //페이지 값 증가  
+          }, 0);
           //setPage => setLastId 에 lastId max 받아다가  
         }
     })
@@ -59,7 +58,7 @@ const PopularCrew = ({searchData}) => {
             preventRef.current = true;
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
           }) 
           setLoad(false);
       }, [page])
@@ -68,7 +67,6 @@ const PopularCrew = ({searchData}) => {
 return (
     <Container >
         <Wrap>
-        <Topbar ></Topbar>
         {
             searchData?.length !== 0 ? 
             
@@ -81,10 +79,18 @@ return (
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+                     <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
+                    
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
-                      🖤 50명 | 🙍‍♀️ {val.crewNum}
+                      🖤 {val.likeNum}명 
+                        <span style={{margin:'0 0.4rem 0 0.6rem'}}>|</span> 
+                      🙍‍♀️ {val.crewNum}명
                     </p>
                   </CrewList>
                 // </React.Fragment>
@@ -101,6 +107,13 @@ return (
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+
+                    <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
+
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
@@ -113,43 +126,63 @@ return (
               ))
 
         }
-          
-            { load && <Loading />}
                         
             <div ref={obsRef} ></div>
+
+            { load && <Loading />}
           
         </Wrap>
       </Container>
     )
 }
 
+
 const Container = styled.div`
-width: 192rem;
-background-color: #141414;
-color: #999999;
-`
+  width: 192rem;
+  background-color: #141414;
+  color: #999999;
+`;
 
 const Wrap = styled.div`
-display: grid;
-grid-template-columns: 41rem 41rem 39rem;
-justify-content: center;
-width: 123rem;
-margin: 0 auto;
-padding: 4rem 0 0 0;
-`
+  display: grid;
+  grid-template-columns: 41rem 41rem 39rem;
+  justify-content: center;
+  width: 123rem;
+  margin: 0 auto;
+  padding: 4rem 0 0 0;
+`;
 
 const CrewList = styled.div`
 width: 38rem;
 height: 49rem;
-margin: 2rem 1rem 0 2rem;
+margin: 2rem 1rem 0 0.4rem;
 padding: 0;
 overflow: hidden;
+:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+cursor: pointer;
+`
+const HashWrap =styled.div`
+display: flex;
+position: absolute;
+margin: 0 0 0 0;
+color: #ffffff;
+font-size: 1.2rem;
+margin: 8rem 0 0 12rem;
+color: #999999;
 `
 
-const Topbar = styled.div`
-width: 122rem;
-margin: 0 auto;
-height: 0.1rem;
+const HashTag = styled.div`
+
 `
+
+
+const Topbar = styled.div`
+  width: 122rem;
+  margin: 0 auto;
+  height: 0.1rem;
+`;
 
 export default PopularCrew;

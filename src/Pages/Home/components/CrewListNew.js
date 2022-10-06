@@ -6,29 +6,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 
-const CrewListNew = () => {
+const CrewListNew = ({crews}) => {
 
-const BASE_URL = "http://sparta-tim.shop";
 const navigate = useNavigate()
-
-
-const [crews, setCrews] = useState([]) 
-console.log(crews)
-
-const getNewCrew = async () => {
-    await axios.get(`${BASE_URL}/crews?page=0&size=4`)
-      .then((res) => {
-        setCrews((prev) => [...prev, ...res.data.data.content]);
-      })
-      .catch((err) => {
-        console.log(err);
-      }) 
-}
-
-useEffect(()=>{
-    getNewCrew();
-},[])
-
 
 return (
     <>
@@ -37,18 +17,18 @@ return (
 
                 crews?.map((crew,i)=>{
                     return(
-                            <div key={crew.id} style={{width:'274px', height:'400px', margin:'0 70px 0 0'}}>
-                                <img src={crew.imgUrl !== "" ? crew.imgUrl : 인기크루} alt="" style={{width:'250px', height:'250px', margin:'0 10px', borderRadius:'60%'}}
-                                    onClick={()=>{navigate(`/crews/${crew.id}`)}}/>
-                                <div>
-                                    <Snumber>{i+1}</Snumber>
-                                    <div style={{textAlign:'center'}}>
-                                        <div style={{color:'white', margin:'0 0 14px 0'}}>{crew?.name}</div>
-                                        <div style={{color:'white'}}>좋아요 {crew?.likeNum}개</div>
-                                    </div>
-                                </div>
-                                
+                        <CrewImg key={crew.id} >
+                        <img src={crew.imgUrl !== "" ? crew.imgUrl : 인기크루} alt="" style={{width:'25rem', height:'250px', margin:'0 10px', borderRadius:'60%'}}
+                            onClick={()=>{navigate(`/crews/${crew.id}`)}}/>
+                        <div>
+                            <Snumber>{i+1}</Snumber>
+                            <div style={{textAlign:'center', color:'white'}}>
+                                <CrewName >{crew?.name}</CrewName>
+                                <div>좋아요 {crew?.likeNum}개</div>
                             </div>
+                        </div>
+                        
+                    </CrewImg>
                     )
                 })
         }
@@ -56,6 +36,25 @@ return (
 )
 }
 
+
+const CrewImg = styled.div`
+/* style={{width:'274px', height:'400px', margin:'0 70px 0 0'}} */
+width: 27.4rem;
+height: 40rem;
+margin: 0 7rem 0 0;
+:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+cursor: pointer;
+`
+
+const CrewName = styled.div`
+margin: 0px auto 14px auto;
+overflow: hidden;
+width: 13rem;
+
+` 
 
 const Snumber = styled.div`
 width: 56px;

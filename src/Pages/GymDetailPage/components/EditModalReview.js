@@ -4,18 +4,19 @@ import styled from "styled-components"
 import { Rating } from 'react-simple-star-rating'
 import { useEffect, useState } from "react"
 import { useNavigate, useParams } from 'react-router-dom';
-import 이미지업로드 from "../../../Image/이미지업로드.png"
+import 이미지업로드 from "../../../Image/프리뷰box.png"
 import 리뷰기본이미지 from '../../../Image/리뷰기본이미지.jpg'
 import { useRef } from "react";
 import { useCallback } from "react";
 import axios from "axios";
-import Loading from '../../../Shared/Loading';
+import Loading from "../components/ReviewLoading"
+import { ReactComponent as ImgUploadIcon } from "../../../Image/imgUploadBox.svg";
 
 
 function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
-    const BASE_URL = "https://01192mg.shop";
+    const BASE_URL = "https://sparta-tim.shop";
 
-    console.log(reviewId)
+    // console.log(reviewId)
     const closeModal = () => {
         setEditModal(false);
     };
@@ -35,34 +36,60 @@ function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
     }, [rating]);
 
     // 이미지 업로드 <firebase> 라이브러리! 
+
+    const [content, setContent] = useState('');
+    const storage = getStorage();
+    // const storageRef = ref(storage);
+    const [imgProductList, setImgProductList] = useState([]);
+    // console.log(imgProductList)
+
+
+    const [loading, setLoading] = useState(false)
+
+    const uploadFB = async (event) => {
+        setLoading(true)
+        const imageLists = event.target.files;
+        const uploaded_file = await uploadBytes(
+          ref(storage, `images/${event.target.files[0]?.name}`),
+          event.target.files[0]
+        );
+    
+        const url = await getDownloadURL(uploaded_file.ref);
+        setImgProductList(url);
+    
+        let imageUrlLists = [...imgProductList];
+        for (let i = 0; i < imageLists.length; i++) {
+          const imgUrl = url;
+          imageUrlLists.push({ imgUrl });
+        //   console.log(imageUrlLists)
+        }
+        if (imageUrlLists.length > 5) {
+          alert('리뷰 사진은 5장까지만 업로드 가능합니다')
+          imageUrlLists = imageUrlLists.slice(0, 5);
+        }
+        setImgProductList(imageUrlLists);
+        setLoading(false)
+      };
+    
+      
+        //이미지 삭제
+        const handleDeleteImage = (id) => {
+            setImgProductList(imgProductList.filter((_, index) => index !== id));
+        };
+    
+
     const onsubmit = () => {
         editReview();
     };
-
-    const [content, setContent] = useState('');
-    const [fileUrl, setFileUrl] = useState('');
-
-    const storage = getStorage();
-    // const storageRef = ref(storage);
-    const uploadFB = async (e) => {
-        const upload_file = await uploadBytes(
-            ref(storage, `images/${e.target.files[0].name}`),
-            e.target.files[0]
-        );
-
-        const file_url = await getDownloadURL(upload_file.ref);
-        setFileUrl(file_url);
-    };
-
-    const editReview = useCallback(async () => {
+    const editReview = async() => {
         if (content === '') {
             alert('후기를 입력해주세요');
         } else {
-
             const payload = {
                 score: rating,
                 content: content,
-                reviewPhotoList: fileUrl !== "" ? [{ imgUrl: fileUrl }] : [{ imgUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtOY6e%2FbtrMC0zJgaN%2FE8MiRTJ9nXjXvMPO5q1gQK%2Fimg.jpg" }],
+                reviewPhotoList: imgProductList.length !== 0 ? imgProductList 
+                                 : [{ imgUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtOY6e%2FbtrMC0zJgaN%2FE8MiRTJ9nXjXvMPO5q1gQK%2Fimg.jpg" }],
             };
             await axios.put(`${BASE_URL}/reviews/${reviewId}`, payload, {
                 headers: { Authorization: window.localStorage.getItem("access_token") }
@@ -77,18 +104,24 @@ function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
                     
                 })
                 .catch((err) => {
-                    console.log(err);
+                    // console.log(err);
                 });
         }
-    }, [onsubmit]);
+    }
 
+//버튼 클릭하면 file호출
+const imgRef = useRef();
+
+const onClickImg = () => {
+    imgRef.current.click();
+    };
 
 if(gym === undefined) {
     return( <Loading/>)
 }
 
     return (
-        <ModalPage onClick={closeModal}>
+        <ModalPage>
             <Container onClick={(e) => e.stopPropagation()}>
 
                 <div style={{ margin: '8rem auto 0 auto', width: '98rem' }}>
@@ -105,20 +138,28 @@ if(gym === undefined) {
                         onChange={(e) => { setContent(e.target.value); } } />
                 </div>
 
-                <label>
-                    <input
-                        encType="multipart/form-data"
+                <input
                         accept='image/*'
-                        type="file"
+                        type="file" multiple
                         style={{ display: 'none' }}
-                        onChange={uploadFB} />
-                    <ImgPreview src={이미지업로드} type="button" />
+                        ref={imgRef}
+                        onChange={(e)=>{ uploadFB(e) }} />
+                    <div style={{display:'flex', position:'absolute', margin:'-1rem 0 0 6rem'}}>
+                        <ImgUploadIcon type="button" onClick={onClickImg} />
+                        
+                        {loading ? <Loading /> :
+                          imgProductList?.map((image, id) => (
+                                <ImgPreview key={id} onClick={()=>{handleDeleteImage(id)}}>
+                                    <img src={image.imgUrl} style={{width:"100%", height:'100%'}}/>
+                                </ImgPreview>
+                            ))
+                        }
+                    
+                    </div>
         
-
-                </label>
                 <div style={{ display: 'flex', margin: '-1rem 0 0 50rem' }}>
                     <S_btn style={{ margin: '0rem 1rem 0 0' }} onClick={closeModal}>취소</S_btn>
-                    <S_btn onClick={onsubmit}>리뷰 올리기</S_btn>
+                    <S_btn onClick={onsubmit}>수정하기</S_btn>
                 </div>
                 
             </Container>
@@ -163,26 +204,26 @@ right: 10px;
 top: 10px;
 `
 
-
-const ImgPreview = styled.img`
+const UploadImg = styled.div`
 width: 5rem;
 height: 5rem;
-margin: -32px 0 0 6rem;
-position: absolute;
 `
 
-const ImgPreview1 = styled.div`
+const ImgPreview = styled.div`
 width: 5rem;
 height: 5rem;
-position: absolute;
-`
+border: 1px solid #5e5e5e;
+` 
 
 const S_btn = styled.button`
 width: 26.5rem;
 height: 6rem;
 margin: 0rem 0 0 0;
 font-size: 2rem;
-background-color: #ffb800;
+background-color: #999999;
+:hover{
+    background-color: #ffb800;
+}
 `
 
 // const Imgbox = styled.div`

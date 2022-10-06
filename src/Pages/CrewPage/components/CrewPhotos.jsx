@@ -10,16 +10,17 @@ import PhotoDetailModal from "./PhotoDetailModal";
 import { getCrewPhoto } from "../../../Redux/modules/crewSlice";
 import { ReactComponent as ImgUpload } from "../../../Image/imgUpload.svg";
 
-function CrewPhotos() {
+function CrewPhotos({crew}) {
   const params = useParams().crewId;
   const dispatch = useDispatch();
+  const userId = Number(window.localStorage.getItem("userId"))
 
   useEffect(() => {
     dispatch(getCrewPhoto(params));
   }, [dispatch]);
 
   const crewPhotos = useSelector((state) => state?.crews?.crewPhotos?.data);
-  // const Photos = crewPhotos?.data;
+  const Photos = crewPhotos;
 
   // const userData = useSelector((state) => state);
   // console.log(userData);
@@ -28,7 +29,13 @@ function CrewPhotos() {
   const [uploadModalVisible, setUploadModaVisible] = useState(false);
 
   const handleMadalClick = () => {
-    setUploadModaVisible(!uploadModalVisible);
+    const a = crew?.memberList.findIndex((val)=>val.id === userId)
+    // console.log(a)
+    if (a !== -1) {
+      setUploadModaVisible(!uploadModalVisible);
+    } else {
+      alert(`${crew?.name}멤버만 사진 등록이 가능합니다`)
+    }
   };
 
   //이미지 리스트 모달 띄우기-->모달에 postId전달.
@@ -52,19 +59,27 @@ function CrewPhotos() {
           postId={postId}
         />
       )}
-      <ImgBox onClick={handleMadalClick}>
+      <ImgBox onClick={handleMadalClick} type="button">
         <ImgUpload />
       </ImgBox>
       {crewPhotos &&
         crewPhotos.map((photo) => (
           <ImgBox
-            type="button"
             key={photo.postId}
+            props={photo.imgList[0]?.imgUrl}
             onClick={() => {
               handleImgMadalClick(photo.imgList, photo);
             }}
+            style={{cursor:'zoom-in'}}
           >
-            <img src={photo.imgList[0]?.imgUrl}></img>
+            <OverLay>
+              <div style={{ margin: "-23.5rem 0 0rem -14rem" }}>
+                {photo.createdAt.substr(0, 10)}
+              </div>
+              <div style={{ position: "absolute", fontSize: "3rem" }}>
+                +{photo.imgList.length}
+              </div>
+            </OverLay>
           </ImgBox>
         ))}
     </Container>
@@ -88,29 +103,44 @@ const Container = styled.div`
 const ImgBox = styled.div`
   width: 280px;
   height: 280px;
-  background-color: black;
-  img {
-    width: 100%;
-    height: 100%;
-  }
-  :hover& {
+  background: url(${(props) => props.props});
+  background-position: center;
+  background-size: cover;
+  background-color: rgba(0, 0, 0, 1);
+  :hover {
     transform: scale(1.05);
     transition: 0.5s;
   }
 `;
 
-const ImgText = styled.div`
-  width: 300px;
-  height: 300px;
-  position: relative;
-  p {
-    margin-top: 18px;
-    margin-left: 94px;
-    font-weight: 700;
-    font-size: 20px;
-    color: #666666;
+const OverLay = styled.div`
+  position: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #ffffff;
+  width: 280px;
+  height: 280px;
+  opacity: 0;
+  :hover {
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1;
   }
 `;
+// const ImgText = styled.div`
+//   width: 300px;
+//   height: 300px;
+//   position: relative;
+//   p {
+//     margin-top: 18px;
+//     margin-left: 94px;
+//     font-weight: 700;
+//     font-size: 20px;
+//     color: #666666;
+//   }
+// `;
 const PhotoButton = styled.div`
   background-color: gray;
   width: 280px;

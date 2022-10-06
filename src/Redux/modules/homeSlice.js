@@ -1,12 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
 
-const BASE_URL = "http://sparta-tim.shop"
+const BASE_URL = "https://sparta-tim.shop"
 
 export const __getCrew = createAsyncThunk(
     'getCrew',
     async (payload, thunkAPI) => {
-        console.log(payload)
+        // console.log(payload)
         try {
             const data = await axios.get(`${BASE_URL}/crews/popular?page=0&size=4`)
             return thunkAPI.fulfillWithValue(data.data)
@@ -19,7 +19,7 @@ export const __getCrew = createAsyncThunk(
 export const __getGym = createAsyncThunk(
     'getGym',
     async (payload, thunkAPI) => {
-        console.log(payload)
+        // console.log(payload)
         try {
             const data = await axios.get(`${BASE_URL}/gyms/popular?size=10`)
             return thunkAPI.fulfillWithValue(data.data)

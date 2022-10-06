@@ -48,8 +48,8 @@ return(
             <Wrap1>
                 <ContentArea>
                     {/* <Top></Top> */}
-                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
-                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                    <Mid>지금이 바로 <br/>CRUX와 함께 할 때!</Mid>
+                    <Bottom>클라이밍을 즐겁게 시작하고 싶다면 <br/>지금 바로 도전해보세요!</Bottom>
                 </ContentArea>
                 
             </Wrap1>
@@ -57,18 +57,16 @@ return(
     {/* 2번째 슬라이드 */}
             <Wrap2>
                 <ContentArea>
-                    <Top></Top>
-                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
-                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                    <Mid>지금이 바로 <br/>CRUX와 함께 할 때!</Mid>
+                    <Bottom>클라이밍을 즐겁게 시작하고 싶다면 <br/>지금 바로 도전해보세요!</Bottom>
                 </ContentArea>
             </Wrap2>
 
     {/* 3번째 슬라이드 */}
             <Wrap3>
                 <ContentArea>
-                    <Top></Top>
-                    <Mid>클라이밍 상급자들을 위한 <br/>새로운 클라이밍 코스</Mid>
-                    <Bottom>상급자를 위한 새로운 코스를 원하신다면, <br/>지금 바로 도전해보세요!</Bottom>
+                    <Mid>지금이 바로 <br/>CRUX와 함께 할 때!</Mid>
+                    <Bottom>클라이밍을 즐겁게 시작하고 싶다면 <br/>지금 바로 도전해보세요!</Bottom>
                 </ContentArea>
             </Wrap3>
 
@@ -119,7 +117,7 @@ const StopButton = styled.img`
 width: 1rem;
 height: 2rem;
 position: absolute;
-margin: 79.2rem 0 0 41.2rem;
+margin: 79rem 0 0 41.2rem;
 z-index: 5;
 `
 

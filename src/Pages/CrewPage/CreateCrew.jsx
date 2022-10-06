@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
@@ -8,7 +8,7 @@ import { storage } from "../../Shared/firebase";
 import { createCrew } from "../../Redux/modules/crewSlice";
 import Select from "react-select";
 import DaumPostcode from "react-daum-postcode";
-import { add } from "date-fns";
+import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 
 const CreateCrew = () => {
   const {
@@ -21,19 +21,32 @@ const CreateCrew = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    console.log(data);
-    // const payload = {
-    //   name: data.name,
-    //   content: data.content,
-    //   imgUrl: fileUrl,
-    // };
-    // dispatch(createCrew(payload));
+    // console.log(data);
+    const payload = {
+      name: data.name,
+      content: data.content,
+      imgUrl: fileUrl,
+      mainActivityGym: data.place,
+      mainActivityArea: address.concat(" ", addressD),
+      keywords: keyword,
+    };
+    if (
+      (data.place === null) |
+      undefined |
+      ((address === null) | undefined) |
+      ((addressD === null) | undefined) |
+      (keyword.length < 3) |
+      ((fileUrl === "") | undefined )
+    ) {
+      return;
+    } else {
+      dispatch(createCrew(payload));
+    }
   };
 
   const [imgUrl, setImgUrl] = useState(null);
   const imgRef = useRef();
 
-  //이미지 미리보기
   const onChangeImg = (e) => {
     const reader = new FileReader();
     const file = imgRef.current.files[0];
@@ -43,7 +56,6 @@ const CreateCrew = () => {
       setImgUrl(reader.result);
     };
   };
-
   const [files, setFiles] = useState("");
 
   function onLoadFile(e) {
@@ -64,11 +76,10 @@ const CreateCrew = () => {
       ref(storage, `images/${e.target.files[0].name}`),
       e.target.files[0]
     );
-    // console.log(upload_file);
 
     //upload_file.ref로 파일 url가져옴
     const file_url = await getDownloadURL(upload_file.ref);
-    console.log(file_url);
+    // console.log(file_url);
     setFileUrl(file_url);
   };
 
@@ -88,105 +99,7 @@ const CreateCrew = () => {
   const [addressD, setAddressD] = useState("");
   const [keyword, setKeyword] = useState([]);
 
-  const options = [
-    { value: "2", label: "2명" },
-    { value: "3", label: "3명" },
-    { value: "4", label: "4명" },
-    { value: "5", label: "5명" },
-    { value: "6", label: "6명" },
-    { value: "7", label: "7명" },
-    { value: "8", label: "8명" },
-    { value: "9", label: "9명" },
-    { value: "10", label: "10명" },
-    { value: "20", label: "20명" },
-    { value: "999", label: "제한없음" },
-  ];
-
-  const colourOptions = [
-    { value: "초보환영", label: "초보환영", isFixed: true },
-    { value: "정기모임", label: "정기모임" },
-    { value: "유경험자", label: "유경험자" },
-    { value: "주로평일", label: "주로평일" },
-    { value: "주로주말", label: "주로주말" },
-    { value: "성별무관", label: "성별무관", isFixed: true },
-    { value: "여자만", label: "여자만" },
-    { value: "남자만", label: "남자만" },
-    { value: "함께해요", label: "함께해요" },
-    { value: "열정적인", label: "열정적인", isFixed: true },
-    { value: "밝은", label: "밝은" },
-  ];
-
-  const addressOptions = [
-    { value: "서울", label: "서울" },
-    { value: "경기", label: "경기" },
-    { value: "인천", label: "인천" },
-  ];
-
-  const seoulOptions = [
-    { value: "강남/역삼/삼성/논현", label: "강남/역삼/삼성/논현" },
-    { value: "서초/신사/방배", label: "서초/신사/방배" },
-    { value: "잠실/신천(잠실새내)", label: "잠실/신천(잠실새내)" },
-    { value: "영등포/여의도", label: "영등포/여의도" },
-    { value: "신림/서울대/사당/동작", label: "신림/서울대/사당/동작" },
-    { value: "천호/길동/둔촌", label: "천호/길동/둔촌" },
-    { value: "화곡/까치산/양천/목동", label: "화곡/까치산/양천/목동" },
-    { value: "구로/금천/오류/신도림", label: "구로/금천/오류/신도림" },
-  ];
-
-  const incheonOptions = [
-    { value: "1", label: "초보환영" },
-    { value: "2", label: "정기모임" },
-    { value: "3", label: "유경험자" },
-    { value: "영등포/여의도", label: "주로평일" },
-    { value: "신림/서울대/사당/동작", label: "주로주말" },
-    { value: "천호/길동/둔촌", label: "성별무관" },
-    { value: "화곡/까치산.양천/목동", label: "여자만" },
-    { value: "구로/금천/오류/신도림", label: "남자만" },
-    { value: "함께해요", label: "함께해요" },
-    { value: "볼더링좋아", label: "볼더링좋아" },
-  ];
-
-  const addressChoice = () => {};
-
-  //짐 선택
-  //주소 검색 모달 열기
-  const [isOpenPost, setIsOpenPost] = useState(false);
-  const userMenu = useRef();
-
-  //주소 저장
-  const [addressDetail, setAddressDetail] = useState(""); // 상세주소
-
-  const onChangeOpenPost = () => {
-    setIsOpenPost(!isOpenPost);
-  };
-
-  const onCompletePost = (data) => {
-    let fullAddr = data.address;
-    let extraAddr = "";
-
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddr += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddr +=
-          extraAddr !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddr += extraAddr !== "" ? ` (${extraAddr})` : "";
-    }
-    setAddressDetail(fullAddr);
-    setIsOpenPost(false);
-  };
-
-  const postCodeStyle = {
-    display: "block",
-    width: "400px",
-    height: "400px",
-    zIndex: 100,
-    position: "absolute",
-    top: "240px",
-    right: "250px",
-  };
+  const addressRef = useRef();
 
   const customStyles = {
     control: (styles) => ({
@@ -253,17 +166,137 @@ const CreateCrew = () => {
     option: (styles) => ({ ...styles }),
   };
 
+  const colourOptions = [
+    { value: "초보환영", label: "초보환영", isFixed: true },
+    { value: "정기모임", label: "정기모임" },
+    { value: "유경험자", label: "유경험자" },
+    { value: "주로평일", label: "주로평일" },
+    { value: "주로주말", label: "주로주말" },
+    { value: "성별무관", label: "성별무관", isFixed: true },
+    { value: "여자만", label: "여자만" },
+    { value: "남자만", label: "남자만" },
+    { value: "함께해요", label: "함께해요" },
+    { value: "열정적인", label: "열정적인", isFixed: true },
+    { value: "밝은", label: "밝은" },
+  ];
+
+  const addressOptions = [
+    { value: "서울", label: "서울" },
+    { value: "경기", label: "경기" },
+    { value: "인천", label: "인천" },
+  ];
+
+  const seoulOptions = [
+    { value: "강남/역삼/삼성/논현", label: "강남/역삼/삼성/논현" },
+    { value: "서초/신사/방배", label: "서초/신사/방배" },
+    { value: "잠실/신천(잠실새내)", label: "잠실/신천(잠실새내)" },
+    { value: "영등포/여의도", label: "영등포/여의도" },
+    { value: "신림/서울대/사당/동작", label: "신림/서울대/사당/동작" },
+    { value: "천호/길동/둔촌", label: "천호/길동/둔촌" },
+    { value: "화곡/까치산/양천/목동", label: "화곡/까치산/양천/목동" },
+    { value: "신촌/홍대/합정", label: "신촌/홍대/합정" },
+    { value: "연신내/불광/응암", label: "연신내/불광/응암" },
+    { value: "종로/대학로/동묘앞 역", label: "종로/대학로/동묘앞 역" },
+    { value: "성신여대/성북/월곡", label: "성신여대/성북/월곡" },
+    { value: "이태원/용산/서울역/명동", label: "이태원/용산/서울역/명동" },
+    { value: "동대문/을지로/충무로/신당", label: "동대문/을지로/충무로/신당" },
+    { value: "회기/고려대/청량리/신설동", label: "회기/고려대/청량리/신설동" },
+    { value: "장안동/답십리", label: "장안동/답십리" },
+    { value: "건대/군자/구의", label: "건대/군자/구의" },
+    { value: "왕십리/성수/금호", label: "왕십리/성수/금호" },
+    { value: "수유/미아", label: "수유/미아" },
+    { value: "상봉/중랑/면목", label: "상봉/중랑/면목" },
+    { value: "태릉/노원/도봉/창동", label: "태릉/노원/도봉/창동" },
+  ];
+
+  const incheonOptions = [
+    { value: "부평", label: "부평" },
+    { value: "구월", label: "구월" },
+    { value: "서구(석남,서구청,검단)", label: "서구(석남,서구청,검단)" },
+    { value: "계양(작전,경인교대)", label: "계양(작전,경인교대)" },
+    { value: "주안", label: "주안" },
+    { value: "송도/연수", label: "송도/연수" },
+    { value: "인천공항/을왕리/영종도", label: "인천공항/을왕리/영종도" },
+    { value: "중구(월미도/동인천)", label: "중구(월미도/동인천)" },
+    { value: "강화/옹진", label: "강화/옹진" },
+    { value: "동암/간석", label: "동암/간석" },
+    { value: "남동구(소래포구/호구포)", label: "남동구(소래포구/호구포)" },
+    { value: "용현/숭의/도화/동구", label: "용현/숭의/도화/동구" },
+  ];
+
+  const gyeonggiOptions = [
+    { value: "수원/석남/판교", label: "수원/석남/판교" },
+    { value: "가평/양평/포천", label: "가평/양평/포천" },
+    { value: "용인/평택/여주/이천", label: "용인/평택/여주/이천" },
+    { value: "화성/동탄/안산/부천/안양", label: "화성/동탄/안산/부천/안양" },
+    { value: "고양/의정부/파주/김포", label: "고양/의정부/파주/김포" },
+    { value: "시흥/군포/광명", label: "시흥/군포/광명" },
+    { value: "남양주시/구리/하남", label: "남양주시/구리/하남" },
+  ];
+
+  //짐 선택
+  //주소 검색 모달 열기
+  const [isOpenPost, setIsOpenPost] = useState(false);
+
+  //주소 저장
+  const [addressDetail, setAddressDetail] = useState(""); // 상세주소
+
+  const onChangeOpenPost = () => {
+    setIsOpenPost(!isOpenPost);
+  };
+
+  const onCompletePost = (data) => {
+    let fullAddr = data.address;
+    let extraAddr = "";
+
+    if (data.addressType === "R") {
+      if (data.bname !== "") {
+        extraAddr += data.bname;
+      }
+      if (data.buildingName !== "") {
+        extraAddr +=
+          extraAddr !== "" ? `, ${data.buildingName}` : data.buildingName;
+      }
+      fullAddr += extraAddr !== "" ? ` (${extraAddr})` : "";
+    }
+    setAddressDetail(fullAddr);
+    setIsOpenPost(false);
+  };
+
+  const postCodeStyle = {
+    display: "block",
+    width: "400px",
+    height: "400px",
+    zIndex: 100,
+    position: "absolute",
+    top: "160px",
+    right: "-800px",
+  };
+
   return (
     <div>
       <Navbar />
       <Warp>
         <ThumbnailContainer onSubmit={handleSubmit(onSubmit)}>
           {isOpenPost && (
-            <DaumPostcode
-              style={postCodeStyle}
-              onComplete={onCompletePost}
-              autoClose={false}
-            />
+            <div style={{ position: "relative" }}>
+              <DaumPostcode
+                style={postCodeStyle}
+                onComplete={onCompletePost}
+                autoClose={false}
+              />
+              <ChatXbtn
+                style={{
+                  position: "absolute",
+                  top: "134px",
+                  right: "-797px",
+                  cursor: "pointer",
+                }}
+                onClick={() => {
+                  setIsOpenPost(false);
+                }}
+              />
+            </div>
           )}
           <ThumbnailContentBox>
             <ImgBox>
@@ -286,59 +319,70 @@ const CreateCrew = () => {
                 {imgTextVisible && (
                   <PhotoButton>
                     <Xbtn />
-                    <p>사진올리기</p>
+                    <p>크루대표사진</p>
                   </PhotoButton>
                 )}
               </ImgText>
+              <img src={imgUrl}></img>
             </ImgBox>
             <ContentBox onSubmit={handleSubmit(onSubmit)}>
               <TextBox>
                 <p>크루 이름</p>
                 <input
-                  placeholder="크루 이름을 입력해주세요."
+                  maxLength="20"
+                  placeholder="크루 이름을 입력해주세요. (20자 이내)"
                   {...register("name", { required: true })}
                 />
               </TextBox>
               <TextBox>
                 <p>주 활동 지역</p>
-                //컨트롤러 사용해서 데이터 받아오는거 해보기,,
-                {/* <Controller control={control} name="mainActivityArea">
-                  <Select
-                    options={addressOptions}
-                    placeholder="시 선택"
-                    styles={customStyles1}
-                    onChange={(s) => setAddress(s.target.value)}
-                  />
-                  <Select
-                    options={seoulOptions}
-                    placeholder="상세주소"
-                    styles={customStyles2}
-                    onChange={(s) => setAddressD(s.target.value)}
-                  />
-                </Controller> */}
+                <Select
+                  options={addressOptions}
+                  placeholder="시 선택"
+                  styles={customStyles1}
+                  onChange={(s) => {
+                    setAddress(s.value);
+                    addressRef.current.setValue("");
+                  }}
+                />
+                <Select
+                  options={
+                    address === "서울"
+                      ? seoulOptions
+                      : address === "인천"
+                      ? incheonOptions
+                      : gyeonggiOptions
+                  }
+                  placeholder="상세주소"
+                  styles={customStyles2}
+                  isClearable={true}
+                  onChange={(s) => {
+                    setAddressD(s.value);
+                  }}
+                  ref={addressRef}
+                />
               </TextBox>
               <TextBox>
                 <p>주 활동 짐</p>
                 <input
                   type="text"
-                  readOnly={true}
-                  style={{ cursor: "pointer" }}
-                  onClick={onChangeOpenPost}
-                  placeholder="장소를 선택해주세요."
-                  defaultValue={addressDetail}
+                  maxLength="20"
+                  {...register("place", { required: true })}
+                  placeholder="주 활동 짐을 입력해주세요. (20자 이내)"
                 />
               </TextBox>
               <TextBox>
                 <p>키워드</p>
                 <Select
                   closeMenuOnSelect={false}
-                  placeholder="크루 키워드를 선택해주세요."
+                  placeholder="크루 키워드를 3개 선택해주세요."
                   isMulti
                   width="400px"
                   height="60px"
+                  isOptionDisabled={() => keyword.length > 2}
                   onChange={(s) => {
-                    setKeyword(s);
-                    console.log(s);
+                    let result = s.map((a) => a.value);
+                    setKeyword(result);
                   }}
                   options={colourOptions}
                   styles={customStyles}
@@ -347,8 +391,9 @@ const CreateCrew = () => {
               <TextDetail>
                 <p>크루 소개</p>
                 <textarea
+                  maxLength="100"
                   placeholder="크루에 대한 간단한 소개를 입력해주세요. 
-                  예) 직장인으로 구성된 크루입니다! 매주 토요일마다 정기모임이 있습니다."
+                  예) 직장인으로 구성된 크루입니다. 매주 토요일마다 정기모임이 있어요."
                   {...register("content", { required: true })}
                 />
               </TextDetail>

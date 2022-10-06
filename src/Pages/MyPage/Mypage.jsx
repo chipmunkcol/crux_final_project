@@ -8,10 +8,12 @@ import { __getMyPage } from "../../Redux/modules/mypageSlice";
 import Loading from "../../Shared/Loading.js"
 import { useState } from "react";
 import EditMypage from "./components/EditMypage";
+import Footer from "../../Shared/Footer";
+import axios from "axios";
 
 
 const Mypage = () => {
-
+const BASE_URL = "https://sparta-tim.shop";
 const userId = window.localStorage.getItem("userId")
 
 const dispatch = useDispatch()
@@ -19,17 +21,37 @@ const navigate = useNavigate()
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
 const myPage = mypage.data
-console.log(myPage)
+// console.log(myPage)
 
 const params = useParams().memberId
 // console.log(params)
 
 //프로필 편집 버튼을 누르면 편집모드로 변경합니다.
 const [editMypage, setEditMypage] = useState(false)
+const [reload, setReload] = useState(false)
 
 useEffect(()=>{
     dispatch(__getMyPage(params))
-},[editMypage])
+},[reload])
+
+//회원 탈퇴
+const deleteId = async() => {
+    if(window.confirm("정말 탈퇴하시겠어요?")) {
+        await axios.delete(`${BASE_URL}/members/withdraw`, 
+        {headers: {Authorization: window.localStorage.getItem("access_token")}})
+        .then((res) => {
+            // console.log(res)
+            alert(res.data.data)
+            localStorage.removeItem("access_token")
+            localStorage.removeItem("userId")
+            localStorage.removeItem("nickname")
+            navigate('/')
+        })
+        .catch((err) => {
+            // console.log(err)
+        })
+    }  
+}
 
     return(
         <>
@@ -38,19 +60,26 @@ useEffect(()=>{
             <Navbar />
 
             {isLoading === true ? <Loading /> : 
-                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage}/> :
+                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage} setReload={setReload} reload={reload}/> : (
 
                 <Container>
-                
+
                 <Flex1>
-                    <ProfileImg src={myPage?.imgUrl !== "" ? myPage?.imgUrl : 사용자기본이미지}/>
+                    <ProfileImg src={myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지}/>
                         
                     <ProfileNickname>{myPage?.nickname}</ProfileNickname>
 
                     {userId !== params ? null :
+                        <>
                         <ButtonBox onClick={()=>{setEditMypage(true)}}>
-                            <button>프로필 편집</button>
+                            <button>수정하기</button>
                         </ButtonBox>
+                        
+                        <div style={{color:'#666666', fontWeight:'400', margin:'2.5rem 0 0 0'}} type="button"
+                            onClick={deleteId}>
+                            회원 탈퇴
+                        </div>
+                        </>
                     }
                     
                 </Flex1>
@@ -62,7 +91,7 @@ useEffect(()=>{
 
                         {
                             myPage?.crewList.map((crew) => {
-                                return(<div key={crew.id} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
+                                return(<div key={`${crew.id}+${crew.name}`} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
                                             &nbsp; &bull; &nbsp; {crew.name}
                                        </div>)
                             })
@@ -76,7 +105,7 @@ useEffect(()=>{
                         
                         {
                             myPage?.gymList.map((gym) => {
-                                return(<div key={gym.id} type="button" onClick={()=>{navigate(`/gyms/${gym.gymId}`)}}>
+                                return(<div key={`${gym.gymId}+${gym.name}`} type="button" onClick={()=>{navigate(`/gyms/${gym.gymId}`)}}>
                                             &nbsp; &bull; &nbsp; {gym.name}
                                        </div>)
                             })
@@ -84,7 +113,7 @@ useEffect(()=>{
 
                     </LikeGymContent>
                         
-                    <div style={{color:'#666666', margin:'0 0 1.5rem 7rem', fontSize:'2rem', fontWeight:'400'}}>
+                    <div style={{color:'#666666', margin:'3rem 0 1.5rem 7rem', fontSize:'2rem', fontWeight:'400'}}>
                         소개글
                     </div>
                     
@@ -92,11 +121,28 @@ useEffect(()=>{
 
                 </Flex2>
 
-            </Container>
+                <Flex3>
+                    <JoinCrewTitle>좋아요 한 크루</JoinCrewTitle>
+                    
+                    <JoinCrewContent>
+
+                        {
+                            myPage?.likeCrewList.map((crew) => {
+                                return(<div key={crew.id} type="button" onClick={()=>{navigate(`/crews/${crew.id}`)}}>
+                                            &nbsp; &bull; &nbsp; {crew.name}
+                                       </div>)
+                            })
+                        }
+                
+                    </JoinCrewContent>
+
+                </Flex3>
+
+            </Container>)
+
             }
-
             
-
+            <Footer />
         </>
     )
 }
@@ -118,7 +164,7 @@ border-right: 1px solid #393939;
 display: flex;
 flex-direction: column;
 align-items: center;
-padding: 4rem 0 0 30rem;
+padding: 0rem 0 0 30rem;
 `
 const ProfileImg = styled.img`
 width: 25rem;
@@ -161,10 +207,12 @@ width: 83rem;
 margin: 0 0 0 7rem;
 font-size: 2rem;
 font-weight: 500;
+word-break: break-all;
+/* overflo */
 `
 
 const Flex2 =styled.div`
-width: 117rem;
+width: 42rem;
 height: 100%;
 `
 
@@ -176,7 +224,7 @@ margin: 1rem 85.7rem 1.5rem 7rem ;
 
 const JoinCrewContent = styled.div`
 color: #FFFFFF;
-width: 83rem;
+width: 39.5rem;
 height: 9rem;
 margin: 1.5rem 75.7rem 0rem 7rem;
 overflow: auto;
@@ -187,17 +235,22 @@ overflow: auto;
 const LikeGymTitle = styled.div`
 color: #666666;
 width: 20rem;
-margin: 5rem 85.7rem 1.5rem 7rem ;
+margin: 3rem 85.7rem 1.5rem 7rem ;
 `
 const LikeGymContent = styled.div`
 color: #FFFFFF;
 width: 83rem;
-height: 13rem;
+height: 12rem;
 margin: 1.5rem 75.7rem 0 7rem;
 overflow: auto;
 ::-webkit-scrollbar {
     display: none;
 }
+`
+
+const Flex3 =styled.div`
+width: 35rem;
+height: 100%;
 `
 
 

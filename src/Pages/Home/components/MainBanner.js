@@ -9,8 +9,8 @@ const MainBanner = () => {
 
     return(
         <Container>
-            <Title>크럭스에서 시작하는 클라이밍 <br/> 
-                <span style={{fontWeight:'700'}}>우리 다같이 시작해볼까요?</span></Title>
+            <Title>혼자 즐기는 클라이밍이 지겹거나 <br/> 
+                <span style={{fontWeight:'700'}}>클라이밍을 즐겁게 시작하기를 원한다면?</span></Title>
             <Wrap>
                 <ContentArea>
                     <Top>새로운 크루원들과의 만남과<br/> 신나는 도전</Top>
@@ -34,7 +34,8 @@ margin: 0 auto;
 `
 const Title = styled.div`
 width: 120rem;
-margin: 14rem auto 0 auto;
+margin: 0 auto 0 auto;
+padding: 14rem 0 0 0;
 font-size: 4.8rem;
 `
 const Wrap = styled.div`

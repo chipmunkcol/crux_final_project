@@ -1,8 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 import { ReactComponent as Crown } from "../../../Image/crown.svg";
+import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
 
-function CrewIntro({ content, adminNickname, adminContent }) {
+function CrewIntro({ content, adminNickname, adminContent, img }) {
+  // console.log(img)
   return (
     <Container>
       <Intro>
@@ -13,10 +15,16 @@ function CrewIntro({ content, adminNickname, adminContent }) {
       <HostIntro>
         <Title>크루장 소개</Title>
         <HostDetailBox>
-          <div>
+          <img src={img === "" ? 사용자기본이미지 : img}></img>
+          <div
+            style={{
+              position: "absolute",
+              bottom: "-20px",
+              paddingLeft: "100px",
+            }}
+          >
             <Crown />
           </div>
-          <img src="https://helpx.adobe.com/content/dam/help/en/photoshop/using/quick-actions/remove-background-before-qa1.png"></img>
           <HostDetail>
             <p>{adminNickname}</p>
             <div>
@@ -110,6 +118,7 @@ const HostDetailBox = styled.div`
   width: 1200px;
   height: 140px;
   display: flex;
+  position: relative;
   img {
     width: 140px;
     height: 140px;

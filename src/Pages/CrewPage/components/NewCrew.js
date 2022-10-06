@@ -8,16 +8,15 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
-const NewCrew = ({searchData}) => {
-
-    const BASE_URL = "http://sparta-tim.shop";
+const PopularCrew = ({searchData}) => {
+    // const BASE_URL = "http://54.180.31.108";
+    const BASE_URL = "https://sparta-tim.shop";
     // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
   
     const [list, setList] = useState([]);
-    console.log(list)
-    
+    // console.log(list)
   
     // 무한스크롤 적용하기
       const [page, setPage] = useState(0); //현재 페이지
@@ -34,9 +33,8 @@ const NewCrew = ({searchData}) => {
         return () => { observer.disconnect(); }
       }, [])
   
-  
       useEffect(()=> {
-            newCrew();
+          newCrew();
       }, [page])
   
     
@@ -44,7 +42,10 @@ const NewCrew = ({searchData}) => {
         const target = entries[0];
         if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
-          setPage(prev => prev+1 ); //페이지 값 증가
+          setTimeout(() => {
+            setPage(prev => prev+1 ); //페이지 값 증가  
+          }, 0);
+          //setPage => setLastId 에 lastId max 받아다가  
         }
     })
 
@@ -53,98 +54,126 @@ const NewCrew = ({searchData}) => {
         await axios.get(`${BASE_URL}/crews?page=${page}&size=6`)
           .then((res) => {
             setList((prev) => [...prev, ...res.data.data.content]);
-            // setNewlist([]);
+            
             preventRef.current = true;
           })
           .catch((err) => {
-            console.log(err);
+            // console.log(err);
           }) 
           setLoad(false);
       }, [page])
 
 
-
 return (
-    <Container>
+    <Container >
         <Wrap>
-            
-          {
+        {
             searchData?.length !== 0 ? 
             
             (searchData?.map((val, i) => (
-                <React.Fragment key={i}>
-                  <CrewList
-                    key={i}
-                    onClick={() => {
-                      navigate(`/crews/${val.id}`);
-                    }}
-                  >
+                // <React.Fragment key={i}>
+                  <CrewList key={i}
+                    onClick={() => {navigate(`/crews/${val.id}`)}}>
                     <img
                       src={val.imgUrl}
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+                    <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
-                      🖤 50명 | 🙍‍♀️ {val.crewNum}
+                      🖤 {val.likeNum}명 
+                        <span style={{margin:'0 0.4rem 0 0.6rem'}}>|</span> 
+                      🙍‍♀️ {val.crewNum}명
                     </p>
                   </CrewList>
-                </React.Fragment>
+                // </React.Fragment>
               ))) 
             
             :
     // 검색한 크루가 있으면 검색 된 크루를 보여줍니다
               list?.map((val, i) => (
-                <React.Fragment key={i}>
-                  <CrewList
-                    key={i} onClick={() => {
-                      navigate(`/crews/${val.id}`);
-                    }}
-                  >
+                // <React.Fragment key={i}>
+                  <CrewList key={i}
+                    onClick={() => {navigate(`/crews/${val.id}`)}}>
                     <img
                       src={val.imgUrl}
                       alt=""
                       style={{ width: "38rem", height: "38rem" }}
                     />
+                    <HashWrap >
+                      <HashTag>#{val.keywords[0]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[1]}&nbsp;</HashTag>
+                      <HashTag>#{val.keywords[2]}&nbsp;</HashTag>
+                    </HashWrap>
                     <h3 style={{ margin: "2rem 0 0 0" }}>{val.name}</h3>
                     <p style={{ margin: "0.5rem 0 0 0", height:'2rem', overflow:'hidden' }}>{val.content}</p>
                     <p style={{ margin: "1rem 0 0 0" }}>
-                      🖤 50명 | 🙍‍♀️ {val.crewNum}
+                      🖤 {val.likeNum}명 
+                        <span style={{margin:'0 0.4rem 0 0.6rem'}}>|</span> 
+                      🙍‍♀️ {val.crewNum}명
                     </p>
                   </CrewList>
-                </React.Fragment>
+                // </React.Fragment>
               ))
 
-            }
+        }
+                        
+            <div ref={obsRef} ></div>
 
             { load && <Loading />}
-            <div ref={obsRef}></div>
+          
         </Wrap>
       </Container>
     )
 }
 
+
 const Container = styled.div`
-width: 192rem;
-background-color: #141414;
-color: #999999;
-`
+  width: 192rem;
+  background-color: #141414;
+  color: #999999;
+`;
+
 const Wrap = styled.div`
-display: grid;
-grid-template-columns: 41rem 41rem 39rem;
-justify-content: center;
-width: 123rem;
-margin: 0 auto;
-padding: 4rem 0 0 0;
-`
+  display: grid;
+  grid-template-columns: 41rem 41rem 39rem;
+  justify-content: center;
+  width: 123rem;
+  margin: 0 auto;
+  padding: 4rem 0 0 0;
+`;
 
 const CrewList = styled.div`
 width: 38rem;
 height: 49rem;
-margin: 2rem 1rem 0 2rem;
+margin: 2rem 1rem 0 0.4rem;
 padding: 0;
 overflow: hidden;
+:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+  }
+cursor: pointer;
+`
+const HashWrap =styled.div`
+display: flex;
+position: absolute;
+margin: 0 0 0 0;
+color: #ffffff;
+font-size: 1.2rem;
+margin: 8rem 0 0 12rem;
+color: #999999;
 `
 
-export default NewCrew;
+const HashTag = styled.div`
+
+`
+
+
+export default PopularCrew;
