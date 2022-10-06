@@ -12,12 +12,12 @@ import Me from "./components/Me";
 import Friends from "./components/Friends";
 import _ from "lodash";
 
-
 const headers = {
   Authorization: window.localStorage.getItem("access_token"),
 };
 const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
 const client = Stomp.over(socket);
+client.debug = () => {};
 client.connect(headers, () => {});
 
 function ChatRoom({ onClose, roomId, roomName, roomImg }) {
@@ -32,25 +32,20 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
   //기본설정---헤더, 토큰, 주소설정
   const dispatch = useDispatch();
   const [message, setMessage] = useState("");
-  const headers = {
-    Authorization: window.localStorage.getItem("access_token"),
-  };
-  const socket = new SockJS(`https://01192mg.shop/stomp/chat`);
-  const client = Stomp.over(socket);
-  client.debug=null;
+
 
   useEffect(() => {
     onConneted();
   }, []);
 
-  useEffect(() => {
-    window.addEventListener("beforeunload", (e) => {
-      client.disconnect(() => client.unsubscribe("sub-0"), headers);
-    }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄
-    return () => {
-      client.disconnect(() => client.unsubscribe("sub-0"), headers);
-    };
-  }, []);
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", (e) => {
+  //     client.disconnect(() => client.unsubscribe("sub-0"), headers);
+  //   }); // 브라우저를 새로고침 하거나 종료하면 disconnect신호 보냄
+  //   return () => {
+  //     client.disconnect(() => client.unsubscribe("sub-0"), headers);
+  //   };
+  // }, []);
 
   //데이터 불러오기
   useEffect(() => {
@@ -60,19 +55,16 @@ function ChatRoom({ onClose, roomId, roomName, roomImg }) {
 
   //   연결&구독
   function onConneted() {
-    try {
-      client.connect(headers, () => {
-        client.subscribe(
-          `/sub/chat/room/${roomId}`,
-          (data) => {
-            const newMessage = JSON.parse(data.body);
-            dispatch(addMessage(newMessage));
-          },
-          headers
-        );
-      });
-    } catch (error) {}
+    client.subscribe(
+      `/sub/chat/room/${roomId}`,
+      (data) => {
+        const newMessage = JSON.parse(data.body);
+        dispatch(addMessage(newMessage));
+      },
+      headers
+    );
   }
+
   const nickname = window?.localStorage?.getItem("nickname");
 
   //메시지 보내기

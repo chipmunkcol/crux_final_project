@@ -13,7 +13,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 
-const EditMypage = ({ myPage, setEditMypage }) => {
+const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
   const BASE_URL = "https://sparta-tim.shop";
   // const BASE_URL = "http://54.180.31.108";
 
@@ -67,7 +67,8 @@ const EditMypage = ({ myPage, setEditMypage }) => {
       .then((res) => {
         alert("프로필 편집완료");
         setEditMypage(false);
-        navigate(`/members/${params}`);
+        setReload(!reload)
+        // navigate(`/members/${params}`);
         window.localStorage.setItem("nickname", editNickname);
         window.localStorage.setItem("profileImg", fileUrl)
       })
@@ -177,7 +178,7 @@ const Flex1 = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 4rem 0 0 30rem;
+  padding: 0rem 0 0 30rem;
 `;
 const Introduce = styled.div`
 color: #666666;

@@ -57,7 +57,7 @@ function UploadPhotoModal({ onClose }) {
 
   const uploadPhoto = async () => {
     if (imgProductList.length === 0) {
-      alert("사진을 첨부해주세요:)")
+      alert("사진을 첨부해주세요:)");
     } else {
       const payload = {
         id: params,
@@ -67,9 +67,6 @@ function UploadPhotoModal({ onClose }) {
       onClose(modalRef);
     }
   };
-
-
-
 
   //이미지 미리보기
   const [imgPreview, setImgPreview] = useState([]);
@@ -142,7 +139,7 @@ function UploadPhotoModal({ onClose }) {
               ref={imgRef}
               onChange={(e) => {
                 handleAddImages(e);
-                uploadFB(e)
+                uploadFB(e);
               }}
             />
           </div>

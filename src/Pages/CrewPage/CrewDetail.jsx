@@ -29,6 +29,7 @@ const CrewDetail = () => {
 
   useEffect(() => {
     dispatch(getCrewDetail(params));
+    window.scrollTo(0, 0);
   }, []);
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);

@@ -28,10 +28,11 @@ const params = useParams().memberId
 
 //프로필 편집 버튼을 누르면 편집모드로 변경합니다.
 const [editMypage, setEditMypage] = useState(false)
+const [reload, setReload] = useState(false)
 
 useEffect(()=>{
     dispatch(__getMyPage(params))
-},[editMypage])
+},[reload])
 
 //회원 탈퇴
 const deleteId = async() => {
@@ -59,7 +60,7 @@ const deleteId = async() => {
             <Navbar />
 
             {isLoading === true ? <Loading /> : 
-                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage}/> : (
+                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage} setReload={setReload} reload={reload}/> : (
 
                 <Container>
 
