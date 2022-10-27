@@ -26,7 +26,7 @@ const openModal = (review) => {
     setReviewData(review)
 }
 
-const userId = Number(window.localStorage.getItem('userId'))
+const userId = Number(JSON.parse(window.localStorage.getItem("userInfo")).userId)
 // console.log(userId)
 const dispatch = useDispatch()
 
@@ -38,7 +38,7 @@ const onclickDelReview = (reviewId) => {
 
 const delReview = async (reviewId) => {
     await axios.delete(`${BASE_URL}/reviews/${reviewId}`,
-        { headers: {Authorization: window.localStorage.getItem("access_token")}})
+        { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
       .then((res) => {
         setReload(!reload)
       })

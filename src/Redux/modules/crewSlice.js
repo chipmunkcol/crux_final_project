@@ -23,7 +23,7 @@ export const createCrew = createAsyncThunk(
     try {
       const response = await axios.post(`${BASE_URLM}/crews`, payload, {
         headers: {
-          Authorization: window.localStorage.getItem("access_token"),
+          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
         },
       });
       window.location.replace("/crews");
@@ -52,7 +52,7 @@ export const editCrew = createAsyncThunk(
           },
           {
             headers: {
-              Authorization: window.localStorage.getItem("access_token"),
+              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
             },
           }
         )
@@ -75,7 +75,7 @@ export const deleteCrew = createAsyncThunk(
       const response = await axios
         .delete(`${BASE_URLM}/crews/${payload}`, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {
@@ -94,11 +94,13 @@ export const getCrewDetail = createAsyncThunk(
   "getCrewDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, {
-        headers: {
-          Authorization: window.localStorage.getItem("access_token"),
-        },
-      });
+      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, 
+      // {
+      //   headers: {
+      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //   },
+      // }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -119,7 +121,7 @@ export const joinCrew = createAsyncThunk(
         null,
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -137,7 +139,7 @@ export const getApplicationList = createAsyncThunk(
     try {
       const data = await axios.get(`${BASE_URLM}/crews/${payload}/members`, {
         headers: {
-          Authorization: window.localStorage.getItem("access_token"),
+          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
         },
       });
       // console.log(data.data);
@@ -159,7 +161,7 @@ export const permitCrew = createAsyncThunk(
           null,
           {
             headers: {
-              Authorization: window.localStorage.getItem("access_token"),
+              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
             },
           }
         )
@@ -180,6 +182,7 @@ export const permitCrew = createAsyncThunk(
 export const createCrewNotice = createAsyncThunk(
   "post/createCrew",
   async (payload, thunkAPI) => {
+    console.log(payload)
     try {
       const response = await axios.post(
         `${BASE_URLM}/notices/${payload.id}`,
@@ -190,7 +193,7 @@ export const createCrewNotice = createAsyncThunk(
         },
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -203,8 +206,9 @@ export const createCrewNotice = createAsyncThunk(
 
 //크루 공지사항 수정
 export const editCrewNotice = createAsyncThunk(
-  "put/editCrew",
+  "put/editCrewNotice",
   async (payload, thunkAPI) => {
+    console.log(payload)
     try {
       const response = await axios.put(
         `${BASE_URLM}/notices/${payload.id}`,
@@ -215,7 +219,7 @@ export const editCrewNotice = createAsyncThunk(
         },
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -242,7 +246,7 @@ export const addCrewPhoto = createAsyncThunk(
         },
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -281,7 +285,7 @@ export const deleteCrewPhoto = createAsyncThunk(
         `${BASE_URLM}/crews/posts/${payload}`,
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -335,16 +339,21 @@ export const crewSlice = createSlice({
       );
     },
     editNotice(state, action) {
-      // console.log(action.payload);
+      console.log(action.payload);
       // console.log(state.crewDetail.data.noticeList);
-      const existingNotice = state.crewDetail.data.noticeList.find(
-        (notice) => notice.noticeId === action.payload.id
-      );
-      if (existingNotice) {
-        existingNotice.place = action.payload.place;
-        existingNotice.content = action.payload.content;
-        existingNotice.date = action.payload.date;
-      }
+      // const existingNotice = state.crewDetail.data.noticeList.find(
+      //   (notice) => notice.noticeId === action.payload.id
+      // );
+      // if (existingNotice) {
+      //   existingNotice.place = action.payload.place;
+      //   existingNotice.content = action.payload.content;
+      //   existingNotice.date = action.payload.date;
+      // }
+      const a = state.crewDetail.data.noticeList.findIndex((v)=> v.noticeId === action.payload.id)
+      state.crewDetail.data.noticeList[a].place = action.payload.place;
+      state.crewDetail.data.noticeList[a].content = action.payload.content;
+      state.crewDetail.data.noticeList[a].date = action.payload.date;
+
       window.alert("수정완료!");
     },
     _crewLike(state, action) {

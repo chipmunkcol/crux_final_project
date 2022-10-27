@@ -15,10 +15,10 @@ function CrewNotice() {
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const noticeList = crewDetail?.data?.noticeList;
-  // console.log(noticeList);
+  console.log(noticeList);
 
   //userId가져오기
-  const userId = window?.localStorage?.getItem("userId");
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
 
   //삭제하기
   async function delteNotice(payload) {
@@ -28,7 +28,7 @@ function CrewNotice() {
           `https://sparta-tim.shop/notices/${payload}`,
           {
             headers: {
-              Authorization: window.localStorage.getItem("access_token"),
+              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
             },
           }
         );
@@ -69,15 +69,15 @@ function CrewNotice() {
         ?.map((notice, index) => (
           <Container key={index}>
             <IntroContent>
-              {Number(userId) === notice.authorId ? (
+              {Number(userId) === notice?.authorId ? (
                 <TextButton>
                   <span
                     onClick={() => {
                       handleModalClick();
-                      setEditid(notice.noticeId);
-                      setEditplace(notice.place);
-                      setEditcontent(notice.content);
-                      setEditdate(notice.date);
+                      setEditid(notice?.noticeId);
+                      setEditplace(notice?.place);
+                      setEditcontent(notice?.content);
+                      setEditdate(notice?.date);
                     }}
                   >
                     수정
@@ -85,8 +85,8 @@ function CrewNotice() {
                   <span>|</span>
                   <span
                     onClick={() => {
-                      delteNotice(notice.noticeId);
-                      dispatch(deleteCrewNotice(notice.noticeId));
+                      delteNotice(notice?.noticeId);
+                      dispatch(deleteCrewNotice(notice?.noticeId));
                     }}
                   >
                     삭제

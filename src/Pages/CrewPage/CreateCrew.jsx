@@ -9,6 +9,7 @@ import { createCrew } from "../../Redux/modules/crewSlice";
 import Select from "react-select";
 import DaumPostcode from "react-daum-postcode";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
+import Footer from "../../Shared/Footer";
 
 const CreateCrew = () => {
   const {
@@ -405,7 +406,8 @@ const CreateCrew = () => {
             </ContentBox>
           </ThumbnailContentBox>
         </ThumbnailContainer>
-        <TabContainer></TabContainer>
+        {/* <TabContainer></TabContainer> */}
+        <Footer/>
       </Warp>
     </div>
   );

@@ -62,7 +62,7 @@ const Crew = () => {
         {/* 검색 박스 */}
         <div style={{ width: "120rem", margin: "0 auto", height: "8rem" }}>
           <S_search
-            placeholder="검색어를 입력해 주세요"
+            placeholder="크루 이름과 해쉬태그로 검색할 수 있어요 (ex.초보)"
             onChange={(e) => setSearch(e.target.value)}
             onKeyPress={onKeyPress}
             value={search}

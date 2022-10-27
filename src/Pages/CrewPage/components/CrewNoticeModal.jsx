@@ -20,8 +20,9 @@ function CrewNoticeModal({ onClose }) {
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
-  const userId = window?.localStorage?.getItem("userId");
-  const nickname = window?.localStorage?.getItem("nickname");
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
+  const nickname = JSON.parse(window?.localStorage?.getItem("userInfo")).nickname;
+  const profileImg = JSON.parse(window?.localStorage?.getItem("userInfo")).profileImg;
   const modalRef = useRef();
 
   const onSubmit = (data) => {
@@ -32,6 +33,7 @@ function CrewNoticeModal({ onClose }) {
       content: data.content,
       authorId: Number(userId),
       authorNickname: nickname,
+      authorProfileImg: profileImg
     };
     createCrewNotice(payload);
     dispatch(addCrewNotice(payload));
@@ -50,7 +52,7 @@ function CrewNoticeModal({ onClose }) {
         },
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );

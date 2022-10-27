@@ -10,7 +10,7 @@ export const __getMyPage = createAsyncThunk(
     try {
       // console.log(memberId);
       const data = await axios.get(`${BASE_URL}/members/${memberId}`, {
-        headers: { Authorization: window.localStorage.getItem("access_token") },
+        headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token },
       });
 
       return thunkAPI.fulfillWithValue(data.data);

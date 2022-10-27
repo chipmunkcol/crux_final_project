@@ -97,6 +97,7 @@ return (
               ))) 
             
             :
+            
     // 검색한 크루가 있으면 검색 된 크루를 보여줍니다
               list?.map((val, i) => (
                 // <React.Fragment key={i}>

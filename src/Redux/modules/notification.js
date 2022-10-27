@@ -11,7 +11,7 @@ export const __getAlam = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const data = await axios.get(`${BASE_URL}/notifications`,
-            { headers: {Authorization: window.localStorage.getItem("access_token")}})
+            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
             // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
@@ -77,7 +77,7 @@ export const __NreadAlam = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             const data = await axios.get(`${BASE_URL}/notifications/count`,
-            { headers: {Authorization: window.localStorage.getItem("access_token")}})
+            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
             // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {

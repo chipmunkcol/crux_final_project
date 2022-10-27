@@ -7,7 +7,7 @@ import ModalReview from "./ModalReview";
 import 클라이밍 from '../../../Image/인기 클라이밍짐.png'
 import {LikeHeart, LikedHeart } from "../../../Shared/components/LikeHeart";
 import { useDispatch, useSelector } from "react-redux";
-import { __getGymDetail } from "../../../Redux/modules/gymDetilSlice";
+import { _likeGym, __getGymDetail } from "../../../Redux/modules/gymDetilSlice";
 import Loading from "../../../Shared/Loading";
 import 노랑별 from "../../../Image/노랑별.png"
 import 검은별 from "../../../Image/검은별.png"
@@ -25,25 +25,24 @@ const { isLoading, error, gymDetail } = useSelector((state) => state.gymDetail)
 // console.log(isLoading, error, gymDetail)
 
 const gym = gymDetail.data
-// console.log(gym)
+// console.log(gym.likeGym)
 
 const navigate = useNavigate()
 const [modal, setModal] = useState(false)
 // console.log(gym.imgUrl)
 
+
 const onclickLikeGym = () => {
     likeGym();
+    dispatch(_likeGym(!gym?.likeGym));
 }
 
 const likeGym = async() => {
     // console.log(gym.id)
     await axios.post(`${BASE_URL}/gyms/${gym.id}/like`, null ,{
-        headers: {Authorization: window.localStorage.getItem("access_token")}})
+        headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
         alert(res.data.data)
-        setTimeout(() => {
-            setReload(!reload)
-        }, 0);
     })
     .catch((err) => {
         // console.log(err)
@@ -53,7 +52,7 @@ const likeGym = async() => {
 useEffect(()=>{
     dispatch(__getGymDetail(params))
 
-},[reload])
+},[dispatch])
 
 
 if (gym === undefined) 

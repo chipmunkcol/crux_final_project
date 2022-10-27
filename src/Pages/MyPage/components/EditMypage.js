@@ -62,7 +62,7 @@ const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
   const editProfile = async (payload) => {
     await axios
       .put(`${BASE_URL}/members`, payload, {
-        headers: { Authorization: window.localStorage.getItem("access_token") },
+        headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token },
       })
       .then((res) => {
         alert("프로필 편집완료");

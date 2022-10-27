@@ -47,7 +47,7 @@ const onclickDeleteAlams = () => {
 
 const readAlam = async (notificationId) => {
   await axios.post(`${BASE_URL}/notifications/${notificationId}`, null,
-          { headers: {Authorization: window.localStorage.getItem("access_token")}})
+          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
     .then((res) => {
       // console.log(res)
     })
@@ -57,7 +57,7 @@ const readAlam = async (notificationId) => {
 }
 const deleteAlam = async (notificationId) => {
   await axios.delete(`${BASE_URL}/notifications/${notificationId}`,
-          { headers: {Authorization: window.localStorage.getItem("access_token")}})
+          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
       // console.log(res)
     })
@@ -67,7 +67,7 @@ const deleteAlam = async (notificationId) => {
 }
 const deleteAlams = async () => {
   await axios.delete(`${BASE_URL}/notifications`,
-          { headers: {Authorization: window.localStorage.getItem("access_token")}})
+          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
       // console.log(res)
     })

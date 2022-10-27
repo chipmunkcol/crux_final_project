@@ -10,7 +10,7 @@ export const __getGymDetail = createAsyncThunk(
         try {
             // console.log(payload)
             const data = await axios.get(`${BASE_URL}/gyms/${payload}`,
-            { headers: {Authorization: window.localStorage.getItem("access_token")}})
+            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -25,7 +25,12 @@ export const gymDetailSlice = createSlice({
         isLoading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        _likeGym(state, action) {
+            // console.log(action.payload)
+            state.gymDetail.data.likeGym = action.payload
+        }
+    },
     extraReducers: {
         [__getGymDetail.pending]: (state) => {
             state.isLoading = true;
@@ -40,3 +45,5 @@ export const gymDetailSlice = createSlice({
         }
     }
 })
+
+export const { _likeGym } = gymDetailSlice.actions

@@ -69,13 +69,23 @@ export const login = createAsyncThunk(
         .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
           // console.log(response);
-          window.localStorage.setItem(
-            "access_token",
-            response.headers.access_token
-          );
-          window.localStorage.setItem("userId", response.data.data.id);
-          window.localStorage.setItem("nickname", response.data.data.nickname);
-          window.localStorage.setItem("profileImg", response.data.data.imgUrl);
+          // window.localStorage.setItem("access_token",
+          //   response.headers.access_token
+          // );
+          // window.localStorage.setItem("userId", response.data.data.id);
+          // window.localStorage.setItem("nickname", response.data.data.nickname);
+          // window.localStorage.setItem("profileImg", response.data.data.imgUrl);
+
+          const userInfo = {
+            access_token: response.headers.access_token,
+            userId: response.data.data.id,
+            nickname: response.data.data.nickname,
+            profileImg: response.data.data.imgUrl,
+            expire: Date.now() + 86400000
+          }
+          const userInfoString = JSON.stringify(userInfo)
+          window.localStorage.setItem('userInfo', userInfoString)
+
           window.location.reload();
         });
       return thunkAPI.fulfillWithValue(response.data);
@@ -158,7 +168,7 @@ export const likeCrew = createAsyncThunk(
       const response = await axios
         .post(`${BASE_URLM}/crews/${payload}/like`, null, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {
@@ -181,7 +191,7 @@ export const unLikeCrew = createAsyncThunk(
       const response = await axios
         .delete(`${BASE_URLM}/crews/${payload}/like`, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {
@@ -224,7 +234,7 @@ export const withdrawCrew = createAsyncThunk(
       const response = await axios
         .delete(`${BASE_URLM}/crews/${payload.id}/members`, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {

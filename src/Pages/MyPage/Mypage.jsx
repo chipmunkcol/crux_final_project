@@ -14,7 +14,8 @@ import axios from "axios";
 
 const Mypage = () => {
 const BASE_URL = "https://sparta-tim.shop";
-const userId = window.localStorage.getItem("userId")
+const userId = JSON.parse(window.localStorage.getItem("userInfo")).userId
+// console.log(userId)
 
 const dispatch = useDispatch()
 const navigate = useNavigate()
@@ -23,7 +24,7 @@ const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 const myPage = mypage.data
 // console.log(myPage)
 
-const params = useParams().memberId
+const params = Number(useParams().memberId)
 // console.log(params)
 
 //프로필 편집 버튼을 누르면 편집모드로 변경합니다.
@@ -38,13 +39,11 @@ useEffect(()=>{
 const deleteId = async() => {
     if(window.confirm("정말 탈퇴하시겠어요?")) {
         await axios.delete(`${BASE_URL}/members/withdraw`, 
-        {headers: {Authorization: window.localStorage.getItem("access_token")}})
+        {headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
         .then((res) => {
             // console.log(res)
             alert(res.data.data)
-            localStorage.removeItem("access_token")
-            localStorage.removeItem("userId")
-            localStorage.removeItem("nickname")
+            localStorage.removeItem("userInfo")
             navigate('/')
         })
         .catch((err) => {

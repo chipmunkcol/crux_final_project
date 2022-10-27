@@ -17,7 +17,7 @@ export const loadMessage = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/chat/messages/${payload}`, {
         headers: {
-          Authorization: window.localStorage.getItem("access_token"),
+          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
         },
       });
       return response.data;
@@ -34,7 +34,7 @@ export const getChatRoom = createAsyncThunk(
     try {
       const response = await axios.get(`${BASE_URL}/chat/rooms`, {
         headers: {
-          Authorization: window.localStorage.getItem("access_token"),
+          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
         },
       });
       return response.data;

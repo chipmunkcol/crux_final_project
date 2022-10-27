@@ -54,9 +54,11 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
         <DeleteBtn
           type="button"
           onClick={() => {
-            dispatch(deleteCrewPhotos(id));
-            dispatch(deleteCrewPhoto(id));
-            onClose(modalRef);
+            if(window.confirm("정말 삭제하시겠어요?")){
+              dispatch(deleteCrewPhotos(id));
+              dispatch(deleteCrewPhoto(id));
+              onClose(modalRef);
+            }
           }}
         >
           삭제

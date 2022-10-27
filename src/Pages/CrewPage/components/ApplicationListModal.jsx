@@ -33,7 +33,7 @@ function ApplicationListModal({ onClose }) {
         null,
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -152,8 +152,12 @@ const PhotoButton = styled.div`
 const ImgBox = styled.div`
   display: flex;
   positon: relative;
+  overflow:auto ;
   width: 410px;
   height: 484px;
+  ::-webkit-scrollbar {
+    display: none;
+}
 `;
 
 const Xbtn = styled.button`

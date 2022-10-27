@@ -30,7 +30,7 @@ const CrewDetail = () => {
   useEffect(() => {
     dispatch(getCrewDetail(params));
     window.scrollTo(0, 0);
-  }, []);
+  }, [params]);
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
@@ -38,7 +38,8 @@ const CrewDetail = () => {
 
   //호스트 확인
   const hostId = crew?.hostId;
-  const userId = window?.localStorage?.getItem("userId");
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
+  
 
   //크루 가입자 확인
   const memberList = crew?.memberList;
@@ -52,7 +53,7 @@ const CrewDetail = () => {
         const response = await axios
           .delete(`https://sparta-tim.shop/crews/${params}`, {
             headers: {
-              Authorization: window.localStorage.getItem("access_token"),
+              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
             },
           })
           .then((response) => {
@@ -94,7 +95,7 @@ const CrewDetail = () => {
         null,
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -112,7 +113,7 @@ const CrewDetail = () => {
         null,
         {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         }
       );
@@ -131,7 +132,7 @@ const CrewDetail = () => {
         const response = await axios
           .delete(`https://sparta-tim.shop/crews/${params}/members`, {
             headers: {
-              Authorization: window.localStorage.getItem("access_token"),
+              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
             },
           })
           .then((response) => {
@@ -152,7 +153,7 @@ const CrewDetail = () => {
       const response = await axios
         .post(`https://sparta-tim.shop/crews/${params}/like`, null, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {
@@ -172,7 +173,7 @@ const CrewDetail = () => {
       const response = await axios
         .delete(`https://sparta-tim.shop/crews/${params}/like`, {
           headers: {
-            Authorization: window.localStorage.getItem("access_token"),
+            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
           },
         })
         .then((response) => {

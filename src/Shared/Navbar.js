@@ -17,14 +17,33 @@ import NavbarDropdown from "./NavbarDropdown";
 
 
 const Navbar = () => {
-  const userToken = window.localStorage.getItem("access_token")
-  const userId = window.localStorage.getItem("userId")
+
+  const [userInfo, setUserInfo] = useState()
+
+  function getUserInfo() {
+    const userInfo = window.localStorage.getItem("userInfo");
+    
+    if(!userInfo) {
+      return null;
+    }
+    const objUserInfo = JSON.parse(userInfo);
+    
+    if(Date.now() > objUserInfo.expire) {
+      window.localStorage.removeItem('userInfo')
+    }
+    // console.log(objUserInfo)
+    return setUserInfo(objUserInfo)
+  }
+  
+  useEffect(()=>{
+    getUserInfo()
+  },[])
+
+  const userToken = userInfo?.access_token
+  const userId = userInfo?.userId
   // console.log(userToken)
   const removeToken = () => {
-     localStorage.removeItem("access_token")
-     localStorage.removeItem("userId")
-     localStorage.removeItem("nickname")
-     localStorage.removeItem("profileImg")
+     localStorage.removeItem("userInfo")
      alert('로그아웃 되었습니다.')
      navigate('/')
   }
@@ -102,7 +121,7 @@ useEffect(()=>{
 // 로그인 시 본인 사진 가져오기
 const [showMypage, setShowMypage] = useState(false)
 
-const profileImg = window.localStorage.getItem("profileImg")
+const profileImg = userInfo?.profileImg
 // console.log(profileImg)
 
 
@@ -130,7 +149,7 @@ const profileImg = window.localStorage.getItem("profileImg")
       </NavContent>
           
           {
-            userToken !== null ?
+            userToken !== undefined ?
             <NavContentLogin>
               
               {/* 알림 드롭다운 */}
