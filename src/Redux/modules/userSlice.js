@@ -68,13 +68,6 @@ export const login = createAsyncThunk(
       const response = await axios
         .post(`${BASE_URLM}/members/login`, payload)
         .then((response) => {
-          // console.log(response);
-          // window.localStorage.setItem("access_token",
-          //   response.headers.access_token
-          // );
-          // window.localStorage.setItem("userId", response.data.data.id);
-          // window.localStorage.setItem("nickname", response.data.data.nickname);
-          // window.localStorage.setItem("profileImg", response.data.data.imgUrl);
 
           const userInfo = {
             access_token: response.headers.access_token,
@@ -124,13 +117,15 @@ export const kakaoLogin = createAsyncThunk(
         .get(`${BASE_URLM}/oauth/kakao/callback?code=${payload}`)
         .then((response) => {
           // console.log(response);
-          window.localStorage.setItem(
-            "access_token",
-            response.headers.authorization
-          );
-          window.localStorage.setItem("userId", response.data.id);
-          window.localStorage.setItem("nickname", response.data.nickname);
-          window.localStorage.setItem("profileImg", response.data.imgUrl);
+          const userInfo = {
+            access_token: response.headers.access_token,
+            userId: response.data.id,
+            nickname: response.data.nickname,
+            profileImg: response.data.imgUrl,
+            expire: Date.now() + 86400000
+          }
+          const userInfoString = JSON.stringify(userInfo)
+          window.localStorage.setItem('userInfo', userInfoString)
         });
       window.location.replace("/");
       return thunkAPI.fulfillWithValue(response.data);

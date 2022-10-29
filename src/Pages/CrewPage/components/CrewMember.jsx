@@ -20,7 +20,7 @@ function CrewMember() {
   //호스트 id
   const hostId = useSelector((state) => state?.crews?.crewDetail?.data?.hostId);
   //유저 id
-  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId;
 
   //탈퇴시키기
   async function handleExpel(payload) {

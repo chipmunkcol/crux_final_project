@@ -17,6 +17,8 @@ import NavbarDropdown from "../../../Shared/NavbarDropdown";
 const Navbar = () => {
 
   const [userInfo, setUserInfo] = useState()
+  const userToken = userInfo?.access_token
+  const userId = userInfo?.userId
 
   function getUserInfo() {
     const userInfo = window.localStorage.getItem("userInfo");
@@ -35,11 +37,8 @@ const Navbar = () => {
   
   useEffect(()=>{
     getUserInfo()
-  },[])
+  },[userToken])
   
-  const userToken = userInfo?.access_token
-  const userId = userInfo?.userId
-  // console.log(userToken)
   const removeToken = () => {
      localStorage.removeItem("userInfo")
      alert('로그아웃 되었습니다.')
@@ -72,8 +71,10 @@ const [realtimeAlam, setRealtimeAlam] = useState([])
 // console.log(realtimeAlam)
 
 useEffect(()=>{
-  dispatch(__NreadAlam())
-  dispatch(__getAlam())
+  if(userInfo){
+    dispatch(__NreadAlam())
+    dispatch(__getAlam())
+  }
 },[dispatch])
 
 //SSE 연결하기

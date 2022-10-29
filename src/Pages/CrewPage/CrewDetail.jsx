@@ -38,7 +38,7 @@ const CrewDetail = () => {
 
   //호스트 확인
   const hostId = crew?.hostId;
-  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId;
   
 
   //크루 가입자 확인

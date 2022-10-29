@@ -14,7 +14,9 @@ import axios from "axios";
 
 const Mypage = () => {
 const BASE_URL = "https://sparta-tim.shop";
-const userId = JSON.parse(window.localStorage.getItem("userInfo")).userId
+
+
+const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId
 // console.log(userId)
 
 const dispatch = useDispatch()

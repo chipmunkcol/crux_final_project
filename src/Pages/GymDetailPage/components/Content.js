@@ -16,7 +16,7 @@ import 하트 from "../../../Image/작은회색하트.png"
 
 
 const Content = ({setShowReview, showReview, setReload, reload}) => {
-    const BASE_URL = 'https://sparta-tim.shop'
+const BASE_URL = 'https://sparta-tim.shop'
 
 const params = useParams().gymId
 const dispatch = useDispatch()
@@ -30,6 +30,7 @@ const gym = gymDetail.data
 const navigate = useNavigate()
 const [modal, setModal] = useState(false)
 // console.log(gym.imgUrl)
+const userInfo = window.localStorage.getItem('userInfo')
 
 
 const onclickLikeGym = () => {
@@ -130,7 +131,12 @@ return(
                         <ButtonBox onClick={()=>{setShowReview(!showReview)}}>
                             <button>리뷰 상세보기</button>
                         </ButtonBox>
-                        <ButtonBox onClick={()=>{setModal(true)}} style={{margin:'1rem 0 0 2rem'}}>
+                        <ButtonBox style={{margin:'1rem 0 0 2rem'}} onClick={()=>{ 
+                                if(userInfo) { 
+                                    setModal(true)
+                                } else {
+                                    alert('로그인 후 이용하실 수 있습니다')
+                                }}}>
                             <button>후기 쓰기</button>
                         </ButtonBox>
                     </div>

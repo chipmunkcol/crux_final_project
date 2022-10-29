@@ -10,7 +10,8 @@ export const __getGymDetail = createAsyncThunk(
         try {
             // console.log(payload)
             const data = await axios.get(`${BASE_URL}/gyms/${payload}`,
-            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
+            // { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }}
+            )
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
             return thunkAPI.rejectWithValue(error)

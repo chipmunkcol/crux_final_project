@@ -26,7 +26,7 @@ const openModal = (review) => {
     setReviewData(review)
 }
 
-const userId = Number(JSON.parse(window.localStorage.getItem("userInfo")).userId)
+const userId = Number(JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId)
 // console.log(userId)
 const dispatch = useDispatch()
 

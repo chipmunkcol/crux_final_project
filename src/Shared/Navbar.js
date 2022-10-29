@@ -19,6 +19,9 @@ import NavbarDropdown from "./NavbarDropdown";
 const Navbar = () => {
 
   const [userInfo, setUserInfo] = useState()
+  const userToken = userInfo?.access_token
+  // console.log(userToken)
+  const userId = userInfo?.userId
 
   function getUserInfo() {
     const userInfo = window.localStorage.getItem("userInfo");
@@ -37,11 +40,8 @@ const Navbar = () => {
   
   useEffect(()=>{
     getUserInfo()
-  },[])
+  },[userToken])
 
-  const userToken = userInfo?.access_token
-  const userId = userInfo?.userId
-  // console.log(userToken)
   const removeToken = () => {
      localStorage.removeItem("userInfo")
      alert('로그아웃 되었습니다.')
@@ -74,8 +74,10 @@ const Navbar = () => {
   // console.log(realtimeAlam)
 
   useEffect(()=>{
-    dispatch(__NreadAlam())
-    dispatch(__getAlam())
+    if(userInfo){
+      dispatch(__NreadAlam())
+      dispatch(__getAlam())
+    }
   },[dispatch])
 
 //SSE 연결하기
@@ -121,7 +123,7 @@ useEffect(()=>{
 // 로그인 시 본인 사진 가져오기
 const [showMypage, setShowMypage] = useState(false)
 
-const profileImg = userInfo?.profileImg
+const profileImg = JSON.parse(window?.localStorage?.getItem('userInfo'))?.profileImg
 // console.log(profileImg)
 
 
@@ -277,6 +279,7 @@ padding: 2px 0 0 6.5px;
 
 const ProfileImg = styled.img`
 width: 5rem;
+height: 5rem;
 border-radius: 60%;
 position: absolute;
 margin: -6px 0 0 49.3rem;

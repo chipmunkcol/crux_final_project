@@ -13,7 +13,7 @@ import { ReactComponent as ImgUpload } from "../../../Image/imgUpload.svg";
 function CrewPhotos({crew}) {
   const params = useParams().crewId;
   const dispatch = useDispatch();
-  const userId = Number(JSON.parse(window?.localStorage?.getItem("userInfo")).userId)
+  const userId = Number(JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId)
 
   useEffect(() => {
     dispatch(getCrewPhoto(params));

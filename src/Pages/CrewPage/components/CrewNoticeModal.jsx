@@ -20,9 +20,9 @@ function CrewNoticeModal({ onClose }) {
 
   const dispatch = useDispatch();
   const params = useParams().crewId;
-  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
-  const nickname = JSON.parse(window?.localStorage?.getItem("userInfo")).nickname;
-  const profileImg = JSON.parse(window?.localStorage?.getItem("userInfo")).profileImg;
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId;
+  const nickname = JSON.parse(window?.localStorage?.getItem("userInfo"))?.nickname;
+  const profileImg = JSON.parse(window?.localStorage?.getItem("userInfo"))?.profileImg;
   const modalRef = useRef();
 
   const onSubmit = (data) => {

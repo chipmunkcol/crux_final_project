@@ -18,7 +18,7 @@ function CrewNotice() {
   console.log(noticeList);
 
   //userId가져오기
-  const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId;
+  const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId;
 
   //삭제하기
   async function delteNotice(payload) {

@@ -1,7 +1,7 @@
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import {storage} from '../../../Shared/firebase'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useCallback } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import styled from "styled-components"
@@ -28,8 +28,27 @@ const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
     myPage?.imgUrl !== null ? myPage?.imgUrl : 사용자기본이미지
   );
   // console.log(fileUrl);
-// 닉네임 2~10 글자 제한
-// 소개글 150 글자 제한
+  const [userInfo, setUserInfo] = useState()
+
+  function getUserInfo() {
+    const userInfo = window.localStorage.getItem("userInfo");
+    
+    if(!userInfo) {
+      return null;
+    }
+    const objUserInfo = JSON.parse(userInfo);
+   
+    return setUserInfo(objUserInfo)
+  }
+
+  useEffect(()=>{
+    getUserInfo()
+  },[dispatch])
+  
+  const userToken = userInfo?.access_token
+  const userId = userInfo?.userId
+  const userExpire = userInfo?.expire
+
   const changeImage = async (e) => {
     const upload_file = await uploadBytes(
       ref(storage, `images/${e.target.files[0].name}`),
@@ -58,6 +77,7 @@ const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
       editProfile(payload);
     }
   };
+  
 
   const editProfile = async (payload) => {
     await axios
@@ -67,10 +87,17 @@ const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
       .then((res) => {
         alert("프로필 편집완료");
         setEditMypage(false);
+
+        const userInfo = {
+          access_token: userToken,
+          expire: userExpire,
+          nickname: editNickname,
+          profileImg: fileUrl,
+          userId: userId
+        }
+        const userInfoString = JSON.stringify(userInfo)
+        window.localStorage.setItem("userInfo", userInfoString)
         setReload(!reload)
-        // navigate(`/members/${params}`);
-        window.localStorage.setItem("nickname", editNickname);
-        window.localStorage.setItem("profileImg", fileUrl)
       })
       .catch((err) => {
         // console.log(err);
