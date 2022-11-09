@@ -118,7 +118,7 @@ export const kakaoLogin = createAsyncThunk(
         .then((response) => {
           // console.log(response);
           const userInfo = {
-            access_token: response.headers.access_token,
+            access_token: response.headers.authorization,
             userId: response.data.id,
             nickname: response.data.nickname,
             profileImg: response.data.imgUrl,
