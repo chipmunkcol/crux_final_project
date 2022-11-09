@@ -28,7 +28,7 @@ const PopularCrew = ({searchData}) => {
       const endRef = useRef(false); //모든 글 로드 확인
   
       useEffect(()=> { //옵저버 생성
-        const observer = new IntersectionObserver(obsHandler, { threshold : 0.5 });
+        const observer = new IntersectionObserver(obsHandler, { threshold : 0.8 });
         if(obsRef.current) observer.observe(obsRef.current);
         return () => { observer.disconnect(); }
       }, [])
@@ -54,7 +54,9 @@ const PopularCrew = ({searchData}) => {
         await axios.get(`${BASE_URL}/crews?page=${page}&size=6`)
           .then((res) => {
             setList((prev) => [...prev, ...res.data.data.content]);
-            
+            if(res.data.data.content.length < 6) {
+              endRef.current = true
+            }
             preventRef.current = true;
           })
           .catch((err) => {

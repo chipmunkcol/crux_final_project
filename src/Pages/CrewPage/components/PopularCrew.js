@@ -22,30 +22,25 @@ const PopularCrew = ({searchData}) => {
       const [page, setPage] = useState(0); //현재 페이지
       // console.log(page)
       const obsRef = useRef(null); 	//observer Element
-  
+      // console.log(obsRef)
       const [load, setLoad] = useState(false); //로딩 스피너
       const preventRef = useRef(true); //옵저버 중복 실행 방지
       const endRef = useRef(false); //모든 글 로드 확인
   
       useEffect(()=> { //옵저버 생성
-        const observer = new IntersectionObserver(obsHandler, { threshold : 0.5 });
+        const observer = new IntersectionObserver(obsHandler, { threshold : 0.8 });
         if(obsRef.current) observer.observe(obsRef.current);
         return () => { observer.disconnect(); }
       }, [])
-  
-      useEffect(()=> {
-          getCrew();
-      }, [page])
-  
     
       const obsHandler = ((entries) => { //옵저버 콜백함수
         const target = entries[0];
-        if(!endRef.current && target.isIntersecting && preventRef.current){ //옵저버 중복 실행 방지
+        if(!endRef.current && target.isIntersecting && preventRef.current ){ //옵저버 중복 실행 방지
           preventRef.current = false; //옵저버 중복 실행 방지
           setTimeout(() => {
-            setPage(prev => prev+1 ); //페이지 값 증가  
+            setPage(prev => prev+1 ); //페이지 값 증가
           }, 0);
-          //setPage => setLastId 에 lastId max 받아다가  
+              
         }
     })
 
@@ -53,6 +48,9 @@ const PopularCrew = ({searchData}) => {
         setLoad(true);
         await axios.get(`${BASE_URL}/crews/popular?page=${page}&size=6`)
           .then((res) => {
+            if(res.data.data.content.length < 6) {
+              endRef.current = true
+            }
             setList((prev) => [...prev, ...res.data.data.content]);
             
             preventRef.current = true;
@@ -62,7 +60,10 @@ const PopularCrew = ({searchData}) => {
           }) 
           setLoad(false);
       }, [page])
-
+      
+      useEffect(()=> {
+          getCrew();
+    }, [page])
 
 return (
     <Container >
@@ -179,11 +180,5 @@ const HashTag = styled.div`
 
 `
 
-
-const Topbar = styled.div`
-  width: 122rem;
-  margin: 0 auto;
-  height: 0.1rem;
-`;
 
 export default PopularCrew;

@@ -21,7 +21,7 @@ function CrewPhotos({crew}) {
 
   const crewPhotos = useSelector((state) => state?.crews?.crewPhotos?.data);
   const Photos = crewPhotos;
-
+  // console.log(Photos)
   // const userData = useSelector((state) => state);
   // console.log(userData);
 
@@ -42,11 +42,13 @@ function CrewPhotos({crew}) {
   const [photoDetailModalVisible, setImgListModaVisible] = useState(false);
   const [photoId, setPhotoId] = useState([]);
   const [postId, setPostId] = useState([]);
+  const [authorId, setAuthorId] = useState();
 
   const handleImgMadalClick = (data, id) => {
     setImgListModaVisible(!photoDetailModalVisible);
     setPhotoId(data);
     setPostId(id?.postId);
+    setAuthorId(id?.authorId)
   };
 
   return (
@@ -57,6 +59,7 @@ function CrewPhotos({crew}) {
           onClose={handleImgMadalClick}
           photoId={photoId}
           postId={postId}
+          authorId={authorId}
         />
       )}
       <ImgBox onClick={handleMadalClick} type="button">

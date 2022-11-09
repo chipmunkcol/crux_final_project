@@ -5,14 +5,17 @@ import { useState } from "react";
 
 const TopBotton = () => {
 
-  // const [position, setPosition] = useState({ x: 0, y: 0 }); // box의 포지션 값
-  // // 업데이트 되는 값을 set 해줌
-  // const trackPos = (data) => {
-  //   setPosition({ x: data.x, y: data.y }); 
-  // }
+  const [position, setPosition] = useState({ x: 0, y: 0 }); // box의 포지션 값
+  // 업데이트 되는 값을 set 해줌
+  const trackPos = (data) => {
+    setPosition({ x: data.x, y: data.y }); 
+  }
   
   return (
-    // <Draggable onDrag={(e, data) => trackPos(data)}>
+    // <Draggable 
+    //   onDrag={(e, data) => trackPos(data)}
+    //   allowAnyClick={true}
+    // >
       <TopBtn
         onMouseUp={() => {
           window.scrollTo({ top: 0, left: 0, behavior: "smooth" });

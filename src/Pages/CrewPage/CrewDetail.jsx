@@ -24,6 +24,7 @@ import Footer from "../../Shared/Footer";
 
 const CrewDetail = () => {
   const params = useParams().crewId;
+  // console.log(params)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,7 +35,7 @@ const CrewDetail = () => {
 
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const crew = crewDetail?.data;
-  console.log(crew);
+  // console.log(crew);
 
   //호스트 확인
   const hostId = crew?.hostId;
@@ -151,11 +152,8 @@ const CrewDetail = () => {
   async function likeCrew() {
     try {
       const response = await axios
-        .post(`https://sparta-tim.shop/crews/${params}/like`, null, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
+        .post(`https://sparta-tim.shop/crews/${params}/like`, null, 
+          {headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
         .then((response) => {
           // console.log(response);
           window.alert("좋아요 완료");
@@ -306,7 +304,11 @@ const CrewDetail = () => {
                 <ButtonBox>
                   <button
                     onClick={() => {
-                      joinCrews();
+                      if(window.localStorage.getItem("userInfo")) {
+                        joinCrews();
+                      } else {
+                        alert("로그인 사용자만 이용 가능합니다")
+                      }
                     }}
                   >
                     크루 가입

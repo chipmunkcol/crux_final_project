@@ -8,10 +8,11 @@ export const __getGymDetail = createAsyncThunk(
     'getGymDetail',
     async (payload, thunkAPI) => {
         try {
-            // console.log(payload)
+            // 즐겨찾기 한 짐을 true 값으로 받기 위해 header에 토큰 추가
             const data = await axios.get(`${BASE_URL}/gyms/${payload}`,
-            // { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }}
+            { headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token }}
             )
+            // console.log(data.data.data.likeGym)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
             return thunkAPI.rejectWithValue(error)
@@ -30,6 +31,11 @@ export const gymDetailSlice = createSlice({
         _likeGym(state, action) {
             // console.log(action.payload)
             state.gymDetail.data.likeGym = action.payload
+            if(action.payload){
+                state.gymDetail.data.likeNum += 1
+            } else {
+                state.gymDetail.data.likeNum -= 1
+            }
         }
     },
     extraReducers: {

@@ -15,17 +15,17 @@ import 사용자이미지 from "../../../Image/작은사용자이미지.png"
 import 하트 from "../../../Image/작은회색하트.png"
 
 
-const Content = ({setShowReview, showReview, setReload, reload}) => {
+const Content = ({setShowReview, showReview, gym, setReload, reload}) => {
 const BASE_URL = 'https://sparta-tim.shop'
 
 const params = useParams().gymId
 const dispatch = useDispatch()
 
-const { isLoading, error, gymDetail } = useSelector((state) => state.gymDetail)
+// const { isLoading, error, gymDetail } = useSelector((state) => state.gymDetail)
 // console.log(isLoading, error, gymDetail)
 
-const gym = gymDetail.data
-// console.log(gym.likeGym)
+// const gym = gymDetail.data
+// console.log(gym)
 
 const navigate = useNavigate()
 const [modal, setModal] = useState(false)
@@ -34,8 +34,9 @@ const userInfo = window.localStorage.getItem('userInfo')
 
 
 const onclickLikeGym = () => {
-    likeGym();
-    dispatch(_likeGym(!gym?.likeGym));
+    if(userInfo){
+        likeGym();
+    }
 }
 
 const likeGym = async() => {
@@ -44,16 +45,12 @@ const likeGym = async() => {
         headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
         alert(res.data.data)
+        dispatch(_likeGym(!gym?.likeGym))
     })
     .catch((err) => {
-        // console.log(err)
+        console.log(err)
     })
 }
-
-useEffect(()=>{
-    dispatch(__getGymDetail(params))
-
-},[dispatch])
 
 
 if (gym === undefined) 

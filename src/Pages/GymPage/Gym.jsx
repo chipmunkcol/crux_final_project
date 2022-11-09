@@ -367,7 +367,7 @@ const Gym = () => {
                               <Wrap>
                                 <GymName>
                                   {val.name}
-                                  <a href={`https://map.kakao.com/link/to/HelloWorld!,${val.lat},${val.lon}`} target="_blank"rel="noreferrer"
+                                  <a href={`https://map.kakao.com/link/to/${val.location},${val.lat},${val.lon}`} target="_blank"rel="noreferrer"
                                   >
                                       길찾기
                                   </a>
@@ -441,6 +441,7 @@ width: 20%;
 height: 100%;
 border-radius: 0 6px 6px 0;
 background: #fec200;
+cursor: pointer;
 `
 
 const S_input = styled.input`

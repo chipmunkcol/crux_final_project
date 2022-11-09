@@ -61,7 +61,7 @@ if(gym === undefined) {
                             <div key={i} style={{margin:'0 auto',display:'flex', padding:'5rem 0 0 0',borderBottom:'1px solid #202020'}}>
                                 <div style={{width:'11rem', height:'100%'}}>
 
-                                    <div><img src={review.imgUrl !== "" || null || undefined ? review.imgUrl : 사용자이미지} style={{width:'8rem', height:'8rem', borderRadius:'60%'}}
+                                    <div><img src={review.imgUrl !== "" || null || undefined ? review.imgUrl : 사용자이미지} style={{width:'8rem', height:'8rem', borderRadius:'60%', cursor:'pointer'}}
                                             onClick={()=>{navigate(`/members/${review.memberId}`)}}/></div>
                                     
                                 </div>

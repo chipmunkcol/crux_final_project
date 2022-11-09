@@ -14,16 +14,17 @@ import axios from "axios";
 
 const Mypage = () => {
 const BASE_URL = "https://sparta-tim.shop";
-
-
-const userId = JSON.parse(window?.localStorage?.getItem("userInfo")).userId
-// console.log(userId)
-
 const dispatch = useDispatch()
 const navigate = useNavigate()
+
+const userInfo = window?.localStorage?.getItem("userInfo")
+// console.log(userInfo)
+const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId
+// console.log(userId)
+
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
-const myPage = mypage.data
+const myPage = mypage?.data
 // console.log(myPage)
 
 const params = Number(useParams().memberId)
@@ -34,7 +35,7 @@ const [editMypage, setEditMypage] = useState(false)
 const [reload, setReload] = useState(false)
 
 useEffect(()=>{
-    dispatch(__getMyPage(params))
+    dispatch(__getMyPage(params));
 },[reload])
 
 //회원 탈퇴
@@ -54,14 +55,25 @@ const deleteId = async() => {
     }  
 }
 
+const noLoginGoBack = () => {
+    if(!userInfo) {
+        alert('로그인 사용자만 이용 가능합니다')
+        navigate(-1)
+    }
+}
+
+useEffect(()=>{
+    noLoginGoBack();
+},[userInfo])
+
     return(
         <>
 
 
             <Navbar />
 
-            {isLoading === true ? <Loading /> : 
-                editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage} setReload={setReload} reload={reload}/> : (
+            { isLoading === true ? <Loading /> : 
+                    editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage} setReload={setReload} reload={reload}/> : (
 
                 <Container>
 

@@ -23,8 +23,8 @@ const onclickReadAlam = (notificationId) => {
   readAlam(notificationId)
   dispatch(_readAlam(notificationId))
 
-  const a = alams.data.findIndex((v) => v.id === notificationId)
-  if (!alams.data[a].status) {
+  const a = alams?.data?.findIndex((v) => v.id === notificationId)
+  if (!alams?.data[a]?.status) {
     dispatch(_minusAlam(1))
   }
 }
@@ -33,8 +33,8 @@ const onclickDeleteAlam = (notificationId) => {
   deleteAlam(notificationId)
   dispatch(_deleteAlam(notificationId))
 
-  const a = alams.data.findIndex((v) => v.id === notificationId)
-  if (!alams.data[a].status) {
+  const a = alams?.data?.findIndex((v) => v.id === notificationId)
+  if (!alams?.data[a]?.status) {
     dispatch(_minusAlam(1))
   }
 }

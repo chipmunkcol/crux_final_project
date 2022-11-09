@@ -94,13 +94,9 @@ export const getCrewDetail = createAsyncThunk(
   "getCrewDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, 
-      // {
-      //   headers: {
-      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //   },
-      // }
-      );
+      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, {
+        headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token},
+      });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

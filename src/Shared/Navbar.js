@@ -20,7 +20,6 @@ const Navbar = () => {
 
   const [userInfo, setUserInfo] = useState()
   const userToken = userInfo?.access_token
-  // console.log(userToken)
   const userId = userInfo?.userId
 
   function getUserInfo() {
@@ -33,6 +32,7 @@ const Navbar = () => {
     
     if(Date.now() > objUserInfo.expire) {
       window.localStorage.removeItem('userInfo')
+      window.location.reload();
     }
     // console.log(objUserInfo)
     return setUserInfo(objUserInfo)
@@ -40,7 +40,7 @@ const Navbar = () => {
   
   useEffect(()=>{
     getUserInfo()
-  },[userToken])
+  },[])
 
   const removeToken = () => {
      localStorage.removeItem("userInfo")
@@ -68,13 +68,13 @@ const Navbar = () => {
   const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
   // console.log(NreadAlams.data, error2)
 
-  const { alams } = useSelector((state) => state.alams)
-  // console.log(alams)
+  const { isLoading, error, alams } = useSelector((state) => state.alams)
+  // console.log(isLoading, error, alams)
   const [realtimeAlam, setRealtimeAlam] = useState([])
   // console.log(realtimeAlam)
 
   useEffect(()=>{
-    if(userInfo){
+    if(window.localStorage.getItem("userInfo")){
       dispatch(__NreadAlam())
       dispatch(__getAlam())
     }
@@ -90,7 +90,7 @@ useEffect(()=>{
     {headers: {Authorization: userToken}  })
     
     sse.onopen = e => {
-      // console.log("연결완료")
+      console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
@@ -118,7 +118,6 @@ useEffect(()=>{
     dispatch(_plusAlam(1))
   }
 },[realtimeAlam])
-
 
 // 로그인 시 본인 사진 가져오기
 const [showMypage, setShowMypage] = useState(false)
@@ -151,13 +150,14 @@ const profileImg = JSON.parse(window?.localStorage?.getItem('userInfo'))?.profil
       </NavContent>
           
           {
-            userToken !== undefined ?
+            window.localStorage.getItem("userInfo") !== null ?
             <NavContentLogin>
               
               {/* 알림 드롭다운 */}
               <AlamImg src={알람종} 
                 onClick={()=>{setShowAlam(!showAlam)}}/>
-              <NreadAlam>{NreadAlams.data.count}</NreadAlam>
+              
+              <NreadAlam>{NreadAlams?.data?.count}</NreadAlam>
               
               { showAlam ? <Alam setShowAlam={setShowAlam} alams={alams} NreadAlams={NreadAlams}/> : null }
               

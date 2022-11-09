@@ -14,7 +14,7 @@ import "slick-carousel/slick/slick-theme.css";
 import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
 import 슬라이더왼쪽버튼 from "../../../Image/btn_left.png"
 
-function PhotoDetailModal({ onClose, photoId, postId }) {
+function PhotoDetailModal({ onClose, photoId, postId, authorId }) {
   const params = useParams().crewId;
 
   const dispatch = useDispatch();
@@ -37,12 +37,12 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
     centerMode: false,
     nextArrow: (
       <Snext>
-          <img src={슬라이더오른쪽버튼} style={{width:'5rem', height:'5rem'}}/>
+          <img src={슬라이더오른쪽버튼} style={{width:'5rem', height:'5rem', position:'absolute', top:'29rem', right:'6rem'}}/>
       </Snext>
   ),
   prevArrow: (
       <Sprev>
-          <img src={슬라이더왼쪽버튼} style={{width:'5rem', height:'5rem'}}/>
+          <img src={슬라이더왼쪽버튼} style={{width:'5rem', height:'5rem', position:'absolute', top:'29rem', left:'6rem'}}/>
       </Sprev>
   ),
   };
@@ -51,18 +51,23 @@ function PhotoDetailModal({ onClose, photoId, postId }) {
     <Background>
       <Modal ref={modalRef}>
         <Xbtn onClick={onClose}></Xbtn>
-        <DeleteBtn
-          type="button"
-          onClick={() => {
-            if(window.confirm("정말 삭제하시겠어요?")){
-              dispatch(deleteCrewPhotos(id));
-              dispatch(deleteCrewPhoto(id));
-              onClose(modalRef);
-            }
-          }}
-        >
-          삭제
-        </DeleteBtn>
+
+        {
+          authorId === JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId ?
+          ( <DeleteBtn
+            type="button"
+            onClick={() => {
+              if(window.confirm("정말 삭제하시겠어요?")){
+                dispatch(deleteCrewPhotos(id));
+                dispatch(deleteCrewPhoto(id));
+                onClose(modalRef);
+              }
+            }}
+          >
+            삭제
+          </DeleteBtn>) : null
+        }
+       
         <ImgBox>
           <StyledSlider {...settings}>
             {photoList &&
@@ -94,10 +99,7 @@ const Snext = styled.div`
 width: 30px;
 height: 30px;
 position: absolute;
-/* right: 16px; */
 z-index: 99;
-margin: 30rem -53rem 0 0;
-/* text-align: right; */
 line-height: 30px;
 `;
 
@@ -105,10 +107,7 @@ const Sprev = styled.div`
 width: 30px;
 height: 30px;
 position: absolute;
-/* left: 16px; */
 z-index: 99;
-margin: 30rem 0 0 6rem;
-/* text-align: left; */
 line-height: 30px;
 `;
 

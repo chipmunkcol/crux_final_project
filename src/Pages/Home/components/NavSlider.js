@@ -17,16 +17,17 @@ const NavSlider = () => {
     
     const [playCarousel, setPlayCarousel] = useState(true);
     const onClickPlayCarousel = () => {
-        setPlayCarousel((prev) => !prev);
+        setPlayCarousel(!playCarousel);
     };
 
     const settings = {
         dots: false,
         fade: true,
         infinite: true,
-        speed: 1000,
+        speed: 1500,
         autoplay: playCarousel,
         autoplaySpeed: 5000,
+        pauseOnHover: false,
         nextArrow: (
             <Snext>
                 <img src={슬라이더오른쪽버튼} style={{width:'2.5rem'}}/>

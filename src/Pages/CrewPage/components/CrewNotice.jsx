@@ -15,7 +15,7 @@ function CrewNotice() {
   //크루 데이터
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const noticeList = crewDetail?.data?.noticeList;
-  console.log(noticeList);
+  // console.log(noticeList);
 
   //userId가져오기
   const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId;

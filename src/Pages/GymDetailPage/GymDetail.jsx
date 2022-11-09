@@ -22,14 +22,13 @@ const dispatch = useDispatch()
 const { isLoading, error, gymDetail } = useSelector((state) => state.gymDetail)
 // console.log(isLoading, error, gymDetail)
 
-const gym = gymDetail.data
-// console.log(gym)
+const gym = gymDetail?.data
+// console.log(gym?.likeGym)
 
 
 useEffect(()=>{
     dispatch(__getGymDetail(params))
-
-},[dispatch])
+},[reload])
 
 if (gym === undefined) 
 return(

@@ -23,7 +23,7 @@ export const __getAlam = createAsyncThunk(
 
 
 export const alamSlice = createSlice({
-    name: 'alam',
+    name: 'getAlam',
     initialState:{
         alams: {
             data: [{id: 0, content: {crewId: 0, content:"test"}, status: false}],

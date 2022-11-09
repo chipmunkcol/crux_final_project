@@ -18,6 +18,7 @@ const Navbar = () => {
 
   const [userInfo, setUserInfo] = useState()
   const userToken = userInfo?.access_token
+  // console.log(userToken)
   const userId = userInfo?.userId
 
   function getUserInfo() {
@@ -30,6 +31,7 @@ const Navbar = () => {
     
     if(Date.now() > objUserInfo.expire) {
       window.localStorage.removeItem('userInfo')
+      window.location.reload();
     }
     // console.log(objUserInfo)
     return setUserInfo(objUserInfo)
@@ -37,7 +39,7 @@ const Navbar = () => {
   
   useEffect(()=>{
     getUserInfo()
-  },[userToken])
+  },[])
   
   const removeToken = () => {
      localStorage.removeItem("userInfo")
@@ -63,15 +65,15 @@ const Navbar = () => {
 //알람 모달 입니다~
 const [showAlam, setShowAlam] = useState(false)
 const {isLoading2, error2, NreadAlams} = useSelector((state) => state.NreadAlams)
-// console.log(NreadAlams.data, error2)
+// console.log(isLoading2, NreadAlams.data)
 
-const { alams } = useSelector((state) => state.alams)
-// console.log(alams)
+const { isLoading, error, alams } = useSelector((state) => state.alams)
+// console.log(isLoading, alams)
 const [realtimeAlam, setRealtimeAlam] = useState([])
 // console.log(realtimeAlam)
 
 useEffect(()=>{
-  if(userInfo){
+  if(window.localStorage.getItem("userInfo")){
     dispatch(__NreadAlam())
     dispatch(__getAlam())
   }
@@ -122,7 +124,7 @@ useEffect(()=>{
 // 로그인 시 본인 사진 가져오기
 const [showMypage, setShowMypage] = useState(false)
 
-const profileImg = userInfo?.profileImg
+const profileImg = JSON.parse(window?.localStorage?.getItem('userInfo'))?.profileImg
 // console.log(profileImg)
 
 //프로필 이미지 로그인시 response로 받아온다.
@@ -151,13 +153,13 @@ const profileImg = userInfo?.profileImg
       </NavContent>
           
           {
-            userToken !== undefined ?
+            window.localStorage.getItem("userInfo") !== null ?
             <NavContentLogin>
               
               {/* 알림 드롭다운 */}
               <AlamImg src={알람종} 
                 onClick={()=>{setShowAlam(!showAlam)}}/>
-              <NreadAlam>{NreadAlams.data.count}</NreadAlam>
+              <NreadAlam>{NreadAlams?.data?.count}</NreadAlam>
               
               { showAlam ? <Alam setShowAlam={setShowAlam} alams={alams} NreadAlams={NreadAlams}/> : null }
               

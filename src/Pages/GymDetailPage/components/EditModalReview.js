@@ -16,7 +16,7 @@ import { ReactComponent as ImgUploadIcon } from "../../../Image/imgUploadBox.svg
 function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
     const BASE_URL = "https://sparta-tim.shop";
 
-    console.log(reviewId)
+    // console.log(reviewId)
     const a = gym.reviews.findIndex((v) => v.id === Number(reviewId))
     const reviewScore = gym.reviews[a].score
     const reviewContent = gym.reviews[a].content
@@ -27,7 +27,7 @@ function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
     };
 
     // 별점 주기 <star rating> 라이브러리!
-    const [rating, setRating] = useState(reviewScore*20);
+    const [rating, setRating] = useState(0);
     // console.log(rating)
     const handleRating = (rate: number) => {
         if (rate < 20) {
@@ -36,9 +36,6 @@ function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
             setRating(rate / 20);
         }
     };
-
-    useEffect(() => {
-    }, [rating]);
 
     // 이미지 업로드 <firebase> 라이브러리! 
 
