@@ -1,12 +1,8 @@
 import styled from "styled-components";
-import Loading from "../../../Shared/Loading";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const PopularCrew = ({searchData}) => {
     // const BASE_URL = "http://54.180.31.108";
@@ -23,7 +19,6 @@ const PopularCrew = ({searchData}) => {
       // console.log(page)
       const obsRef = useRef(null); 	//observer Element
       // console.log(obsRef)
-      const [load, setLoad] = useState(false); //로딩 스피너
       const preventRef = useRef(true); //옵저버 중복 실행 방지
       const endRef = useRef(false); //모든 글 로드 확인
   
@@ -45,7 +40,6 @@ const PopularCrew = ({searchData}) => {
     })
 
     const getCrew = useCallback(async () => {
-        setLoad(true);
         await axios.get(`${BASE_URL}/crews/popular?page=${page}&size=6`)
           .then((res) => {
             if(res.data.data.content.length < 6) {
@@ -58,7 +52,6 @@ const PopularCrew = ({searchData}) => {
           .catch((err) => {
             // console.log(err);
           }) 
-          setLoad(false);
       }, [page])
       
       useEffect(()=> {
@@ -130,9 +123,6 @@ return (
         }
                         
             <div ref={obsRef} ></div>
-
-            { load && <Loading />}
-          
         </Wrap>
       </Container>
     )

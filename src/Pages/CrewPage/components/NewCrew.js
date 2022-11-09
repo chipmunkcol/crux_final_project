@@ -3,10 +3,7 @@ import Loading from "../../../Shared/Loading";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useInView } from "react-intersection-observer";
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 const PopularCrew = ({searchData}) => {
     // const BASE_URL = "http://54.180.31.108";
@@ -50,7 +47,9 @@ const PopularCrew = ({searchData}) => {
     })
 
     const newCrew = useCallback(async () => {
-        setLoad(true);
+        // if(page !== 0 || page !== 1 ) {
+        //   setLoad(true);
+        // }
         await axios.get(`${BASE_URL}/crews?page=${page}&size=6`)
           .then((res) => {
             setList((prev) => [...prev, ...res.data.data.content]);
@@ -62,7 +61,7 @@ const PopularCrew = ({searchData}) => {
           .catch((err) => {
             // console.log(err);
           }) 
-          setLoad(false);
+          // setLoad(false);
       }, [page])
 
 

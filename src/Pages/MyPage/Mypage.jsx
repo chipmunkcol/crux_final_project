@@ -25,7 +25,7 @@ const userId = JSON.parse(window?.localStorage?.getItem("userInfo"))?.userId
 const {isLoading, error, mypage} = useSelector((state)=>state.myPage)
 // console.log(isLoading, error, mypage)
 const myPage = mypage?.data
-// console.log(myPage)
+console.log(myPage)
 
 const params = Number(useParams().memberId)
 // console.log(params)
@@ -72,7 +72,8 @@ useEffect(()=>{
 
             <Navbar />
 
-            { isLoading === true ? <Loading /> : 
+            { 
+            // isLoading === true ? <Loading /> : 
                     editMypage === true ? <EditMypage myPage={myPage} setEditMypage={setEditMypage} setReload={setReload} reload={reload}/> : (
 
                 <Container>

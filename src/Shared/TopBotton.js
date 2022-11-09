@@ -6,29 +6,35 @@ import { useState } from "react";
 const TopBotton = () => {
 
   const [position, setPosition] = useState({ x: 0, y: 0 }); // box의 포지션 값
-  // 업데이트 되는 값을 set 해줌
+  const [checkMove, setCheckMove] = useState({x: 0, y: 0});
+
   const trackPos = (data) => {
-    setPosition({ x: data.x, y: data.y }); 
+    setPosition({ x: data.x, y: data.y });
+
+    setTimeout(() => {
+      setCheckMove({x: data.x, y: data.y})
+    }, 500);
   }
   
   return (
-    // <Draggable 
-    //   onDrag={(e, data) => trackPos(data)}
-    //   allowAnyClick={true}
-    // >
+    <Draggable 
+      onDrag={(e, data) => {trackPos(data); e.preventDefault();}}>
       <TopBtn
-        onMouseUp={() => {
-          window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+        onClick={() => {
+          if(position.x === checkMove.x) {
+            window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+          }
         }}
       >
         <img src={탑버튼} style={{ width: "6rem" }} />
       </TopBtn>
-    // </Draggable>
+    </Draggable>
   );
 };
 
 const TopBtn = styled.div`
   position: fixed;
+  z-index: 999999;
   right: 19%;
   bottom: 10%;
   cursor: pointer;
