@@ -9,7 +9,7 @@ const navigate = useNavigate()
     return(
         <Container>
             <Anker>
-                <Git onClick={()=>{window.open('https://github.com/chipmunkcol/crux_final_project')}}></Git>
+                <Git onClick={()=>{window.open('https://github.com/Crux-TeamProject/FE')}}></Git>
                 <Hanghae99 onClick={()=>{window.open('https://hanghae99.spartacodingclub.kr/v2/exhibitions')}}></Hanghae99>
             </Anker>
 
@@ -21,7 +21,7 @@ const Container = styled.div`
 background-image: url(${푸터영역});
 background-size: cover;
 background-position: center;
-width: 100%;
+width: 192rem;
 height: 40rem;
 margin: 0 auto;
 `

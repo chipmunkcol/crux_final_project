@@ -16,6 +16,7 @@ function ChatList({ onClose }) {
     dispatch(getChatRoom());
   }, []);
   const chatRoomList = useSelector((state) => state?.chat?.chatRoom?.data);
+  console.log(chatRoomList)
   //채팅방 들어가기
   const [isVisible, setIsVisible] = useState(true);
   const handleChange = () => {
@@ -52,7 +53,7 @@ function ChatList({ onClose }) {
             <ChatXbtn onClick={onClose} style={{ cursor: "pointer" }} />
           </Title>
           <List>
-            {chatRoomList?.length === 0 ? <div style={{color:'#ffffff', textAlign:'center', fontSize:'1.4rem', padding:'4rem'}}>가입한 크루원들과 채팅을 할 수 있어요!</div> :
+            {!chatRoomList ? <div style={{color:'#ffffff', textAlign:'center', fontSize:'1.4rem', padding:'4rem'}}>가입한 크루원들과 채팅을 할 수 있어요!</div> :
               chatRoomList?.map((room) => (
                 <Room
                   key={room.roomId}

@@ -277,6 +277,7 @@ const Xbtn = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
+  cursor: pointer;
   ::before,
   ::after {
     position: absolute;

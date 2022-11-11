@@ -46,6 +46,7 @@ const Navbar = () => {
      localStorage.removeItem("userInfo")
      alert('로그아웃 되었습니다.')
      navigate('/')
+     window.location.reload();
   }
 
   const navigate = useNavigate();
