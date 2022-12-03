@@ -1,8 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { GetAxios, PostAxios } from "../../Shared/api/main";
 
 const BASE_URLM = "https://sparta-tim.shop";
 // const BASE_URLM = 'http://3.39.237.124'
+// const BASE_URLM = 'http:54.180.106.211'
 
 const initialState = {
   crewDetail: [],
@@ -21,11 +23,12 @@ export const createCrew = createAsyncThunk(
   "post/createCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.post(`${BASE_URLM}/crews`, payload, {
-        headers: {
-          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-        },
-      });
+      const response = await PostAxios(`crews`, payload)
+      // axios.post(`${BASE_URLM}/crews`, payload, {
+      //   headers: {
+      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //   },
+      // });
       window.location.replace("/crews");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
@@ -94,9 +97,10 @@ export const getCrewDetail = createAsyncThunk(
   "getCrewDetail",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(`${BASE_URLM}/crews/${payload}`, {
-        headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token},
-      });
+      const response = await GetAxios(`crews/${payload}`)
+      // axios.get(`${BASE_URLM}/crews/${payload}`, {
+      //   headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token},
+      // });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

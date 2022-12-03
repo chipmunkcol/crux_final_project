@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { GetAxios, PostAxios, DeleteAxios, PutAxios } from "../../Shared/api/main";
 
 // const SERVERH = process.env.REACT_APP_SERVER_H;
 // const SERVERM = process.env.REACT_APP_SERVER_M;
@@ -65,10 +66,10 @@ export const login = createAsyncThunk(
   "members/login",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .post(`${BASE_URLM}/members/login`, payload)
+      console.log(payload)
+      const response = await PostAxios(`members/login`, payload)
         .then((response) => {
-
+          console.log('response: ', response)
           const userInfo = {
             access_token: response.headers.access_token,
             userId: response.data.data.id,
@@ -113,8 +114,7 @@ export const kakaoLogin = createAsyncThunk(
   "members/kakaoLogin",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .get(`${BASE_URLM}/oauth/kakao/callback?code=${payload}`)
+      const response = await GetAxios(`oauth/kakao/callback?code=${payload}`)
         .then((response) => {
           // console.log(response);
           const userInfo = {
@@ -155,71 +155,7 @@ export const kakaoLoginSlice = createSlice({
   },
 });
 
-//크루 좋아요
-export const likeCrew = createAsyncThunk(
-  "post/like-crew",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await axios
-        .post(`${BASE_URLM}/crews/${payload}/like`, null, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
-        .then((response) => {
-          // console.log(response);
-        });
-      window.alert("좋아요 완료");
-      // console.log(response.data);
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.data);
-    }
-  }
-);
 
-//크루 좋아요취소
-export const unLikeCrew = createAsyncThunk(
-  "post/like-crew",
-  async (payload, thunkAPI) => {
-    try {
-      const response = await axios
-        .delete(`${BASE_URLM}/crews/${payload}/like`, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
-        .then((response) => {
-          // console.log(response);
-        });
-      window.alert("좋아요 취소 완료");
-      // console.log(response.data);
-      return thunkAPI.fulfillWithValue(response.data);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.data);
-    }
-  }
-);
-
-export const userSlice = createSlice({
-  name: "user",
-  initialState,
-  reducers: {},
-  extraReducers: {
-    [likeCrew.pending]: (state) => {
-      state.isLoading = true;
-      state.error = null;
-    },
-    [likeCrew.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.user = action.payload;
-    },
-    [likeCrew.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
-    },
-  },
-});
 
 //크루 탈퇴
 export const withdrawCrew = createAsyncThunk(
@@ -243,4 +179,61 @@ export const withdrawCrew = createAsyncThunk(
   }
 );
 
+export const userSlice = createSlice({
+  name: "user",
+  initialState,
+  reducers: {},
+  extraReducers: {
+    // [likeCrew.pending]: (state) => {
+    //   state.isLoading = true;
+    //   state.error = null;
+    // },
+    // [likeCrew.fulfilled]: (state, action) => {
+    //   state.isLoading = false;
+    //   state.user = action.payload;
+    // },
+    // [likeCrew.rejected]: (state, action) => {
+    //   state.isLoading = false;
+    //   state.error = action.payload;
+    // },
+  },
+});
+
 export default { userSlice, signupSlice, loginSlice, kakaoLoginSlice }.reducer;
+
+
+
+
+//크루 좋아요
+// export const likeCrew = createAsyncThunk(
+//   "post/like-crew",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const response = await PostAxios(`crews/${payload}/like`, null) 
+//         .then((response) => {
+//           console.log(response.data);
+//           window.alert("좋아요 완료");
+//         });
+//       return thunkAPI.fulfillWithValue(response.data);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.data);
+//     }
+//   }
+// );
+
+//크루 좋아요취소
+// export const unLikeCrew = createAsyncThunk(
+//   "post/like-crew",
+//   async (payload, thunkAPI) => {
+//     try {
+//       const response = await DeleteAxios(`crews/${payload}/like`)
+//       .then((response) => {
+//         // console.log(response.data);
+//         window.alert("좋아요 취소 완료");
+//       });
+//       return thunkAPI.fulfillWithValue(response.data);
+//     } catch (error) {
+//       return thunkAPI.rejectWithValue(error.data);
+//     }
+//   }
+// );

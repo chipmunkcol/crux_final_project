@@ -12,12 +12,14 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 import { faL, faMagnifyingGlass, faPlus } from '@fortawesome/free-solid-svg-icons';
 import GymList from './components/GymList';
 import Footer from '../../Shared/Footer';
+import { GetAxios, PostAxios } from '../../Shared/api/main';
 
 
 const Gym = () => {
-    const BASE_URL = "https://sparta-tim.shop"
+    // const BASE_URL = "https://sparta-tim.shop"
     // const BASE_URL = 'https://01192mg.shop'
-    // const BASE_URL = "http://54.180.31.108";
+    const BASE_URL = "http://54.180.106.211";
+    
     const navigate = useNavigate()
 
     const [location, setLocation] = useState('내 주변 클라이밍짐')
@@ -58,7 +60,7 @@ const Gym = () => {
         async (position) => {
           const lat = position.coords.latitude
           const lng = position.coords.longitude
-          await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeMy}&lon=${lng}&lat=${lat}`)
+          await GetAxios(`gyms?page=0&size=${sizeMy}&lon=${lng}&lat=${lat}`)
         .then((res) => {
             // console.log(res.data.data)
             setGyms(res.data.data)
@@ -145,7 +147,7 @@ const Gym = () => {
   const categorySeoul = async() => {
     const lat = 37.56682195018582
     const lng = 126.97865225946583
-    await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeSeoul}&lon=${lng}&lat=${lat}`)
+    await GetAxios(`gyms?page=0&size=${sizeSeoul}&lon=${lng}&lat=${lat}`)
     .then((res) => {
       setGyms(res.data.data)
       setState((prev) => ({
@@ -164,7 +166,7 @@ const Gym = () => {
   const categoryGg = async() => {
     const lat = 37.23430874181801
     const lng = 127.20135714691537
-    await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeGg}&lon=${lng}&lat=${lat}`)
+    await GetAxios(`gyms?page=0&size=${sizeGg}&lon=${lng}&lat=${lat}`)
     .then((res) => {
       setGyms(res.data.data)
       setState((prev) => ({
@@ -183,7 +185,7 @@ const Gym = () => {
   const categoryBs = async() => {
     const lat = 35.179735278020225
     const lng = 129.0750650311972
-    await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeBs}&lon=${lng}&lat=${lat}`)
+    await GetAxios(`gyms?page=0&size=${sizeBs}&lon=${lng}&lat=${lat}`)
     .then((res) => {
       setGyms(res.data.data)
       setState((prev) => ({
@@ -202,7 +204,7 @@ const Gym = () => {
   const categoryDg = async() => {
     const lat = 35.87138346208865
     const lng = 128.60180223396753
-    await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeDg}&lon=${lng}&lat=${lat}`)
+    await GetAxios(`gyms?page=0&size=${sizeDg}&lon=${lng}&lat=${lat}`)
     .then((res) => {
       setGyms(res.data.data)
       setState((prev) => ({
@@ -221,7 +223,7 @@ const Gym = () => {
   const categoryGj = async() => {
     const lat = 35.160101970076916
     const lng = 126.8516381907944
-    await axios.get(`${BASE_URL}/gyms?page=0&size=${sizeGj}&lon=${lng}&lat=${lat}`)
+    await GetAxios(`gyms?page=0&size=${sizeGj}&lon=${lng}&lat=${lat}`)
     .then((res) => {
       setGyms(res.data.data)
       setState((prev) => ({
@@ -254,11 +256,10 @@ const Gym = () => {
       }
     }
 
-    const searchGym = async() => {
-        await axios.get(`${BASE_URL}/gyms/search?lastArticleId=10000&size=100&query=${search}`)
+    const searchGym = () => {
+        GetAxios(`gyms/search?lastArticleId=10000&size=100&query=${search}`)
         .then((res) => {
           if(res.data.data.length !== 0) {
-
               setState((prev) => ({
                 ...prev, center: {lat: res.data.data[0]?.lat, lng: res.data.data[0]?.lon}
               }))
@@ -277,10 +278,6 @@ const Gym = () => {
             console.log(err)
         })
       }
-    
-      useEffect(()=>{
-        // console.log(gyms)
-      },[searchGym])
 
 // 마커 마우스 호버 이벤트
       const [isopen, setIsopen] = useState(false)

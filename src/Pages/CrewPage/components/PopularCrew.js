@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useState, useEffect, useRef, useCallback } from "react";
 import React from "react";
+import { GetAxios } from "../../../Shared/api/main";
 
 const PopularCrew = ({searchData}) => {
     // const BASE_URL = "http://54.180.31.108";
@@ -40,7 +41,7 @@ const PopularCrew = ({searchData}) => {
     })
 
     const getCrew = useCallback(async () => {
-        await axios.get(`${BASE_URL}/crews/popular?page=${page}&size=6`)
+        await GetAxios(`crews/popular?page=${page}&size=6`)
           .then((res) => {
             if(res.data.data.content.length < 6) {
               endRef.current = true

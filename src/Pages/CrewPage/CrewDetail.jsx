@@ -21,6 +21,7 @@ import ApplicationListModal from "./components/ApplicationListModal";
 import { ReactComponent as Heart } from "../../Image/heart.svg";
 import Loading from "../../Shared/Loading";
 import Footer from "../../Shared/Footer";
+import { DeleteAxios, PostAxios } from "../../Shared/api/main";
 
 const CrewDetail = () => {
   const params = useParams().crewId;
@@ -151,10 +152,8 @@ const CrewDetail = () => {
   //크루 좋아요
   async function likeCrew() {
     try {
-      const response = await axios
-        .post(`https://sparta-tim.shop/crews/${params}/like`, null, 
-          {headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
-        .then((response) => {
+      const response = await PostAxios(`crews/${params}/like`, null)
+      .then((response) => {
           // console.log(response);
           window.alert("좋아요 완료");
           dispatch(_crewLike(!crew?.like));
@@ -168,12 +167,7 @@ const CrewDetail = () => {
   //크루 좋아요 취소
   async function dislikeCrew() {
     try {
-      const response = await axios
-        .delete(`https://sparta-tim.shop/crews/${params}/like`, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
+      const response = await DeleteAxios(`crews/${params}/like`)
         .then((response) => {
           // console.log(response);
           window.alert("좋아요 취소");

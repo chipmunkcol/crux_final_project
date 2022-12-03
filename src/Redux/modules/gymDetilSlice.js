@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
+import { GetAxios } from "../../Shared/api/main";
+
 
 const BASE_URL = 'https://sparta-tim.shop'
 // const BASE_URL = 'https://01192mg.shop'
@@ -9,9 +11,7 @@ export const __getGymDetail = createAsyncThunk(
     async (payload, thunkAPI) => {
         try {
             // 즐겨찾기 한 짐을 true 값으로 받기 위해 header에 토큰 추가
-            const data = await axios.get(`${BASE_URL}/gyms/${payload}`,
-            { headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token }}
-            )
+            const data = await GetAxios(`gyms/${payload}`)
             // console.log(data.data.data.likeGym)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
