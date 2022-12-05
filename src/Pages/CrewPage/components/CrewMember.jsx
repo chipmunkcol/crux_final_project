@@ -5,6 +5,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { expelCrew } from "../../../Redux/modules/crewSlice";
 import axios from "axios";
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
+import { DeleteAxios } from "../../../Shared/api/main";
 
 function CrewMember() {
   const BASE_URL = "https://sparta-tim.shop";
@@ -25,18 +26,21 @@ function CrewMember() {
   //탈퇴시키기
   async function handleExpel(payload) {
     try {
-      const response = await axios.delete(
-        `${BASE_URL}/crews/${payload.crewId}/members/${payload.memberId}`,
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
-      dispatch(expelCrew(payload.memberId));
-      // return console.log(response.data);
+      const response = await DeleteAxios(`crews/${payload.crewId}/members/${payload.memberId}`)
+      // .delete(
+      //   `${BASE_URL}/crews/${payload.crewId}/members/${payload.memberId}`,
+      //   {
+      //     headers: {
+      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //     },
+      //   }
+      // );
+      .then(()=>{
+        dispatch(expelCrew(payload.memberId));
+      })
+      return console.log(response.data);
     } catch (error) {
-      return error.data;
+      return console.log(error.data);
     }
   }
 

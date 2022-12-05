@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk, current } from "@reduxjs/toolkit";
 import axios from 'axios';
-import { bool } from "yup";
+import { GetAxios } from "../../Shared/api/main";
 
 const BASE_URL = 'https://sparta-tim.shop'
 // const BASE_URL = 'https://01192mg.shop'
@@ -10,8 +10,9 @@ export const __getAlam = createAsyncThunk(
     'getAlam',
     async (payload, thunkAPI) => {
         try {
-            const data = await axios.get(`${BASE_URL}/notifications`,
-            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
+            const data = await GetAxios(`notifications`)
+            // .get(`${BASE_URL}/notifications`,
+            // { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
             // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {
@@ -76,8 +77,9 @@ export const __NreadAlam = createAsyncThunk(
     'NreadAlam',
     async (payload, thunkAPI) => {
         try {
-            const data = await axios.get(`${BASE_URL}/notifications/count`,
-            { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
+            const data = await GetAxios(`notifications/count`)
+            // .get(`${BASE_URL}/notifications/count`,
+            // { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
             // console.log(data.data)
             return thunkAPI.fulfillWithValue(data.data)
         } catch (error) {

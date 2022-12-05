@@ -13,6 +13,7 @@ import 노랑별 from "../../../Image/노랑별.png"
 import 검은별 from "../../../Image/검은별.png"
 import 사용자이미지 from "../../../Image/작은사용자이미지.png"
 import 하트 from "../../../Image/작은회색하트.png"
+import { PostAxios } from "../../../Shared/api/main";
 
 
 const Content = ({setShowReview, showReview, gym, setReload, reload}) => {
@@ -41,8 +42,7 @@ const onclickLikeGym = () => {
 
 const likeGym = async() => {
     // console.log(gym.id)
-    await axios.post(`${BASE_URL}/gyms/${gym.id}/like`, null ,{
-        headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
+    await PostAxios(`gyms/${gym.id}/like`, null)
     .then((res) => {
         alert(res.data.data)
         dispatch(_likeGym(!gym?.likeGym))

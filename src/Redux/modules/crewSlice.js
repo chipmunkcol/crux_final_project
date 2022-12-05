@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { GetAxios, PostAxios } from "../../Shared/api/main";
+import { DeleteAxios, GetAxios, PostAxios, PutAxios } from "../../Shared/api/main";
 
 const BASE_URLM = "https://sparta-tim.shop";
 // const BASE_URLM = 'http://3.39.237.124'
@@ -24,12 +24,9 @@ export const createCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await PostAxios(`crews`, payload)
-      // axios.post(`${BASE_URLM}/crews`, payload, {
-      //   headers: {
-      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //   },
-      // });
-      window.location.replace("/crews");
+      .then(()=>{
+        window.location.replace("/crews");
+      })
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -42,27 +39,19 @@ export const editCrew = createAsyncThunk(
   "put/editCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .put(
-          `${BASE_URLM}/crews/${payload.id}`,
-          {
+      const data = {
             name: payload.name,
             content: payload.content,
             imgUrl: payload.imgUrl,
             mainActivityGym: payload.mainActivityGym,
             mainActivityArea: payload.mainActivityArea,
             keywords: payload.keywords,
-          },
-          {
-            headers: {
-              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-            },
-          }
-        )
+      }
+      const response = await PutAxios(`crews/${payload.id}`, data)
         .then((response) => {
           // console.log(response);
+          window.location.replace(`/crews/${payload.id}`);
         });
-      window.location.replace(`/crews/${payload.id}`);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -75,16 +64,16 @@ export const deleteCrew = createAsyncThunk(
   "delete/createCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .delete(`${BASE_URLM}/crews/${payload}`, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
+      const response = await DeleteAxios(`crews/${payload}`)
+        // .delete(`${BASE_URLM}/crews/${payload}`, {
+        //   headers: {
+        //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+        //   },
+        // })
         .then((response) => {
           // console.log(response);
+          window.location.replace("/crews");
         });
-      window.location.replace("/crews");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -116,15 +105,16 @@ export const joinCrew = createAsyncThunk(
   "post/joinCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/crews/${payload}/members`,
-        null,
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
+      const response = await PostAxios(`crews/${payload}/members`, null)
+      // .post(
+      //   `${BASE_URLM}/crews/${payload}/members`,
+      //   null,
+      //   {
+      //     headers: {
+      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //     },
+      //   }
+      // );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -137,11 +127,12 @@ export const getApplicationList = createAsyncThunk(
   "get/getApplicationList",
   async (payload, thunkAPI) => {
     try {
-      const data = await axios.get(`${BASE_URLM}/crews/${payload}/members`, {
-        headers: {
-          Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-        },
-      });
+      const data = await GetAxios(`crews/${payload}/members`)
+      // .get(`${BASE_URLM}/crews/${payload}/members`, {
+      //   headers: {
+      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //   },
+      // });
       // console.log(data.data);
       return thunkAPI.fulfillWithValue(data.data);
     } catch (err) {
@@ -155,16 +146,16 @@ export const permitCrew = createAsyncThunk(
   "post/permitCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .post(
-          `${BASE_URLM}/crews/${payload.crewId}/members/${payload.memberId}?permit=true`,
-          null,
-          {
-            headers: {
-              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-            },
-          }
-        )
+      const response = await PostAxios(`crews/${payload.crewId}/members/${payload.memberId}?permit=true`, null)
+        // .post(
+        //   `${BASE_URLM}/crews/${payload.crewId}/members/${payload.memberId}?permit=true`,
+        //   null,
+        //   {
+        //     headers: {
+        //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+        //     },
+        //   }
+        // )
         .then((response) => {
           // console.log(response);
         });
@@ -184,19 +175,15 @@ export const createCrewNotice = createAsyncThunk(
   async (payload, thunkAPI) => {
     console.log(payload)
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/notices/${payload.id}`,
-        {
+      const data = {
           content: payload.content,
           date: payload.date,
           place: payload.place,
-        },
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
+      }
+      const response = await PostAxios(`notices/${payload.id}`, data)
+      .then(()=>{
+        alert('공지사항 등록완료')
+      })
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -210,19 +197,12 @@ export const editCrewNotice = createAsyncThunk(
   async (payload, thunkAPI) => {
     console.log(payload)
     try {
-      const response = await axios.put(
-        `${BASE_URLM}/notices/${payload.id}`,
-        {
+      const data = {
           content: payload.content,
           date: payload.date,
           place: payload.place,
-        },
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
+      }
+      const response = await PutAxios(`notices/${payload.id}`, data)
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -239,19 +219,14 @@ export const addCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log(payload);
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/crews/${payload.id}/posts`,
-        {
+      const data ={
           imgList: payload.imgUrl,
-        },
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
-      // alert('등록 완료!')
-      window.location.reload();
+      }
+      const response = await PostAxios(`crews/${payload.id}/posts`, data)
+      .then(()=>{
+        window.location.reload();
+        alert('사진 업로드 완료!')
+      })
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -264,9 +239,10 @@ export const getCrewPhoto = createAsyncThunk(
   "get/CrewPhoto",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.get(
-        `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
-      );
+      const response = await GetAxios(`crews/${payload}/posts?page=0&size=10`)
+      // .get(
+      //   `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
+      // );
       // console.log(response.data);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
@@ -281,14 +257,15 @@ export const deleteCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log(payload);
     try {
-      const response = await axios.delete(
-        `${BASE_URLM}/crews/posts/${payload}`,
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
+      const response = await DeleteAxios(`crews/posts/${payload}`)
+      // .delete(
+      //   `${BASE_URLM}/crews/posts/${payload}`,
+      //   {
+      //     headers: {
+      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+      //     },
+      //   }
+      // );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);

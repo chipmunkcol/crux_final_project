@@ -12,6 +12,7 @@ import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
 
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { PutAxios } from '../../../Shared/api/main';
 
 const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
   const BASE_URL = "https://sparta-tim.shop";
@@ -80,10 +81,10 @@ const EditMypage = ({ myPage, setEditMypage, setReload, reload }) => {
   
 
   const editProfile = async (payload) => {
-    await axios
-      .put(`${BASE_URL}/members`, payload, {
-        headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token },
-      })
+    await PutAxios(`members`, payload)
+      // .put(`${BASE_URL}/members`, payload, {
+      //   headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token },
+      // })
       .then((res) => {
         alert("프로필 편집완료");
         setEditMypage(false);

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { __getAlam, _readAlam, _deleteAlam, _deleteAlams, _minusAlam } from "../Redux/modules/notification";
 import axios from "axios";
+import { DeleteAxios, GetAxios, PostAxios } from "./api/main";
 
 
 const Alam = ({setShowAlam, alams, NreadAlams}) => {
@@ -46,8 +47,9 @@ const onclickDeleteAlams = () => {
 }
 
 const readAlam = async (notificationId) => {
-  await axios.post(`${BASE_URL}/notifications/${notificationId}`, null,
-          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
+  await PostAxios(`notifications/${notificationId}`, null)
+  // .post(`${BASE_URL}/notifications/${notificationId}`, null,
+  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
     .then((res) => {
       // console.log(res)
     })
@@ -56,8 +58,9 @@ const readAlam = async (notificationId) => {
     }) 
 }
 const deleteAlam = async (notificationId) => {
-  await axios.delete(`${BASE_URL}/notifications/${notificationId}`,
-          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
+  await DeleteAxios(`notifications/${notificationId}`)
+  // .delete(`${BASE_URL}/notifications/${notificationId}`,
+  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
       // console.log(res)
     })
@@ -66,8 +69,9 @@ const deleteAlam = async (notificationId) => {
     }) 
 }
 const deleteAlams = async () => {
-  await axios.delete(`${BASE_URL}/notifications`,
-          { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
+  await DeleteAxios(`notifications`)
+  // .delete(`${BASE_URL}/notifications`,
+  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
       // console.log(res)
     })

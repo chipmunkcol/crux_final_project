@@ -14,6 +14,7 @@ import {
   addCrewNotice,
 } from "../../../Redux/modules/crewSlice";
 import { ReactComponent as ChatXbtn } from "../../../Image/chatx.svg";
+import { PostAxios } from "../../../Shared/api/main";
 
 function CrewNoticeModal({ onClose }) {
   const { register, handleSubmit } = useForm();
@@ -43,19 +44,15 @@ function CrewNoticeModal({ onClose }) {
   //크루 공지사항 생성
   async function createCrewNotice(payload) {
     try {
-      const response = await axios.post(
-        `https://sparta-tim.shop/notices/${payload.id}`,
-        {
+      const data = {
           content: payload.content,
           date: payload.date,
           place: payload.place,
-        },
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
+      }
+      const response = await PostAxios(`notices/${payload.id}`, data)
+      .then(()=>{
+        alert('공지사항 등록완료')
+      })
       return response.data;
     } catch (error) {
       return error.data;

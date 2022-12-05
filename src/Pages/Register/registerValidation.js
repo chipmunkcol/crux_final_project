@@ -1,6 +1,7 @@
 import * as yup from "yup";
 import { useMemo } from "react";
 import axios from "axios";
+import { GetAxios } from "../../Shared/api/main";
 
 const RegisterValidation = () => {
   const schema = useMemo(() => {
@@ -16,9 +17,7 @@ const RegisterValidation = () => {
             "중복된 이메일입니다.",
             async function verifyEmail(value) {
               try {
-                const response = await axios.get(
-                  `https://sparta-tim.shop/members/email-check?email=${value}`
-                );
+                const response = await GetAxios(`members/email-check?email=${value}`)
                 // console.log(response.data);
                 return response.data.success;
               } catch (error) {
@@ -39,9 +38,8 @@ const RegisterValidation = () => {
             "중복된 닉네임입니다",
             async function verifyNickname(value) {
               try {
-                const response = await axios.get(
-                  `https://sparta-tim.shop/members/nickname-check?nickname=${value}`
-                );
+                const response = await GetAxios(`members/nickname-check?nickname=${value}`)
+                
                 // console.log(response);
                 return response.data.success;
               } catch (error) {

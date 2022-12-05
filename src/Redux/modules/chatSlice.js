@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const BASE_URL = `https://01192mg.shop`;
-const accessToken = localStorage.getItem("access_token");
 
 const initialState = {
   chat: [],

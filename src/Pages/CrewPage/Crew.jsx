@@ -10,6 +10,7 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import PopularCrew from "./components/PopularCrew.js";
 import NewCrew from "./components/NewCrew.js";
 import Footer from "../../Shared/Footer.js";
+import { GetAxios } from "../../Shared/api/main.js";
 
 
 const Crew = () => {
@@ -37,8 +38,7 @@ const Crew = () => {
   };
 
   const searchCrew = useCallback(async () => {
-    await axios
-      .get(`${BASE_URL}/crews/search?query=${search}`)
+    await GetAxios(`crews/search?query=${search}`)
       .then((res) => {
         setSearchData(res.data.data);
         setSearch("");

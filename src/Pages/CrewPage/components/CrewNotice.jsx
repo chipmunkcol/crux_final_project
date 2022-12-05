@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { deleteCrewNotice } from "../../../Redux/modules/crewSlice";
 import CrewNoticeEditModal from "./CrewNoticeEditModal";
+import { DeleteAxios } from "../../../Shared/api/main";
 
 function CrewNotice() {
   const dispatch = useDispatch();
@@ -24,14 +25,15 @@ function CrewNotice() {
   async function delteNotice(payload) {
     if (window.confirm("삭제하시겠습니까?")) {
       try {
-        const response = await axios.delete(
-          `https://sparta-tim.shop/notices/${payload}`,
-          {
-            headers: {
-              Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-            },
-          }
-        );
+        const response = await DeleteAxios(`notices/${payload}`)
+        // .delete(
+        //   `https://sparta-tim.shop/notices/${payload}`,
+        //   {
+        //     headers: {
+        //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
+        //     },
+        //   }
+        // );
         return response.data;
       } catch (error) {
         return error.data;
