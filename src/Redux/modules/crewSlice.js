@@ -23,6 +23,7 @@ export const createCrew = createAsyncThunk(
     try {
       const response = await PostAxios(`crews`, payload)
       .then(()=>{
+        alert('크루 생성을 축하합니다✨')
         window.location.replace("/crews");
       })
       return thunkAPI.fulfillWithValue(response.data);
