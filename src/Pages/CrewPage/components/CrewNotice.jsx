@@ -26,14 +26,6 @@ function CrewNotice() {
     if (window.confirm("삭제하시겠습니까?")) {
       try {
         const response = await DeleteAxios(`notices/${payload}`)
-        // .delete(
-        //   `https://sparta-tim.shop/notices/${payload}`,
-        //   {
-        //     headers: {
-        //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-        //     },
-        //   }
-        // );
         return response.data;
       } catch (error) {
         return error.data;

@@ -95,9 +95,6 @@ function ModalReview({ setModal, gym, reload, setReload }) {
                                  : [{ imgUrl: "https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtOY6e%2FbtrMC0zJgaN%2FE8MiRTJ9nXjXvMPO5q1gQK%2Fimg.jpg" }],
             };
             await PostAxios(`reviews/${gym.id}`, payload)
-            // .post(`${BASE_URL}/reviews/${gym.id}`, payload, {
-            //     headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }
-            // })
                 .then((res) => {
                     // console.log(res.data)
                     alert('리뷰 작성완료!');

@@ -8,7 +8,6 @@ import 사용자기본이미지 from "../../../Image/사용자기본이미지.jp
 import { DeleteAxios } from "../../../Shared/api/main";
 
 function CrewMember() {
-  const BASE_URL = "https://sparta-tim.shop";
   //데이터 가져오기
   const crewDetail = useSelector((state) => state?.crews?.crewDetail);
   const members = crewDetail.data.memberList;
@@ -27,14 +26,7 @@ function CrewMember() {
   async function handleExpel(payload) {
     try {
       const response = await DeleteAxios(`crews/${payload.crewId}/members/${payload.memberId}`)
-      // .delete(
-      //   `${BASE_URL}/crews/${payload.crewId}/members/${payload.memberId}`,
-      //   {
-      //     headers: {
-      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //     },
-      //   }
-      // );
+      
       .then(()=>{
         dispatch(expelCrew(payload.memberId));
       })

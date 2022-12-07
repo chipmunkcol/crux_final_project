@@ -14,7 +14,6 @@ import { DeleteAxios } from "../../Shared/api/main";
 
 
 const Mypage = () => {
-const BASE_URL = "https://sparta-tim.shop";
 const dispatch = useDispatch()
 const navigate = useNavigate()
 
@@ -37,14 +36,12 @@ const [reload, setReload] = useState(false)
 
 useEffect(()=>{
     dispatch(__getMyPage(params));
-},[reload])
+},[dispatch, params, reload])
 
 //회원 탈퇴
 const deleteId = async() => {
     if(window.confirm("정말 탈퇴하시겠어요?")) {
         await DeleteAxios(`members/withdraw`)
-        // .delete(`${BASE_URL}/members/withdraw`, 
-        // {headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
         .then((res) => {
             // console.log(res)
             alert(res.data.data)

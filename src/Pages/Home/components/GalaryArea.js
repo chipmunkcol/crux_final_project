@@ -6,7 +6,7 @@ import Loading from "../../../Shared/Loading";
 import { GetAxios } from "../../../Shared/api/main";
 
 const GalaryArea = () => {
-const BASE_URL = "https://sparta-tim.shop";
+    
 const navigate = useNavigate()
 
 const [galarys, setGalarys] = useState([]) 

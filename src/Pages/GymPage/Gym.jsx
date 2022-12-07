@@ -4,8 +4,7 @@ import { useEffect, useRef, useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Loading from "../../Shared/Loading.js"
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../Shared/Navbar'
-import GymHeader from './components/GymHeader';
+import Navbar from '../../Shared/Navbar';
 import axios from 'axios';
 import { Map, MapMarker, CustomOverlayMap } from 'react-kakao-maps-sdk'
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'

@@ -15,7 +15,7 @@ import { DeleteAxios } from "../../../Shared/api/main";
 
 
 const Review = ({gym, reload, setReload}) => {
-const BASE_URL = "https://sparta-tim.shop";
+    
 const navigate = useNavigate()
 const [editModal, setEditModal] = useState(false)
 const [reviewId, setReviewId] = useState('')
@@ -39,9 +39,7 @@ const onclickDelReview = (reviewId) => {
 
 const delReview = async (reviewId) => {
     await DeleteAxios(`reviews/${reviewId}`)
-    // .delete(`${BASE_URL}/reviews/${reviewId}`,
-    //     { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
-      .then((res) => {
+    .then((res) => {
         setReload(!reload)
       })
       .catch((err) => {

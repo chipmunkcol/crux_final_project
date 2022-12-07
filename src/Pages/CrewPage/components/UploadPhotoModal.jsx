@@ -10,11 +10,11 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 // import 슬라이더왼쪽버튼 from "../../Image/btn_left.png";
 // import 슬라이더오른쪽버튼 from "../../Image/btn_left.png";
-import { addCrewPhoto } from "../../../Redux/modules/crewSlice";
+import { addCrewPhoto, } from "../../../Redux/modules/crewSlice";
 import { useCallback } from "react";
 import Loading from '../components/UploadLoading' 
 
-function UploadPhotoModal({ onClose }) {
+function UploadPhotoModal({ onClose, setReload }) {
   //기본 세팅
   const params = useParams().crewId;
   const dispatch = useDispatch();
@@ -54,6 +54,10 @@ function UploadPhotoModal({ onClose }) {
   const onsubmit = () => {
     uploadPhoto();
   };
+
+  const dispatch_Reload = (payload) => {
+    dispatch(addCrewPhoto(payload))
+  }
 
   const uploadPhoto = async () => {
     if (imgProductList.length === 0) {

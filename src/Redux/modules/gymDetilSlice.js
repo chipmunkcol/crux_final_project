@@ -3,8 +3,6 @@ import axios from 'axios';
 import { GetAxios } from "../../Shared/api/main";
 
 
-const BASE_URL = 'https://sparta-tim.shop'
-// const BASE_URL = 'https://01192mg.shop'
 
 export const __getGymDetail = createAsyncThunk(
     'getGymDetail',

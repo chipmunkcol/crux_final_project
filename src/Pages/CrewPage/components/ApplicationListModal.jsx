@@ -12,6 +12,7 @@ import {
   addCrew,
 } from "../../../Redux/modules/crewSlice";
 import 사용자기본이미지 from "../../../Image/사용자기본이미지.jpg";
+import { PostAxios } from "../../../Shared/api/main";
 
 function ApplicationListModal({ onClose }) {
   const params = useParams().crewId;
@@ -28,19 +29,13 @@ function ApplicationListModal({ onClose }) {
   //크루 가입 승인
   async function permitCrew(memberId) {
     try {
-      const response = await axios.post(
-        `https://sparta-tim.shop/crews/${params}/members/${memberId}?permit=true`,
-        null,
-        {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        }
-      );
-      window.alert("크루 가입 승인 완료.");
-      return response.data;
+      const response = PostAxios(`crews/${params}/members/${memberId}?permit=true`, null) 
+      .then(()=>{
+        window.alert("크루 가입 승인 완료.");
+      })
+        return response.data;
     } catch (error) {
-      return error.data;
+        return error.data;
     }
   }
 

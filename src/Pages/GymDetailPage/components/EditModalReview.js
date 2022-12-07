@@ -15,7 +15,6 @@ import { PutAxios } from '../../../Shared/api/main';
 
 
 function EditModalReview({ setEditModal, reviewId, gym, reload, setReload }) {
-    const BASE_URL = "https://sparta-tim.shop";
 
     // console.log(reviewId)
     const a = gym.reviews.findIndex((v) => v.id === Number(reviewId))

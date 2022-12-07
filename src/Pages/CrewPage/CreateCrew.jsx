@@ -10,6 +10,7 @@ import Select from "react-select";
 import DaumPostcode from "react-daum-postcode";
 import { ReactComponent as ChatXbtn } from "../../Image/chatx.svg";
 import Footer from "../../Shared/Footer";
+import { date } from "yup/lib/locale";
 
 const CreateCrew = () => {
   const {
@@ -22,7 +23,7 @@ const CreateCrew = () => {
   const dispatch = useDispatch();
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data, addressD, keyword, fileUrl );
     const payload = {
       name: data.name,
       content: data.content,
@@ -31,17 +32,10 @@ const CreateCrew = () => {
       mainActivityArea: address.concat(" ", addressD),
       keywords: keyword,
     };
-    if (
-      (data.place === null) |
-      undefined |
-      ((address === null) | undefined) |
-      ((addressD === null) | undefined) |
-      (keyword.length < 3) |
-      ((fileUrl === "") | undefined )
-    ) {
-      return;
-    } else {
+    if ( data.content && data.name && data.place && addressD && keyword.length === 3 && fileUrl ) {
       dispatch(createCrew(payload));
+    } else {
+      alert('★요구사항을 다 채워주셔야 합니다★')
     }
   };
 

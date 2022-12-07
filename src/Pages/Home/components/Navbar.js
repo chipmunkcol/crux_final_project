@@ -94,7 +94,7 @@ const token = window.localStorage?.getItem("userInfo")
     {headers: {Authorization: JSON.parse(token).access_token}  })
     
     sse.onopen = e => {
-      console.log("연결완료")
+      // console.log("연결완료")
     }
 
     sse.addEventListener('sse', e => {
@@ -151,7 +151,11 @@ const profileImg = JSON.parse(window?.localStorage?.getItem('userInfo'))?.profil
         <NavCrew type="button" onClick={() => {navigate("/crews")}}>
           크루 모임
         </NavCrew>
-        <NavCreateCrew type="button" onClick={() => {navigate("/createcrew")}}> 
+        <NavCreateCrew type="button" onClick={() => {
+          if (userInfo) {
+            navigate("/createcrew")
+          } else { alert('로그인 사용자만 이용 가능합니다') }
+          }}> 
           크루 생성
         </NavCreateCrew>
         <NavGym type="button" onClick={() => {navigate("/gyms")}}>

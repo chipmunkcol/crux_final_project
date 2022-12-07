@@ -6,7 +6,7 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import {
   deleteCrewPhoto,
-  deleteCrewPhotos,
+  _deleteCrewPhoto,
 } from "../../../Redux/modules/crewSlice";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -58,7 +58,7 @@ function PhotoDetailModal({ onClose, photoId, postId, authorId }) {
             type="button"
             onClick={() => {
               if(window.confirm("정말 삭제하시겠어요?")){
-                dispatch(deleteCrewPhotos(id));
+                dispatch(_deleteCrewPhoto(id));
                 dispatch(deleteCrewPhoto(id));
                 onClose(modalRef);
               }

@@ -8,9 +8,6 @@ import { GetAxios } from "../../../Shared/api/main";
 
 
 const PopularCrew = ({searchData}) => {
-    // const BASE_URL = "http://54.180.31.108";
-    const BASE_URL = "https://sparta-tim.shop";
-    // const BASE_URL = 'https://01192mg.shop'
   
     const navigate = useNavigate();
   

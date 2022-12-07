@@ -2,9 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { DeleteAxios, GetAxios, PostAxios, PutAxios } from "../../Shared/api/main";
 
-const BASE_URLM = "https://sparta-tim.shop";
-// const BASE_URLM = 'http://3.39.237.124'
-// const BASE_URLM = 'http:54.180.106.211'
+
 
 const initialState = {
   crewDetail: [],
@@ -65,11 +63,6 @@ export const deleteCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await DeleteAxios(`crews/${payload}`)
-        // .delete(`${BASE_URLM}/crews/${payload}`, {
-        //   headers: {
-        //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-        //   },
-        // })
         .then((response) => {
           // console.log(response);
           window.location.replace("/crews");
@@ -87,9 +80,6 @@ export const getCrewDetail = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await GetAxios(`crews/${payload}`)
-      // axios.get(`${BASE_URLM}/crews/${payload}`, {
-      //   headers: {Authorization: JSON.parse(window?.localStorage?.getItem("userInfo"))?.access_token},
-      // });
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -106,15 +96,6 @@ export const joinCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await PostAxios(`crews/${payload}/members`, null)
-      // .post(
-      //   `${BASE_URLM}/crews/${payload}/members`,
-      //   null,
-      //   {
-      //     headers: {
-      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //     },
-      //   }
-      // );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -128,12 +109,7 @@ export const getApplicationList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const data = await GetAxios(`crews/${payload}/members`)
-      // .get(`${BASE_URLM}/crews/${payload}/members`, {
-      //   headers: {
-      //     Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //   },
-      // });
-      // console.log(data.data);
+
       return thunkAPI.fulfillWithValue(data.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -147,15 +123,7 @@ export const permitCrew = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await PostAxios(`crews/${payload.crewId}/members/${payload.memberId}?permit=true`, null)
-        // .post(
-        //   `${BASE_URLM}/crews/${payload.crewId}/members/${payload.memberId}?permit=true`,
-        //   null,
-        //   {
-        //     headers: {
-        //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-        //     },
-        //   }
-        // )
+        
         .then((response) => {
           // console.log(response);
         });
@@ -240,10 +208,7 @@ export const getCrewPhoto = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await GetAxios(`crews/${payload}/posts?page=0&size=10`)
-      // .get(
-      //   `${BASE_URLM}/crews/${payload}/posts?page=0&size=10`
-      // );
-      // console.log(response.data);
+      
       return thunkAPI.fulfillWithValue(response.data);
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
@@ -258,14 +223,6 @@ export const deleteCrewPhoto = createAsyncThunk(
     // console.log(payload);
     try {
       const response = await DeleteAxios(`crews/posts/${payload}`)
-      // .delete(
-      //   `${BASE_URLM}/crews/posts/${payload}`,
-      //   {
-      //     headers: {
-      //       Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-      //     },
-      //   }
-      // );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -309,7 +266,7 @@ export const crewSlice = createSlice({
         action.payload,
       ];
     },
-    deleteCrewPhotos(state, action) {
+    _deleteCrewPhoto(state, action) {
       const id = action.payload;
       state.crewPhotos.data = state.crewPhotos.data.filter(
         (photo) => photo.postId !== id
@@ -435,7 +392,7 @@ export const {
   editNotice,
   addCrewPhotos,
   addCrew,
-  deleteCrewPhotos,
+  _deleteCrewPhoto,
   _joinCrew,
   _joinCancelCrew,
 } = crewSlice.actions;

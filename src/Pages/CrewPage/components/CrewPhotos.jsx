@@ -17,11 +17,11 @@ function CrewPhotos({crew}) {
 
   useEffect(() => {
     dispatch(getCrewPhoto(params));
-  }, [dispatch]);
+  }, [dispatch, params]);
 
   const crewPhotos = useSelector((state) => state?.crews?.crewPhotos?.data);
   const Photos = crewPhotos;
-  // console.log(Photos)
+  // console.log(crewPhotos)
   // const userData = useSelector((state) => state);
   // console.log(userData);
 

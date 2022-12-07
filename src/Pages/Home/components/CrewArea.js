@@ -9,8 +9,6 @@ import { GetAxios } from "../../../Shared/api/main";
 
 const CrewArea = () => {
 
-const BASE_URL = "https://sparta-tim.shop";
-// const BASE_URL = "54.180.106.211";
 
 const dispatch = useDispatch()
 const [showNewCrew, setShowNewCrew] = useState(false)    

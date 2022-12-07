@@ -36,17 +36,10 @@ const CrewEdit = () => {
       mainActivityArea: address.concat(" ", addressD),
       keywords: keyword,
     };
-    if (
-      (data.place === null) |
-      undefined |
-      ((address === null) | undefined) |
-      ((addressD === null) | undefined) |
-      (keyword.length < 3) |
-      ((fileUrl === "") | undefined)
-    ) {
-      return;
-    } else {
+    if ( data.content && data.name && data.place && addressD && keyword.length === 3 && fileUrl ) {
       dispatch(editCrew(payload));
+    } else {
+      alert('★요구사항을 다 채워주셔야 합니다★')
     }
   };
 

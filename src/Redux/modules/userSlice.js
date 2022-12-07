@@ -2,12 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import { GetAxios, PostAxios, DeleteAxios, PutAxios } from "../../Shared/api/main";
 
-// const SERVERH = process.env.REACT_APP_SERVER_H;
-// const SERVERM = process.env.REACT_APP_SERVER_M;
-
-// const BASE_URL = SERVERM;
-const BASE_URLM = "https://sparta-tim.shop";
-// const BASE_URLM = 'http://3.39.237.124'
 
 const initialState = {
   user: [],
@@ -22,22 +16,22 @@ export const signup = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log(payload);
     try {
-      const response = await axios.post(
-        `${BASE_URLM}/members/signup`,
-        {
+      const data = {
           email: payload.email,
           nickname: payload.nickname,
           password: payload.password,
           content: payload.content,
           imgUrl:
             "https://firebasestorage.googleapis.com/v0/b/fir-ec6e2.appspot.com/o/images%2Fundefined?alt=media&token=ba20ef8c-11d5-44af-8838-8b6a1201f3ce",
-        }
-      );
-      // window.alert("회원가입 성공");
-      // window.location.replace("/");
-      return response.data;
+      }
+      const response = await PostAxios(`members/signup`, data)
+      .then(()=>{
+          window.alert("회원가입 성공");
+          window.location.replace("/"); 
+      })
+        return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue(error.data);
+        return thunkAPI.rejectWithValue(error.data);
     }
   }
 );
@@ -69,7 +63,7 @@ export const login = createAsyncThunk(
       console.log(payload)
       const response = await PostAxios(`members/login`, payload)
         .then((response) => {
-          console.log('response: ', response)
+          // console.log('response: ', response)
           const userInfo = {
             access_token: response.headers.access_token,
             userId: response.data.data.id,
@@ -162,16 +156,11 @@ export const withdrawCrew = createAsyncThunk(
   "delete/withdrawCrew",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios
-        .delete(`${BASE_URLM}/crews/${payload.id}/members`, {
-          headers: {
-            Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token,
-          },
-        })
+      const response = await DeleteAxios(`crews/${payload.id}/members`)
         .then((response) => {
           // console.log(response);
+          window.alert("탈퇴 완료");
         });
-      window.alert("탈퇴 완료");
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error.data);
@@ -183,57 +172,9 @@ export const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {},
-  extraReducers: {
-    // [likeCrew.pending]: (state) => {
-    //   state.isLoading = true;
-    //   state.error = null;
-    // },
-    // [likeCrew.fulfilled]: (state, action) => {
-    //   state.isLoading = false;
-    //   state.user = action.payload;
-    // },
-    // [likeCrew.rejected]: (state, action) => {
-    //   state.isLoading = false;
-    //   state.error = action.payload;
-    // },
-  },
+  extraReducers: {},
 });
 
 export default { userSlice, signupSlice, loginSlice, kakaoLoginSlice }.reducer;
 
 
-
-
-//크루 좋아요
-// export const likeCrew = createAsyncThunk(
-//   "post/like-crew",
-//   async (payload, thunkAPI) => {
-//     try {
-//       const response = await PostAxios(`crews/${payload}/like`, null) 
-//         .then((response) => {
-//           console.log(response.data);
-//           window.alert("좋아요 완료");
-//         });
-//       return thunkAPI.fulfillWithValue(response.data);
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.data);
-//     }
-//   }
-// );
-
-//크루 좋아요취소
-// export const unLikeCrew = createAsyncThunk(
-//   "post/like-crew",
-//   async (payload, thunkAPI) => {
-//     try {
-//       const response = await DeleteAxios(`crews/${payload}/like`)
-//       .then((response) => {
-//         // console.log(response.data);
-//         window.alert("좋아요 취소 완료");
-//       });
-//       return thunkAPI.fulfillWithValue(response.data);
-//     } catch (error) {
-//       return thunkAPI.rejectWithValue(error.data);
-//     }
-//   }
-// );

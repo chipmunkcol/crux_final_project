@@ -48,9 +48,7 @@ const onclickDeleteAlams = () => {
 
 const readAlam = async (notificationId) => {
   await PostAxios(`notifications/${notificationId}`, null)
-  // .post(`${BASE_URL}/notifications/${notificationId}`, null,
-  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token }})
-    .then((res) => {
+  .then((res) => {
       // console.log(res)
     })
     .catch((err) => {
@@ -59,9 +57,7 @@ const readAlam = async (notificationId) => {
 }
 const deleteAlam = async (notificationId) => {
   await DeleteAxios(`notifications/${notificationId}`)
-  // .delete(`${BASE_URL}/notifications/${notificationId}`,
-  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
-    .then((res) => {
+  .then((res) => {
       // console.log(res)
     })
     .catch((err) => {
@@ -70,8 +66,6 @@ const deleteAlam = async (notificationId) => {
 }
 const deleteAlams = async () => {
   await DeleteAxios(`notifications`)
-  // .delete(`${BASE_URL}/notifications`,
-  //         { headers: {Authorization: JSON.parse(window.localStorage.getItem("userInfo")).access_token}})
     .then((res) => {
       // console.log(res)
     })
@@ -102,15 +96,15 @@ const deleteAlams = async () => {
                             alams?.data.map((alam) => {
                           return (
                             <div key={alam.id}>
-                              {!alam.status ? 
-                                (<AlamList onClick={()=>{ onclickReadAlam(alam.id); navigate(`/crews/${alam.content.crewId}`); window.location.reload()}}>
+                              {!alam.status ?  // 안 읽은 알람
+                                (<AlamList onClick={()=>{ onclickReadAlam(alam.id); navigate(`/crews/${alam.content.crewId}`) }}>
                                   <AlamContent >
                                     <span >{alam.content.content}</span> 
                                     <AlamDelete onClick={(e)=>{e.stopPropagation(); onclickDeleteAlam(alam.id)}}>삭제</AlamDelete> 
                                   </AlamContent>
                                 </AlamList>)
-                              :
-                                (<AlamList onClick={()=>{ navigate(`/crews/${alam.content.crewId}`); window.location.reload()}}>
+                              :                // 읽은 알람
+                                (<AlamList onClick={()=>{ navigate(`/crews/${alam.content.crewId}`) }}>
                                   <ReadAlamContent >
                                     <span >{alam.content.content}</span>
                                     <AlamDelete onClick={(e)=>{e.stopPropagation(); onclickDeleteAlam(alam.id); }}>삭제</AlamDelete> 
