@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import loadingSpinner from '../Image/Spinner-1s-200px.gif'
+import loadingSpinner from '../Image/로딩스피너.gif'
 
 const Loading = () => {
     return (
-        <div>
+        <div style={{width:'100%', height:'100%', backgroundColor:'#141414'}}>
             <LoadingSpinner>
                 <LoadingText>잠시만 기다려 주세요~</LoadingText>
                 <img src={loadingSpinner} alt="로딩중" width="5%"/>
@@ -13,12 +13,9 @@ const Loading = () => {
 }
 
 const LoadingSpinner = styled.div`
-position: absolute;
-width: 100vw;
-height: 100vh;
-top: 0;
-left: 0;
-background: #ffffffb7;
+width: 100%;
+margin: 0 auto;
+background: #141414;
 z-index: 999;
 display: flex;
 flex-direction: column;
@@ -29,6 +26,7 @@ justify-content: center;
 const LoadingText = styled.div`
 font: 1rem 'Noto Sans KR';
 text-align: center;
+color: #ffffff;
 `
 
 export default Loading;

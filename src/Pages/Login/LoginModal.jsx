@@ -1,26 +1,35 @@
 import styled from "styled-components";
-import { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import { login } from "../../Redux/modules/userSlice";
 import useOutSideClick from "../../Shared/hooks/useOutSideClick";
+import { ReactComponent as ClearXbtn } from "../../Image/x.svg";
 
 function LoginModal({ onClose }) {
+  const dispatch = useDispatch();
+
+  //useForm 관련
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
-  } = useForm();
+    resetField,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+  } = useForm({ defaultValues: { email: "", password: "" } });
 
-  const dispatch = useDispatch();
-
+  //form submit
   const onSubmit = (data) => {
     dispatch(login(data));
   };
 
-  const onError = () => {
-    alert("이메일 또는 비밀번호를 확인해주세요");
-  };
+  //오류 발생시 보더 색상 변경
+  const [emailBorder, setEmailBorder] = useState("none");
+  const [passwordBorder, setPasswordBorder] = useState("none");
+
+  //완료시 버튼 컬러 변경
+  const [btnColor, setBtnColr] = useState("gray");
 
   //모달 스크롤 방지
   useEffect(() => {
@@ -34,56 +43,75 @@ function LoginModal({ onClose }) {
   useOutSideClick(modalRef, onClose);
 
   //카카오 로그인
-  const API = process.env.REACT_APP_KAKAO_API;
-  const URI = process.env.REACT_APP_KAKAO_REDIRECT_URI;
+  const API = `6a2435f02f897dc1c87f7cca3eb2bfbb`;
+  const URI = `https://youmadeit.shop/kakaologin`;
   const KAKAO_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${API}&redirect_uri=${URI}&response_type=code`;
 
   const handleKaKaoLogin = () => {
     window.location.replace(KAKAO_URL);
   };
 
+  //input x버튼 관련
+  const emailValue = watch("email");
+  const PasswordValue = watch("password");
+
   return (
     <Background>
-      <Modal ref={modalRef} onSubmit={handleSubmit(onSubmit, onError)}>
-        <Login>로그인</Login>
+      <Modal onSubmit={handleSubmit(onSubmit)}>
+        <Title>로그인</Title>
         <Xbtn onClick={onClose}></Xbtn>
-        <Input>
-          <input
-            type="text"
-            placeholder="이메일"
-            maxLength="320"
-            {...register("email", {
-              required: true,
-              pattern: {
-                value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/,
-              },
-            })}
-          />
-          <input
-            type="password"
-            placeholder="비밀번호"
-            maxLength="20"
-            autoComplete="off"
-            {...register("password", {
-              required: true,
-              pattern: {
-                value: /(?=.*[0-9])(?=.*[a-zA-Z])(?=.*\W)(?=\S+$).{4,12}/,
-              },
-            })}
-          />
-          <Checkbox>
-            <input type="checkbox" />
-            <label>로그인 상태 유지</label>
-          </Checkbox>
-        </Input>
-        <Linkbox>
-          <a href="/register">회원가입</a>
-          <a href="/#">아이디/비밀번호 찾기</a>
-        </Linkbox>
+        <InputBox emailBorder={emailBorder} passwordBorder={passwordBorder}>
+          <div>
+            <input
+              type="text"
+              placeholder="이메일"
+              {...register("email", {
+                required: "이메일을 입력해주세요.",
+                pattern: {
+                  value: /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$/,
+                  message: "이메일을 정확히 입력해주세요.",
+                },
+              })}
+            />
+            {emailValue?.length > 0 ? (
+              <div>
+                <ClearXbtn
+                  onClick={() => {
+                    setValue("email", "");
+                    resetField("email");
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <p>{errors?.email?.message}</p>
+          </div>
+          <div>
+            <input
+              type="password"
+              placeholder="비밀번호"
+              {...register("password", {
+                required: "비밀번호를 입력해주세요.",
+              })}
+            />
+            {PasswordValue?.length > 0 ? (
+              <div>
+                <ClearXbtn
+                  onClick={() => {
+                    setValue("password", "");
+                    resetField("password");
+                  }}
+                />
+              </div>
+            ) : null}
+          </div>
+          <div>
+            <p>{errors?.password?.message}</p>
+          </div>
+        </InputBox>
         <Buttonbox>
-          <button type="submit" disabled={isSubmitting}>
-            로그인
-          </button>
+          <button type="submit">로그인</button>
           <button type="button" onClick={handleKaKaoLogin}>
             카카오톡 로그인
           </button>
@@ -105,138 +133,143 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 200px;
+  z-index: 99999;
 `;
 
 const Modal = styled.form`
   width: 500px;
-  height: 635px;
-  background-color: #ffffff;
+  height: fit-content;
+  background-color: #141414;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 65px 45px 65px 45px;
+  padding: 65px 50px 65px 50px;
   position: relative;
 `;
 
-const Login = styled.p`
+const Title = styled.p`
   font-family: "Spoqa Han Sans Neo";
   font-style: normal;
   font-weight: 700;
-  font-size: 2.75rem;
+  font-size: 44px;
   letter-spacing: -0.05em;
-  color: #000000;
+  color: #ffffff;
 `;
 
-const Input = styled.div`
-  input {
-    width: 410px;
-    height: 35px;
-    outline: none;
-    border: none;
-    border-bottom: solid 1px #cccccc;
-    font-family: "Spoqa Han Sans Neo";
-    font-style: normal;
-    font-size: 1.25rem;
-    font-weight: 400;
-    letter-spacing: -0.05em;
-    margin: 0;
-    padding: 0;
+const InputBox = styled.div`
+  div {
     &:nth-child(1) {
-      margin-top: 45px;
+      width: 400px;
+      height: 60px;
+      height: fit-content;
+      margin-top: 50px;
+      margin-bottom: 10px;
+      position: relative;
+      div {
+        width: 19px;
+        height: 19px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+      }
+      input {
+        width: 400px;
+        height: 60px;
+        outline: none;
+        border: ${(props) => props.emailBorder || "none"};
+        font-family: "Spoqa Han Sans Neo";
+        font-style: normal;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: -0.05em;
+        margin: 0;
+        padding: 21px 45px 21px 20px;
+        color: #ffffff;
+        background-color: #262626;
+      }
     }
     &:nth-child(2) {
-      margin-top: 35px;
+      p {
+        font-family: "Spoqa Han Sans Neo";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        letter-spacing: -0.05em;
+        color: #cb2e2e;
+        margin-bottom: 10px;
+      }
+    }
+    &:nth-child(3) {
+      width: 400px;
+      height: 60px;
+      position: relative;
+      div {
+        width: 19px;
+        height: 19px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+      }
+      input {
+        width: 400px;
+        height: 60px;
+        outline: none;
+        border: ${(props) => props.passwordBorder || "none"};
+        font-family: "Spoqa Han Sans Neo";
+        font-style: normal;
+        font-size: 14px;
+        font-weight: 400;
+        letter-spacing: -0.05em;
+        margin: 0;
+        padding: 21px 45px 21px 20px;
+        color: #ffffff;
+        background-color: #262626;
+      }
+    }
+    &:nth-child(4) {
+      p {
+        font-family: "Spoqa Han Sans Neo";
+        font-style: normal;
+        font-weight: 400;
+        font-size: 11px;
+        letter-spacing: -0.05em;
+        color: #cb2e2e;
+        margin-top: 10px;
+      }
     }
   }
 `;
 
-const Checkbox = styled.div`
-  width: 100%;
-  height: 25px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  position: relative;
-  input {
-    width: 25px;
-    height: 25px;
-    position: absolute;
-    top: -45px;
-  }
-  label {
-    font-family: "Spoqa Han Sans Neo";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.25rem;
-    letter-spacing: -0.05em;
-    margin-left: 40px;
-  }
-`;
-
-const Linkbox = styled.div`
-  a {
-    font-family: "Spoqa Han Sans Neo";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.25rem
-    letter-spacing: -0.05em;
-    text-decoration-line:none;
-    color: #000000;
-    &:first-child {
-      position: absolute;
-      bottom: 163px;
-      left: 45px;
-    }
-    &:last-child {
-      position: absolute;
-      bottom: 163px;
-      right: 45px;
-    }
-  }
-`;
 const Buttonbox = styled.div`
+  margin-top: 63px;
   button {
-    width: 410px;
+    width: 400px;
     height: 60px;
     border: none;
-    background-color: #cccccc;
+    background-color: #666666;
     font-family: "Spoqa Han Sans Neo";
     font-style: normal;
     font-weight: 400;
-    font-size: 1.25rem;
-    color: #ffffff;
+    font-size: 20px;
+    color: #141414;
     letter-spacing: -0.05em;
     &:first-child {
-      position: absolute;
-      top: 367px;
-      left: 45px;
+      &:hover {
+        color: #141414;
+        background-color: #ffb800;
+        transition: 0.5s;
+      }
+      margin-bottom: 25px;
     }
     &:last-child {
-      position: absolute;
-      top: 510px;
-      left: 45px;
-    }
-  }
-  div {
-    width: 410px;
-    height: 60px;
-    border: none;
-    background-color: #cccccc;
-    font-family: "Spoqa Han Sans Neo";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 1.25rem;
-    color: #ffffff;
-    letter-spacing: -0.05em;
-    &:first-child {
-      position: absolute;
-      top: 510px;
-      left: 45px;
+      color: #141414;
+      background-color: #fae100;
+      margin-top: 26px;
     }
   }
 `;
 
-const Xbtn = styled.button`
+const Xbtn = styled.div`
   width: 25px;
   height: 25px;
   background: none;
@@ -244,6 +277,7 @@ const Xbtn = styled.button`
   position: absolute;
   top: 20px;
   right: 20px;
+  cursor: pointer;
   ::before,
   ::after {
     position: absolute;
@@ -251,7 +285,7 @@ const Xbtn = styled.button`
     content: "";
     height: 25px;
     width: 1px;
-    background-color: #000000;
+    background-color: #ffffff;
   }
   ::before {
     transform: rotate(45deg);

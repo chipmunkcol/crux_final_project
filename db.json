@@ -13,6 +13,84 @@
       "content": "야호 야호 크루입니다",
       "imgUrl":"http://dkmedal.co.kr/web/product/big/201712/464_shop1_539894.jpg",
       "crewNum": 4
+    },
+    {
+      "id" : 3,
+      "name": "현우크루",
+      "content": "야호 야호 크루입니다",
+      "imgUrl":"http://dkmedal.co.kr/web/product/big/201712/464_shop1_539894.jpg",
+      "crewNum": 4
+    },
+    {
+      "id" : 4,
+      "name": "현우크루",
+      "content": "야호 야호 크루입니다",
+      "imgUrl":"http://dkmedal.co.kr/web/product/big/201712/464_shop1_539894.jpg",
+      "crewNum": 4
+    },
+    {
+      "id" : 5,
+      "name": "현우크루",
+      "content": "야호 야호 크루입니다",
+      "imgUrl":"http://dkmedal.co.kr/web/product/big/201712/464_shop1_539894.jpg",
+      "crewNum": 4
+    },
+    {
+      "id" : 6,
+      "name": "현우크루",
+      "content": "야호 야호 크루입니다",
+      "imgUrl":"http://dkmedal.co.kr/web/product/big/201712/464_shop1_539894.jpg",
+      "crewNum": 4
+    }
+  ],
+  "gyms": [
+    {
+      "id" : 1,
+      "name": "더클라임 양재점",
+      "location": "서울특별시 강남구 남부순환로 2615 지하1 층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
+    },
+    {
+      "id" : 2,
+      "name": "손상원클라이밍 강남점",
+      "location": "서울 강남구 신원로 35 삼모더프라임타워 5층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
+    },
+    {
+      "id" : 3,
+      "name": "333333",
+      "location": "서울 강남구 신원로 35 삼모더프라임타워 5층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
+    },
+    {
+      "id" : 4,
+      "name": "4444444",
+      "location": "서울 강남구 신원로 35 삼모더프라임타워 5층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
+    },
+    {
+      "id" : 5,
+      "name": "55555555555",
+      "location": "서울 강남구 신원로 35 삼모더프라임타워 5층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
+    },
+    {
+      "id" : 6,
+      "name": "66666666666666",
+      "location": "서울 강남구 신원로 35 삼모더프라임타워 5층",
+      "phone": "123-1234",
+      "imgUrl":"https://aaa.png",
+      "avgScore": 4.7
     }
   ]
 }
