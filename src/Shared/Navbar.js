@@ -92,7 +92,7 @@ const token = window.localStorage?.getItem("userInfo")
   if (token) {
     sse = new EventSource(
       // request(`subscribe`))
-      'http://54.180.106.211/subscribe',   //구독
+      'https://sparta-jhw.shop/subscribe',   //구독
     {headers: {Authorization: JSON.parse(token).access_token}  })
     
     sse.onopen = e => {
