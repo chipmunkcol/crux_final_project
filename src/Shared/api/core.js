@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const request = axios.create({ //axios 인스턴스 생성
-    baseURL: 'http://54.180.106.211/',
+    baseURL: 'https://sparta-jhw.shop/',
     headers: { Authorization: JSON.parse(window.localStorage.getItem("userInfo"))?.access_token }
 })
 
