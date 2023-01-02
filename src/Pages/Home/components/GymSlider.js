@@ -1,7 +1,7 @@
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import 슬라이더왼쪽버튼 from "../../../Image/btn_left.png"
 import 슬라이더오른쪽버튼 from "../../../Image/btn_right.png"
 import 기본클라이밍짐 from "../../../Image/인기 클라이밍짐.png"
@@ -43,10 +43,12 @@ const SliderGym = ({ gyms }) => {
                 gyms?.map((gym,i)=>{
                     return(
                         <Wrap key={i}>
-                            <GymName>{gym.name} (평점: {Number(gym.avgScore).toFixed(2)}점)</GymName>
+                            <GymName onClick={()=>{navigate(`/gyms/${gym.id}`)}}> 
+                                {gym.name} (평점: {Number(gym.avgScore).toFixed(2)}점)
+                                <GymNavi>바로가기</GymNavi>
+                            </GymName>
                             <img src={gym.imgUrl !== null ? gym.imgUrl : 기본클라이밍짐} alt="" 
-                                 style={{width:'630px', height:'630px', margin:'0 2%', position:'relative'}}
-                                    onClick={()=>{navigate(`/gyms/${gym.id}`)}}/>
+                                 style={{width:'630px', height:'630px', margin:'0 2%', position:'relative'}}/>
                         </Wrap>
                     )
                 })
@@ -57,9 +59,25 @@ const SliderGym = ({ gyms }) => {
         </div>
     );
 }
+const blinkEffect = keyframes`
+    0% {
+        color: white;
+    }
+    50% {
+        color: #ffb800;
+    }
+    100% {
+        color: white;
+    }
+`
+
 const Wrap = styled.div`
 :hover {
     color: #ffb800;
+    span{
+        color: white;
+        animation: ${blinkEffect} 1s 1s infinite;
+    }
 }
 cursor: pointer;
 `
@@ -69,7 +87,11 @@ font-size: 2rem;
 margin: 1rem 0px 8px 3rem;
 position: absolute;
 z-index: 3;
-
+`
+const GymNavi = styled.span`
+font-size: 1.6rem;
+text-decoration: underline;
+margin-left: 5px;
 `
 
 const StyledSlider = styled(Slider)`
